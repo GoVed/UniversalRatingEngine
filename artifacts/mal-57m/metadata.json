@@ -1,0 +1,12 @@
+{
+  "dataset": "mal-57m",
+  "is_combined": false,
+  "sources": [
+    "mal-57m-kaggle",
+    "mal-2024-archive"
+  ],
+  "total_titles": 15575,
+  "total_ratings": 266688526,
+  "modern_titles_added": 2218,
+  "updated_at": "2026-11-01T18:47:02Z"
+}

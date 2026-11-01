@@ -1,0 +1,10 @@
+{
+  "dataset": "anilist",
+  "sources": [
+    "anilist-2025-archive"
+  ],
+  "total_titles": 15336,
+  "total_ratings_processed": 247900884,
+  "user_level_ratings": 247900884,
+  "generation_timestamp": "2026-11-01T18:32:08Z"
+}

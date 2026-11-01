@@ -1,0 +1,13 @@
+{
+  "dataset": "ml-32m",
+  "global_mean": 7.09314017338172,
+  "global_std": 2.1124371752498896,
+  "total_ratings": 31637476,
+  "total_titles": 19669,
+  "min_user_ratings": 15,
+  "min_item_ratings": 30,
+  "k": 32,
+  "lambda_reg": 0.02,
+  "final_rmse": 1.3111231006281714,
+  "bridge_threshold": 0.8526366526774669
+}

@@ -1,0 +1,13 @@
+{
+  "dataset": "ml-latest-small",
+  "global_mean": 7.326107067427694,
+  "global_std": 1.9855664451758368,
+  "total_ratings": 57291,
+  "total_titles": 869,
+  "min_user_ratings": 15,
+  "min_item_ratings": 30,
+  "k": 32,
+  "lambda_reg": 0.02,
+  "final_rmse": 1.8630555854702495,
+  "bridge_threshold": 0.8583156616996088
+}

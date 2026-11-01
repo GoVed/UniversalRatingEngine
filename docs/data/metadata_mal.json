@@ -1,0 +1,17 @@
+{
+  "dataset": "mal",
+  "is_combined": false,
+  "sources": [
+    "mal"
+  ],
+  "global_mean": 7.400297558439567,
+  "global_std": 1.323149285262597,
+  "total_ratings": 834794,
+  "total_titles": 4648,
+  "min_user_ratings": 15,
+  "min_item_ratings": 30,
+  "k": 32,
+  "lambda_reg": 0.02,
+  "final_rmse": 0.8360875621582584,
+  "bridge_threshold": 0.8427270329654798
+}
