@@ -341,11 +341,51 @@
       color: #94a3b8 !important;
     }
     html:not(.dark) #inspector-modal {
-      background-color: rgba(15, 23, 42, 0.55);
+      background-color: rgba(15, 23, 42, 0.65);
     }
-    html:not(.dark) #inspector-modal .bg-slate-900 {
-      background-color: #f8fafc;
-      border-color: #e2e8f0;
+    html:not(.dark) #inspector-modal .bg-slate-900,
+    html:not(.dark) #inspector-modal .bg-slate-900\/90,
+    html:not(.dark) #inspector-modal .bg-slate-900\/80,
+    html:not(.dark) #inspector-modal .bg-slate-900\/60,
+    html:not(.dark) #inspector-modal .bg-slate-900\/40 {
+      background-color: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) #modal-overview-text {
+      background-color: #ffffff !important;
+      color: #1e293b !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) #modal-tagline-container {
+      background-color: #f5f3ff !important;
+      border-color: #ddd6fe !important;
+      color: #6b21a8 !important;
+    }
+    html:not(.dark) #modal-keywords-list span {
+      background-color: #f1f5f9 !important;
+      color: #334155 !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #inspector-modal h2 {
+      color: #0f172a !important;
+    }
+    html:not(.dark) #modal-consensus-banner {
+      background: linear-gradient(to right, #ecfdf5, #f0fdf4, #ecfeff) !important;
+      border-color: #a7f3d0 !important;
+    }
+    html:not(.dark) #modal-consensus-banner span.text-white {
+      color: #064e3b !important;
+    }
+    html:not(.dark) #modal-story-consensus-summary {
+      color: #334155 !important;
+    }
+    html:not(.dark) #modal-consensus-banner button {
+      background-color: #ffffff !important;
+      color: #0e7490 !important;
+      border-color: #06b6d4 !important;
+    }
+    html:not(.dark) #modal-consensus-banner button:hover {
+      background-color: #f0fdfa !important;
     }
     html:not(.dark) #theme-toggle {
       color: #64748b;
@@ -1272,13 +1312,14 @@
 
   <!-- Title Inspector Modal -->
   <div id="inspector-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="glass max-w-2xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150">
-      <div class="p-4 sm:p-6 border-b border-slate-800 flex items-start justify-between shrink-0 gap-3">
+    <div class="glass max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150">
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-slate-800 flex items-start justify-between shrink-0 gap-3">
         <div class="pr-2 min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
             <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-white leading-tight">Movie Title</h2>
             <span id="modal-year" class="text-xs sm:text-sm font-semibold text-slate-400"></span>
-            <span id="modal-imdb-link"></span>
+            <span id="modal-imdb-link" class="flex items-center gap-1.5 flex-wrap"></span>
           </div>
           <div id="modal-subtitles" class="text-xs text-slate-400 mt-1 space-y-0.5"></div>
           <div id="modal-genres" class="flex flex-wrap gap-1 mt-2">
@@ -1304,58 +1345,162 @@
         </div>
       </div>
 
-      <div class="p-4 sm:p-6 space-y-5 overflow-y-auto">
-        <!-- Big Score Hero -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-          <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/30">
-            <div class="text-[11px] text-emerald-400 font-semibold">Universal Score (Mod B)</div>
-            <div id="modal-score-b" class="text-2xl font-bold text-emerald-400 mt-0.5">0.00</div>
-            <div class="text-[10px] text-slate-500">De-Biased Cross-DB Scale</div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-[11px] text-slate-400 font-medium">Composite Raw</div>
-            <div id="modal-score-raw" class="text-2xl font-bold text-yellow-400 mt-0.5">0.00</div>
-            <div class="text-[10px] text-slate-500">Uncalibrated Mean</div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-[11px] text-slate-400 font-medium">Bayesian Weighted</div>
-            <div id="modal-score-bayes" class="text-2xl font-bold text-slate-300 mt-0.5">0.00</div>
-            <div class="text-[10px] text-slate-500">Volume-Shrunk Mean</div>
-          </div>
-          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-[11px] text-slate-400 font-medium">Calibration Shift (Δ)</div>
-            <div id="modal-delta" class="text-2xl font-bold text-white mt-0.5">0.00</div>
-            <div class="text-[10px] text-slate-500">Universal - Raw</div>
-          </div>
+      <!-- Modal Segmented View Switcher -->
+      <div class="px-4 sm:px-6 pt-2.5 pb-0 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-2">
+          <button id="modal-tab-story-btn" onclick="setModalTab('story')" class="px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all">
+            <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+            <span>Story & Premise</span>
+          </button>
+          <button id="modal-tab-stats-btn" onclick="setModalTab('stats')" class="px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all">
+            <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
+            <span>Rating & Statistical Calibration</span>
+          </button>
         </div>
-
-        <!-- Source Database Raw Ratings & Calibration Waterfall -->
-        <div id="modal-source-breakdown" class="space-y-3">
-          <!-- Populated dynamically by inspectMovie() -->
-        </div>
-
-        <!-- Radar Comparison Chart -->
-        <div class="h-52">
-          <canvas id="modal-chart"></canvas>
-        </div>
-
-        <!-- Diagnostic Shift Banner -->
-        <div id="modal-diagnostic-banner" class="p-4 rounded-xl border flex items-center justify-between text-xs font-medium">
-          <div class="flex items-center gap-2">
-            <i id="modal-diag-icon" data-lucide="trending-down" class="w-5 h-5"></i>
-            <div>
-              <div id="modal-diag-text" class="font-bold text-sm">Dropped X ranks</div>
-              <div id="modal-diag-sub" class="text-slate-400 text-xs">Self-selection enthusiast inflation isolated</div>
-            </div>
-          </div>
-          <div class="text-right">
-            <div class="text-slate-400">Rank Transition</div>
-            <div class="text-sm font-bold text-white"><span id="modal-raw-rank">#0</span> → <span id="modal-cal-rank" class="text-cyan-400">#0</span></div>
+        <div class="flex items-center gap-1.5 pb-1">
+          <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold">
+            <span class="text-yellow-400">★</span> <span id="modal-tab-score">0.00</span>
+            <span class="text-[10px] text-emerald-400/80 font-sans font-normal ml-0.5 hidden sm:inline">Calibrated</span>
           </div>
         </div>
       </div>
 
-      <div class="p-3 sm:p-4 bg-slate-900/80 border-t border-slate-800 flex justify-end shrink-0">
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
+        
+        <!-- View 1: Story & Premise -->
+        <div id="modal-view-story" class="space-y-4">
+          <!-- Tagline Callout -->
+          <div id="modal-tagline-container" class="p-3 sm:p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20 text-purple-200 text-xs sm:text-sm italic flex items-start gap-2.5">
+            <span class="text-purple-400 text-base leading-none font-serif select-none">“</span>
+            <span id="modal-tagline-text" class="font-medium tracking-wide"></span>
+            <span class="text-purple-400 text-base leading-none font-serif select-none">”</span>
+          </div>
+
+          <!-- Plot Overview -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <i data-lucide="align-left" class="w-3.5 h-3.5 text-cyan-400"></i>
+                Storyline & Premise
+              </span>
+              <span id="modal-source-attribution" class="text-[10px] text-slate-500 font-mono"></span>
+            </div>
+            <div id="modal-overview-text" class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed tracking-normal font-sans">
+              <!-- Inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Thematic Keywords -->
+          <div id="modal-keywords-container" class="space-y-1.5 hidden">
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="tag" class="w-3.5 h-3.5 text-purple-400"></i>
+              Thematic Keywords & Motifs
+            </div>
+            <div id="modal-keywords-list" class="flex flex-wrap gap-1.5">
+              <!-- Keywords inserted dynamically -->
+            </div>
+          </div>
+
+          <!-- Metadata Quick Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
+            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Format</div>
+              <div id="modal-format-val" class="font-semibold text-slate-200 mt-0.5 truncate">Feature Film</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Release Era</div>
+              <div id="modal-era-val" class="font-semibold text-slate-200 mt-0.5 truncate">2023</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Scope</div>
+              <div id="modal-scope-val" class="font-semibold text-slate-200 mt-0.5 truncate">Feature Length</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div class="text-[10px] text-slate-400 uppercase font-bold">Global Rank</div>
+              <div id="modal-rank-val" class="font-semibold text-cyan-300 font-mono mt-0.5">#1 of 38,916</div>
+            </div>
+          </div>
+
+          <!-- Rating Consensus Snapshot -->
+          <div id="modal-consensus-banner" class="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-cyan-950/30 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-sm font-bold text-white flex items-center gap-1.5">
+                  <span class="text-yellow-400">★</span> Universal Calibrated Score: <span id="modal-story-score-b" class="text-emerald-400 font-mono text-base font-extrabold">0.00</span>
+                </span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">1-10 Scale</span>
+              </div>
+              <p id="modal-story-consensus-summary" class="text-xs text-slate-300 mt-1">
+                Cross-calibrated consensus score.
+              </p>
+            </div>
+            <button onclick="setModalTab('stats')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shrink-0">
+              <span>View De-biasing Math</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- View 2: Rating & Statistical Calibration -->
+        <div id="modal-view-stats" class="space-y-5 hidden">
+          <!-- Big Score Hero -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/30">
+              <div class="text-[11px] text-emerald-400 font-semibold">Universal Score (Mod B)</div>
+              <div id="modal-score-b" class="text-2xl font-bold text-emerald-400 mt-0.5">0.00</div>
+              <div class="text-[10px] text-slate-500">De-Biased Cross-DB Scale</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-[11px] text-slate-400 font-medium">Composite Raw</div>
+              <div id="modal-score-raw" class="text-2xl font-bold text-yellow-400 mt-0.5">0.00</div>
+              <div class="text-[10px] text-slate-500">Uncalibrated Mean</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-[11px] text-slate-400 font-medium">Bayesian Weighted</div>
+              <div id="modal-score-bayes" class="text-2xl font-bold text-slate-300 mt-0.5">0.00</div>
+              <div class="text-[10px] text-slate-500">Volume-Shrunk Mean</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-[11px] text-slate-400 font-medium">Calibration Shift (Δ)</div>
+              <div id="modal-delta" class="text-2xl font-bold text-white mt-0.5">0.00</div>
+              <div class="text-[10px] text-slate-500">Universal - Raw</div>
+            </div>
+          </div>
+
+          <!-- Source Database Raw Ratings & Calibration Waterfall -->
+          <div id="modal-source-breakdown" class="space-y-3">
+            <!-- Populated dynamically by inspectMovie() -->
+          </div>
+
+          <!-- Radar Comparison Chart -->
+          <div class="h-52">
+            <canvas id="modal-chart"></canvas>
+          </div>
+
+          <!-- Diagnostic Shift Banner -->
+          <div id="modal-diagnostic-banner" class="p-4 rounded-xl border flex items-center justify-between text-xs font-medium">
+            <div class="flex items-center gap-2">
+              <i id="modal-diag-icon" data-lucide="trending-down" class="w-5 h-5"></i>
+              <div>
+                <div id="modal-diag-text" class="font-bold text-sm">Dropped X ranks</div>
+                <div id="modal-diag-sub" class="text-slate-400 text-xs">Self-selection enthusiast inflation isolated</div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-slate-400">Rank Transition</div>
+              <div class="text-sm font-bold text-white"><span id="modal-raw-rank">#0</span> → <span id="modal-cal-rank" class="text-cyan-400">#0</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3 sm:p-4 bg-slate-900/80 border-t border-slate-800 flex items-center justify-between shrink-0">
+        <button id="modal-footer-toggle-btn" onclick="toggleModalTabs()" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1.5 transition-colors">
+          <span id="modal-footer-toggle-text">View Full Rating Calibration & Math →</span>
+        </button>
         <button onclick="closeInspector()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition-colors">
           Close Inspector
         </button>
@@ -1395,6 +1540,10 @@
         <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Browse Titles in Inspector</span>
           <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">→</kbd></div>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Toggle Story / Stats in Inspector</span>
+          <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">1</kbd> <span class="text-slate-500">/</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">2</kbd></div>
         </div>
         <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Close Modal / Clear Search</span>
@@ -1609,6 +1758,9 @@
 
         // Check if direct deep link to movie or tab exists in URL hash
         checkInitialUrlParams();
+
+        // Initialize Plot Synopses & Story Premise Cache
+        initSynopses();
 
         const spinner = document.getElementById('loading-spinner');
         if (spinner) spinner.classList.add('hidden');
@@ -2887,6 +3039,239 @@
       window.scrollTo({ top: 380, behavior: 'smooth' });
     }
 
+    // Helper to safely escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Storyline Synopses Cache & Dynamic Loading
+    let movieSynopsesCache = {};
+    let isSynopsesFullLoaded = false;
+    let synopsesLoadingPromise = null;
+    let currentModalTab = 'story'; // 'story' | 'stats'
+
+    async function initSynopses() {
+      try {
+        const topRes = await fetch('./data/synopses_top.json');
+        if (topRes.ok) {
+          const topData = await topRes.json();
+          Object.assign(movieSynopsesCache, topData);
+          if (currentInspectingMovieId) {
+            const m = allMovies.find(x => x.id === currentInspectingMovieId);
+            if (m) updateModalStory(m);
+          }
+        }
+      } catch (e) {
+        console.warn('Could not load top synopses:', e);
+      }
+
+      // Background load full catalog
+      setTimeout(() => {
+        loadFullSynopsesBackground();
+      }, 500);
+    }
+
+    function loadFullSynopsesBackground() {
+      if (synopsesLoadingPromise) return synopsesLoadingPromise;
+      synopsesLoadingPromise = fetch('./data/movie_synopses.json')
+        .then(res => res.json())
+        .then(data => {
+          Object.assign(movieSynopsesCache, data);
+          isSynopsesFullLoaded = true;
+          if (currentInspectingMovieId) {
+            const m = allMovies.find(x => x.id === currentInspectingMovieId);
+            if (m) updateModalStory(m);
+          }
+          return movieSynopsesCache;
+        })
+        .catch(err => {
+          console.warn('Could not load full synopses:', err);
+          return movieSynopsesCache;
+        });
+      return synopsesLoadingPromise;
+    }
+
+    function setModalTab(tab) {
+      currentModalTab = tab;
+      const storyBtn = document.getElementById('modal-tab-story-btn');
+      const statsBtn = document.getElementById('modal-tab-stats-btn');
+      const storyView = document.getElementById('modal-view-story');
+      const statsView = document.getElementById('modal-view-stats');
+      const footerToggleText = document.getElementById('modal-footer-toggle-text');
+
+      if (tab === 'story') {
+        if (storyBtn) {
+          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
+        }
+        if (statsBtn) {
+          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
+        }
+        if (storyView) storyView.classList.remove('hidden');
+        if (statsView) statsView.classList.add('hidden');
+        if (footerToggleText) footerToggleText.innerText = 'View Full Rating Calibration & Math →';
+      } else {
+        if (statsBtn) {
+          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
+        }
+        if (storyBtn) {
+          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
+        }
+        if (storyView) storyView.classList.add('hidden');
+        if (statsView) statsView.classList.remove('hidden');
+        if (footerToggleText) footerToggleText.innerText = '← Return to Story & Premise';
+
+        if (currentInspectingMovieId) {
+          const m = allMovies.find(item => item.id === currentInspectingMovieId);
+          if (m) renderModalChart(m);
+        }
+      }
+      if (currentInspectingMovieId) {
+        history.replaceState(null, '', `#id=${currentInspectingMovieId}&tab=${tab}`);
+      }
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function toggleModalTabs() {
+      setModalTab(currentModalTab === 'story' ? 'stats' : 'story');
+    }
+
+    function updateModalStory(m) {
+      const entry = movieSynopsesCache[m.id] || movieSynopsesCache[String(m.id)];
+      let overview = '';
+      let tagline = '';
+      let keywords = '';
+
+      if (typeof entry === 'string') {
+        overview = entry;
+      } else if (Array.isArray(entry)) {
+        overview = entry[0] || '';
+        tagline = entry[1] || '';
+        keywords = entry[2] || '';
+      }
+
+      // Tagline
+      const taglineContainer = document.getElementById('modal-tagline-container');
+      const taglineText = document.getElementById('modal-tagline-text');
+      if (tagline && tagline.trim()) {
+        if (taglineText) taglineText.innerText = tagline.trim();
+        if (taglineContainer) taglineContainer.classList.remove('hidden');
+      } else {
+        if (taglineContainer) taglineContainer.classList.add('hidden');
+      }
+
+      // Story Overview
+      const overviewEl = document.getElementById('modal-overview-text');
+      const sourceEl = document.getElementById('modal-source-attribution');
+      if (overviewEl) {
+        if (overview && overview.trim()) {
+          overviewEl.innerHTML = `<p class="leading-relaxed">${escapeHtml(overview.trim())}</p>`;
+          if (sourceEl) {
+            sourceEl.innerText = m.media_type === 'anime' ? 'Verified AniList / MAL Plot' : 'Verified TMDB / IMDb Plot';
+          }
+        } else if (!isSynopsesFullLoaded) {
+          overviewEl.innerHTML = `
+            <div class="space-y-2 py-2 animate-pulse text-slate-400 text-xs">
+              <div class="h-4 bg-slate-800 rounded w-3/4"></div>
+              <div class="h-4 bg-slate-800 rounded w-full"></div>
+              <div class="h-4 bg-slate-800 rounded w-5/6"></div>
+              <div class="text-[11px] text-cyan-400 font-mono pt-1">Loading storyline & premise...</div>
+            </div>`;
+          loadFullSynopsesBackground();
+        } else {
+          overviewEl.innerHTML = `<p class="text-slate-400 italic">Official storyline synopsis is currently being cataloged for this title.</p>`;
+          if (sourceEl) sourceEl.innerText = '';
+        }
+      }
+
+      // Thematic Keywords
+      const kwContainer = document.getElementById('modal-keywords-container');
+      const kwList = document.getElementById('modal-keywords-list');
+      if (kwList && kwContainer) {
+        if (keywords && keywords.trim()) {
+          const rawTags = keywords.split(',').map(s => s.trim()).filter(Boolean);
+          const uniqueKw = Array.from(new Set(rawTags)).slice(0, 10);
+          kwList.innerHTML = uniqueKw.map(kw => `
+            <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-slate-300 border border-slate-700/60 text-[11px] font-medium hover:border-slate-500 transition-colors">
+              ${escapeHtml(kw)}
+            </span>
+          `).join('');
+          kwContainer.classList.remove('hidden');
+        } else {
+          kwContainer.classList.add('hidden');
+        }
+      }
+
+      // Format & Metadata
+      const formatVal = document.getElementById('modal-format-val');
+      if (formatVal) {
+        let fText = 'Cinema Feature Film';
+        if (m.media_type === 'anime') {
+          fText = (m.ep_count && m.ep_count > 1) ? `Anime Series (${m.ep_count} eps)` : 'Anime Series / Film';
+        } else if (m.media_type === 'tv_season') {
+          fText = `TV Series (Season ${m.season_num || 1})`;
+        } else if (m.media_type === 'bridge') {
+          fText = 'Cross-DB Anchor Film';
+        }
+        formatVal.innerText = fText;
+      }
+
+      const eraVal = document.getElementById('modal-era-val');
+      if (eraVal) {
+        const y = m.year;
+        let eraName = 'Contemporary';
+        if (y < 1980) eraName = 'Classic';
+        else if (y < 1990) eraName = '80s Era';
+        else if (y < 2000) eraName = '90s Golden Era';
+        else if (y < 2010) eraName = '2000s Era';
+        else if (y < 2020) eraName = '2010s Modern';
+        eraVal.innerText = y ? `${y} (${eraName})` : 'N/A';
+      }
+
+      const scopeVal = document.getElementById('modal-scope-val');
+      if (scopeVal) {
+        if (m.ep_count) {
+          scopeVal.innerText = `${m.ep_count} Episodes Analyzed`;
+        } else {
+          scopeVal.innerText = 'Feature Length';
+        }
+      }
+
+      const rankVal = document.getElementById('modal-rank-val');
+      if (rankVal) {
+        rankVal.innerText = `#${m.cal_rank.toLocaleString()} of ${allMovies.length.toLocaleString()}`;
+      }
+
+      // Scores
+      const storyScoreB = document.getElementById('modal-story-score-b');
+      if (storyScoreB) storyScoreB.innerText = m.mod_b.toFixed(2);
+
+      const tabScore = document.getElementById('modal-tab-score');
+      if (tabScore) tabScore.innerText = m.mod_b.toFixed(2);
+
+      const consensusSummary = document.getElementById('modal-story-consensus-summary');
+      if (consensusSummary) {
+        const sources = [];
+        if (m.mal_raw != null) sources.push(`MyAnimeList (${m.mal_raw.toFixed(2)})`);
+        if (m.al_raw != null) sources.push(`AniList (${m.al_raw.toFixed(2)})`);
+        if (m.imdb_raw != null) sources.push(`IMDb (${m.imdb_raw.toFixed(2)})`);
+        if (m.ml_raw != null) sources.push(`MovieLens (${m.ml_raw.toFixed(2)})`);
+        if (m.imdb_ep_avg != null) sources.push(`Episode Avg (${m.imdb_ep_avg.toFixed(2)})`);
+
+        const voteStr = m.votes ? `${m.votes.toLocaleString()} audience & user votes` : 'verified ratings';
+        if (sources.length > 0) {
+          consensusSummary.innerText = `Calibrated consensus across ${sources.join(', ')} totaling ${voteStr}.`;
+        } else {
+          consensusSummary.innerText = `Calibrated latent quality score derived from ${voteStr}.`;
+        }
+      }
+    }
+
     // Inspect Modal & Title Carousel Navigation
     let currentInspectingMovieId = null;
 
@@ -2917,14 +3302,18 @@
         history.replaceState(null, '', `#id=${id}`);
       }
 
-      // IMDb Link badge
+      // External Links: IMDb & MyAnimeList
       const imdbLinkSpan = document.getElementById('modal-imdb-link');
       if (imdbLinkSpan) {
+        let linksHtml = '';
         if (m.tconst) {
-          imdbLinkSpan.innerHTML = `<a href="https://www.imdb.com/title/${m.tconst}/" target="_blank" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-[10px] hover:bg-amber-500/30 transition-colors">IMDb: ${m.tconst} ↗</a>`;
-        } else {
-          imdbLinkSpan.innerHTML = '';
+          linksHtml += `<a href="https://www.imdb.com/title/${m.tconst}/" target="_blank" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-[10px] hover:bg-amber-500/30 transition-colors inline-flex items-center gap-1">IMDb: ${m.tconst} ↗</a>`;
         }
+        if (m.media_type === 'anime' && m.id >= 3000000 && m.id < 4000000) {
+          const malId = m.id - 3000000;
+          linksHtml += ` <a href="https://myanimelist.net/anime/${malId}" target="_blank" class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40 font-mono text-[10px] hover:bg-blue-500/30 transition-colors inline-flex items-center gap-1">MAL: #${malId} ↗</a>`;
+        }
+        imdbLinkSpan.innerHTML = linksHtml;
       }
 
       // Genre badges
@@ -2969,6 +3358,9 @@
         }
         subDiv.innerHTML = subHtml;
       }
+
+      // Populate Story Tab Content
+      updateModalStory(m);
 
       // Populate Source Database Breakdown & Step-by-Step Calibration Path
       const srcBreakDiv = document.getElementById('modal-source-breakdown');
@@ -3072,6 +3464,9 @@
 
       // Render chart
       renderModalChart(m);
+
+      // Default to story view in simple discovery mode, or keep selected view
+      setModalTab(currentModalTab || (currentViewMode === 'simple' ? 'story' : 'stats'));
 
       const inspModal = document.getElementById('inspector-modal');
       if (inspModal) inspModal.classList.remove('hidden');
@@ -3759,6 +4154,10 @@
         const rSel = document.getElementById('min-rating-select');
         if (rSel) rSel.value = qRating;
       }
+      const qTheme = urlParams.get('theme');
+      if (qTheme === 'light' || qTheme === 'dark') {
+        applyTheme(qTheme, false);
+      }
       if (qSearch || qTag || qEra || qRating) {
         applyFilters();
       }
@@ -3770,7 +4169,14 @@
           const movieId = parseInt(idMatch[1], 10);
           const found = allMovies.find(m => m.id === movieId);
           if (found) {
-            setTimeout(() => inspectMovie(movieId), 250);
+            setTimeout(() => {
+              inspectMovie(movieId);
+              if (hash.includes('tab=stats')) {
+                setModalTab('stats');
+              } else if (hash.includes('tab=story')) {
+                setModalTab('story');
+              }
+            }, 250);
           }
         }
       } else if (hash.startsWith('#')) {
@@ -3808,6 +4214,10 @@
           inspectPrevMovie();
         } else if (e.key === 'ArrowRight') {
           inspectNextMovie();
+        } else if (e.key === '1') {
+          setModalTab('story');
+        } else if (e.key === '2') {
+          setModalTab('stats');
         }
         return;
       }
