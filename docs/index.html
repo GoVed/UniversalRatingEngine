@@ -12,11 +12,10 @@
           localStorage.setItem('theme', queryTheme);
         }
         const saved = localStorage.getItem('theme');
-        const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (saved === 'dark' || (!saved && systemDark)) {
-          document.documentElement.classList.add('dark');
-        } else {
+        if (saved === 'light') {
           document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
         }
       } catch (e) {}
     })();
@@ -160,19 +159,22 @@
       background-color: #ffffff;
     }
     html:not(.dark) .bg-slate-950,
+    html:not(.dark) .bg-slate-950\/80,
     html:not(.dark) .bg-slate-950\/90 {
       background-color: #f8fafc;
     }
-    html:not(.dark) .bg-slate-800 {
+    html:not(.dark) .bg-slate-800,
+    html:not(.dark) .bg-slate-800\/80 {
       background-color: #f1f5f9;
     }
     html:not(.dark) .bg-slate-800\/40,
     html:not(.dark) .bg-slate-800\/60 {
-      background-color: rgba(241, 245, 249, 0.8);
+      background-color: rgba(241, 245, 249, 0.85);
     }
     html:not(.dark) .hover\:bg-slate-800:hover,
     html:not(.dark) .hover\:bg-slate-800\/40:hover,
-    html:not(.dark) .hover\:bg-slate-800\/60:hover {
+    html:not(.dark) .hover\:bg-slate-800\/60:hover,
+    html:not(.dark) .hover\:bg-slate-800\/80:hover {
       background-color: #e2e8f0;
     }
     html:not(.dark) .hover\:bg-slate-700:hover {
@@ -209,7 +211,8 @@
       border-color: #e2e8f0;
     }
     html:not(.dark) .border-slate-700,
-    html:not(.dark) .border-slate-700\/80 {
+    html:not(.dark) .border-slate-700\/80,
+    html:not(.dark) .border-slate-700\/60 {
       border-color: #cbd5e1;
     }
     html:not(.dark) .divide-slate-800 > :not([hidden]) ~ :not([hidden]) {
@@ -220,7 +223,9 @@
     html:not(.dark) .text-cyan-400 {
       color: #0891b2;
     }
-    html:not(.dark) .text-cyan-300 {
+    html:not(.dark) .text-cyan-300,
+    html:not(.dark) .text-cyan-300\/90,
+    html:not(.dark) .text-cyan-200 {
       color: #0e7490;
     }
     html:not(.dark) .text-emerald-400 {
@@ -232,7 +237,8 @@
     html:not(.dark) .text-amber-400 {
       color: #d97706;
     }
-    html:not(.dark) .text-amber-300 {
+    html:not(.dark) .text-amber-300,
+    html:not(.dark) .text-amber-200 {
       color: #b45309;
     }
     html:not(.dark) .text-rose-400,
@@ -242,21 +248,42 @@
     html:not(.dark) .text-indigo-400 {
       color: #4f46e5;
     }
-    html:not(.dark) .text-yellow-400 {
+    html:not(.dark) .text-yellow-400,
+    html:not(.dark) .text-yellow-400\/90,
+    html:not(.dark) .text-yellow-300 {
       color: #b45309;
+    }
+    html:not(.dark) .text-purple-300,
+    html:not(.dark) .text-purple-400,
+    html:not(.dark) .text-purple-200 {
+      color: #7e22ce;
+    }
+    html:not(.dark) .text-orange-400,
+    html:not(.dark) .text-orange-200 {
+      color: #c2410c;
+    }
+    html:not(.dark) .text-sky-400,
+    html:not(.dark) .text-sky-200 {
+      color: #0369a1;
     }
 
     /* Light mode badge backgrounds */
     html:not(.dark) .bg-cyan-950\/60,
-    html:not(.dark) .bg-cyan-950\/40 {
+    html:not(.dark) .bg-cyan-950\/40,
+    html:not(.dark) .bg-cyan-950\/30,
+    html:not(.dark) .bg-cyan-950\/50,
+    html:not(.dark) .bg-cyan-900\/40 {
       background-color: #ecfeff;
       border-color: #a5f3fc;
     }
-    html:not(.dark) .bg-emerald-950\/60 {
+    html:not(.dark) .bg-emerald-950\/60,
+    html:not(.dark) .bg-emerald-950\/30,
+    html:not(.dark) .bg-emerald-950\/20 {
       background-color: #ecfdf5;
       border-color: #a7f3d0;
     }
     html:not(.dark) .bg-amber-950\/60,
+    html:not(.dark) .bg-amber-950\/30,
     html:not(.dark) .bg-amber-500\/10,
     html:not(.dark) .bg-amber-500\/5 {
       background-color: #fffbeb;
@@ -265,6 +292,26 @@
     html:not(.dark) .bg-amber-500\/20 {
       background-color: #fef3c7;
       border-color: #fcd34d;
+    }
+    html:not(.dark) .bg-purple-900\/30,
+    html:not(.dark) .bg-purple-950\/30,
+    html:not(.dark) .bg-purple-950\/20,
+    html:not(.dark) .bg-purple-500\/15,
+    html:not(.dark) .bg-purple-500\/20 {
+      background-color: #f5f3ff;
+      border-color: #e9d5ff;
+    }
+    html:not(.dark) .bg-sky-950\/30 {
+      background-color: #f0f9ff;
+      border-color: #bae6fd;
+    }
+    html:not(.dark) .bg-orange-950\/30 {
+      background-color: #fff7ed;
+      border-color: #fed7aa;
+    }
+    html:not(.dark) .math-block {
+      background-color: #f8fafc;
+      border-color: #e2e8f0;
     }
     html:not(.dark) #combined-disclaimer-banner {
       background-color: #fffbeb;
@@ -376,6 +423,11 @@
         <button onclick="toggleArchitectureGuide()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition-colors flex items-center gap-1.5" title="How This Unified DB Is Built & Rated">
           <i data-lucide="layers" class="w-3.5 h-3.5"></i>
           <span class="hidden xl:inline">How It's Built &amp; Rated</span>
+        </button>
+
+        <button onclick="toggleShortcutsModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5" title="Keyboard Shortcuts (?)">
+          <i data-lucide="keyboard" class="w-3.5 h-3.5"></i>
+          <span class="hidden xl:inline">Shortcuts</span>
         </button>
 
         <!-- Theme Toggle Button -->
@@ -580,31 +632,6 @@
           </div>
         </div>
 
-        <!-- Medium / Source Cohort Filter Bar -->
-        <div class="flex flex-wrap items-center gap-1.5 pb-3 border-b border-slate-800/80">
-          <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mr-1.5 flex items-center gap-1">
-            <i data-lucide="database" class="w-3.5 h-3.5 text-cyan-400"></i> Cohort / Medium:
-          </span>
-          <button onclick="setMediaFilter('all')" id="media-all" class="media-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all">
-            🌐 All Unified
-          </button>
-          <button onclick="setMediaFilter('movie')" id="media-movie" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
-            🎬 Cinema Movies (ML + IMDb)
-          </button>
-          <button onclick="setMediaFilter('anime')" id="media-anime" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
-            ⛩️ Anime Seasons &amp; Films (MAL + IMDb)
-          </button>
-          <button onclick="setMediaFilter('tv_season')" id="media-tv_season" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
-            📺 TV Seasons (IMDb Episode-Separated)
-          </button>
-          <button onclick="setMediaFilter('bridge')" id="media-bridge" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated simultaneously across MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb">
-            🔗 Multi-DB Bridge Overlap
-          </button>
-          <button onclick="setMediaFilter('imdb_exclusive')" id="media-imdb_exclusive" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated exclusively via IMDb Official DB">
-            ⭐ IMDb Exclusives
-          </button>
-        </div>
-
         <!-- Search Mode Toggle Bar -->
         <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
           <div class="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
@@ -622,45 +649,21 @@
           </div>
         </div>
 
-        <!-- Search & Preset Filter Row -->
-        <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-          <div class="relative flex-1 group">
-            <i data-lucide="search" id="search-input-icon" class="w-4 h-4 text-slate-400 group-focus-within:text-cyan-400 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input 
-              type="text" 
-              id="search-input" 
-              oninput="onSearchInput(this.value)"
-              placeholder="Search Movie, Anime (EN/JP), TV Season, or IMDb ID... (Press '/' to focus)" 
-              class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-20 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
-            >
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
-              <button id="clear-search-btn" onclick="clearSearch()" class="hidden text-slate-500 hover:text-white p-0.5" title="Clear Search">
-                <i data-lucide="x" class="w-4 h-4"></i>
-              </button>
-              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800/90 border border-slate-700 rounded shadow-sm" title="Press '/' or 'Cmd+K' to quick search">/</kbd>
-            </div>
-          </div>
-
-          <!-- Quick Filters -->
-          <div class="flex flex-wrap items-center gap-1.5">
-            <button onclick="setPreset('all')" id="preset-all" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
-              All
+        <!-- Search Input Bar -->
+        <div class="relative group">
+          <i data-lucide="search" id="search-input-icon" class="w-4 h-4 text-slate-400 group-focus-within:text-cyan-400 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            oninput="onSearchInput(this.value)"
+            placeholder="Search Movie, Anime (EN/JP), TV Season, or IMDb ID... (Press '/' to focus)" 
+            class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-20 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+          >
+          <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
+            <button id="clear-search-btn" onclick="clearSearch()" class="hidden text-slate-500 hover:text-white p-0.5" title="Clear Search">
+              <i data-lucide="x" class="w-4 h-4"></i>
             </button>
-            <button onclick="setPreset('top100')" id="preset-top100" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
-              ⭐ Top 100
-            </button>
-            <button onclick="setPreset('top250')" id="preset-top250" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
-              🏆 Top 250
-            </button>
-            <button onclick="setPreset('inflated')" id="preset-inflated" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-rose-500"></span> Enthusiast Inflated
-            </button>
-            <button onclick="setPreset('penalized')" id="preset-penalized" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Audience Drag / Gems
-            </button>
-            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-colors ml-auto" title="Download Full CSV">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
-            </button>
+            <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-slate-800/90 border border-slate-700 rounded shadow-sm" title="Press '/' or 'Cmd+K' to quick search">/</kbd>
           </div>
         </div>
 
@@ -689,80 +692,149 @@
           </button>
         </div>
 
-        <!-- Filter Tags: Universal Tag Bar -->
-        <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 text-xs">
-          <span class="text-purple-400 text-xs font-semibold uppercase tracking-wider pr-2 flex items-center gap-1.5 shrink-0">
+        <!-- Filter Tags: Universal Tag Bar with Left/Right Scroll Arrows -->
+        <div class="flex items-center gap-1.5 pb-1 text-xs">
+          <span class="text-purple-400 text-xs font-bold uppercase tracking-wider pr-1 flex items-center gap-1 shrink-0">
             <i data-lucide="tag" class="w-3.5 h-3.5 text-purple-400"></i> Universal Tags:
           </span>
-          <div id="genre-pills" class="flex items-center space-x-1.5">
-            <!-- Injected dynamically -->
+          <button onclick="scrollTags(-220)" class="p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags left">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+          </button>
+          <div id="genre-pills-container" class="flex items-center space-x-1.5 overflow-x-auto scroll-smooth py-0.5 flex-1 no-scrollbar">
+            <div id="genre-pills" class="flex items-center space-x-1.5 shrink-0">
+              <!-- Injected dynamically -->
+            </div>
           </div>
+          <button onclick="scrollTags(220)" class="p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags right">
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+          </button>
         </div>
 
-        <!-- Secondary Filter Controls -->
-        <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-800/80 text-xs text-slate-400">
-          <div class="flex flex-wrap items-center gap-3 sm:gap-4">
-            <label class="flex items-center space-x-2">
-              <span class="font-medium text-slate-300">Sort By:</span>
-              <select id="sort-select" onchange="onSortChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-cyan-500">
-                <option value="score_model_b_desc">Universal Rating (Highest First)</option>
-                <option value="score_model_b_asc">Universal Rating (Lowest First)</option>
-                <option value="votes_desc">Total Audience Votes (Most Popular)</option>
-                <option value="votes_asc">Total Audience Votes (Lowest)</option>
-                <option value="year_desc">Release Year (Newest)</option>
-                <option value="year_asc">Release Year (Oldest)</option>
-                <option value="title_asc">Title (A to Z)</option>
-                <option value="title_desc">Title (Z to A)</option>
-                <option value="raw_avg_desc">Raw Composite Score (Highest)</option>
-                <option value="raw_avg_asc">Raw Composite Score (Lowest)</option>
-                <option value="rank_delta_desc">Biggest Rank Drop (Enthusiast Bias)</option>
-                <option value="rank_delta_asc">Biggest Rank Gain (Audience Drag)</option>
-                <option value="cal_delta_asc">Largest Score Shift (Δ Score Drop)</option>
-                <option value="cal_delta_desc">Largest Score Shift (Δ Score Gain)</option>
-                <option value="bayes_desc">Empirical Bayesian Average</option>
-              </select>
-            </label>
+        <!-- Mobile Filter Expand Toggle (Small Screens Only) -->
+        <div class="md:hidden pt-1">
+          <button id="mobile-filter-toggle" onclick="toggleMobileFilters()" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors">
+            <span class="flex items-center gap-1.5">
+              <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-cyan-500"></i>
+              <span>Cohorts &amp; Advanced Filters</span>
+            </span>
+            <i id="mobile-filter-chevron" data-lucide="chevron-down" class="w-4 h-4 text-slate-400 transition-transform duration-200"></i>
+          </button>
+        </div>
 
-            <label class="flex items-center space-x-2">
-              <span class="font-medium text-slate-300">Min Votes:</span>
-              <select id="min-votes-select" onchange="onMinVotesChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
-                <option value="30">30+ (All Filtered)</option>
-                <option value="500">500+ votes</option>
-                <option value="5000">5,000+ votes</option>
-                <option value="25000">25,000+ votes</option>
-                <option value="100000">100,000+ votes</option>
-              </select>
-            </label>
-
-            <!-- Advance Search: Era / Decade -->
-            <label class="flex items-center space-x-2">
-              <span class="font-medium text-slate-300">Era:</span>
-              <select id="era-select" onchange="onEraChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
-                <option value="all">All Eras (1920–2026)</option>
-                <option value="2020s">2020s (2020–Present)</option>
-                <option value="2010s">2010s (2010–2019)</option>
-                <option value="2000s">2000s (2000–2009)</option>
-                <option value="1990s">1990s (1990–1999)</option>
-                <option value="1980s">1980s (1980–1989)</option>
-                <option value="classic">Classics (Pre-1980)</option>
-              </select>
-            </label>
-
-            <!-- Advance Search: Min Rating -->
-            <label class="flex items-center space-x-2">
-              <span class="font-medium text-slate-300">Min Rating:</span>
-              <select id="min-rating-select" onchange="onMinRatingChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
-                <option value="0">All Ratings</option>
-                <option value="8.5">⭐ 8.5+ Masterpiece</option>
-                <option value="8.0">⭐ 8.0+ Exceptional</option>
-                <option value="7.5">⭐ 7.5+ Great Quality</option>
-                <option value="7.0">⭐ 7.0+ Above Average</option>
-              </select>
-            </label>
+        <!-- Advanced Filter Container (Hidden on mobile by default, always visible on md+) -->
+        <div id="mobile-collapsible-filters" class="hidden md:block space-y-4 pt-1">
+          <!-- Medium / Source Cohort Filter Bar -->
+          <div class="flex flex-wrap items-center gap-1.5 pb-3 border-b border-slate-800/80">
+            <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mr-1.5 flex items-center gap-1">
+              <i data-lucide="database" class="w-3.5 h-3.5 text-cyan-400"></i> Cohort / Medium:
+            </span>
+            <button onclick="setMediaFilter('all')" id="media-all" class="media-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all">
+              🌐 All Unified
+            </button>
+            <button onclick="setMediaFilter('movie')" id="media-movie" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+              🎬 Cinema Movies (ML + IMDb)
+            </button>
+            <button onclick="setMediaFilter('anime')" id="media-anime" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+              ⛩️ Anime Seasons &amp; Films (MAL + IMDb)
+            </button>
+            <button onclick="setMediaFilter('tv_season')" id="media-tv_season" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+              📺 TV Seasons (IMDb Episode-Separated)
+            </button>
+            <button onclick="setMediaFilter('bridge')" id="media-bridge" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated simultaneously across MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb">
+              🔗 Multi-DB Bridge Overlap
+            </button>
+            <button onclick="setMediaFilter('imdb_exclusive')" id="media-imdb_exclusive" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated exclusively via IMDb Official DB">
+              ⭐ IMDb Exclusives
+            </button>
           </div>
 
-          <div class="text-slate-400 font-medium" id="results-count">
-            Showing 0 of 0 titles
+          <!-- Quick Filters -->
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button onclick="setPreset('all')" id="preset-all" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+              All
+            </button>
+            <button onclick="setPreset('top100')" id="preset-top100" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+              ⭐ Top 100
+            </button>
+            <button onclick="setPreset('top250')" id="preset-top250" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+              🏆 Top 250
+            </button>
+            <button onclick="setPreset('inflated')" id="preset-inflated" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span> Enthusiast Inflated
+            </button>
+            <button onclick="setPreset('penalized')" id="preset-penalized" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Audience Drag / Gems
+            </button>
+            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-colors ml-auto" title="Download Full CSV">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+            </button>
+          </div>
+
+          <!-- Secondary Filter Controls -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-800/80 text-xs text-slate-400">
+            <div class="flex flex-wrap items-center gap-3 sm:gap-4">
+              <label class="flex items-center space-x-2">
+                <span class="font-medium text-slate-300">Sort By:</span>
+                <select id="sort-select" onchange="onSortChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                  <option value="score_model_b_desc">Universal Rating (Highest First)</option>
+                  <option value="score_model_b_asc">Universal Rating (Lowest First)</option>
+                  <option value="votes_desc">Total Audience Votes (Most Popular)</option>
+                  <option value="votes_asc">Total Audience Votes (Lowest)</option>
+                  <option value="year_desc">Release Year (Newest)</option>
+                  <option value="year_asc">Release Year (Oldest)</option>
+                  <option value="title_asc">Title (A to Z)</option>
+                  <option value="title_desc">Title (Z to A)</option>
+                  <option value="raw_avg_desc">Raw Composite Score (Highest)</option>
+                  <option value="raw_avg_asc">Raw Composite Score (Lowest)</option>
+                  <option value="rank_delta_desc">Biggest Rank Drop (Enthusiast Bias)</option>
+                  <option value="rank_delta_asc">Biggest Rank Gain (Audience Drag)</option>
+                  <option value="cal_delta_asc">Largest Score Shift (Δ Score Drop)</option>
+                  <option value="cal_delta_desc">Largest Score Shift (Δ Score Gain)</option>
+                  <option value="bayes_desc">Empirical Bayesian Average</option>
+                </select>
+              </label>
+
+              <label class="flex items-center space-x-2">
+                <span class="font-medium text-slate-300">Min Votes:</span>
+                <select id="min-votes-select" onchange="onMinVotesChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                  <option value="30">30+ (All Filtered)</option>
+                  <option value="500">500+ votes</option>
+                  <option value="5000">5,000+ votes</option>
+                  <option value="25000">25,000+ votes</option>
+                  <option value="100000">100,000+ votes</option>
+                </select>
+              </label>
+
+              <!-- Advance Search: Era / Decade -->
+              <label class="flex items-center space-x-2">
+                <span class="font-medium text-slate-300">Era:</span>
+                <select id="era-select" onchange="onEraChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                  <option value="all">All Eras (1920–2026)</option>
+                  <option value="2020s">2020s (2020–Present)</option>
+                  <option value="2010s">2010s (2010–2019)</option>
+                  <option value="2000s">2000s (2000–2009)</option>
+                  <option value="1990s">1990s (1990–1999)</option>
+                  <option value="1980s">1980s (1980–1989)</option>
+                  <option value="classic">Classics (Pre-1980)</option>
+                </select>
+              </label>
+
+              <!-- Advance Search: Min Rating -->
+              <label class="flex items-center space-x-2">
+                <span class="font-medium text-slate-300">Min Rating:</span>
+                <select id="min-rating-select" onchange="onMinRatingChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                  <option value="0">All Ratings</option>
+                  <option value="8.5">⭐ 8.5+ Masterpiece</option>
+                  <option value="8.0">⭐ 8.0+ Exceptional</option>
+                  <option value="7.5">⭐ 7.5+ Great Quality</option>
+                  <option value="7.0">⭐ 7.0+ Above Average</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="text-slate-400 font-medium" id="results-count">
+              Showing 0 of 0 titles
+            </div>
           </div>
         </div>
 
@@ -1020,8 +1092,8 @@
               <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mover accent="true"><mi>S</mi><mo>^</mo></mover><mi>i</mi></msub><mo>=</mo><msub><mi>μ</mi><mtext>global</mtext></msub><mo>+</mo><mo stretchy="false">(</mo><msub><mover accent="true"><mi>z</mi><mo>ˉ</mo></mover><mi>i</mi></msub><mo>⋅</mo><msub><mi>σ</mi><mtext>global</mtext></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{S}_i = \mu_{\text{global}} + (\bar{z}_i \cdot \sigma_{\text{global}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0968em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">global</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.044em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">global</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span>
             </div>
 
-            <div class="text-[11px] text-slate-500 leading-relaxed border-t border-slate-800/80 pt-3">
-              <strong class="text-slate-400">Parameters:</strong> <span class="font-mono text-cyan-300">μ_u, σ_u</span> are user mean and std dev (<span class="font-mono text-slate-400">ε = 10⁻⁶</span>); <span class="font-mono text-cyan-300">z̄_i</span> is item mean z-score across all raters.
+            <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed border-t border-slate-800/80 pt-3">
+              <strong class="text-slate-700 dark:text-slate-300">Parameters:</strong> \(\mu_u, \sigma_u\) are user mean and standard deviation (\(\epsilon = 10^{-6}\)); \(\bar{z}_i\) is item mean z-score across all raters.
             </div>
           </div>
 
@@ -1034,7 +1106,7 @@
               </div>
               <h3 class="text-lg font-bold text-white">Biased Matrix Factorization</h3>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Decomposes observed ratings into global baseline (<span class="font-mono text-slate-300">μ</span>), user leniency bias (<span class="font-mono text-emerald-300">b_u</span>), intrinsic item quality bias (<span class="font-mono text-emerald-300">b_i</span>), and latent taste vectors (<span class="font-mono text-slate-300">p_uᵀ q_i</span>):
+                Decomposes observed ratings into global baseline (\(\mu\)), user leniency bias (\(b_u\)), intrinsic item quality bias (\(b_i\)), and latent taste vectors (\(\mathbf{p}_u^T \mathbf{q}_i\)):
               </p>
             </div>
 
@@ -1046,8 +1118,8 @@
               <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mover accent="true"><mi>S</mi><mo>^</mo></mover><mtext>latent</mtext></msub><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo><mo>=</mo><mtext>clip</mtext><mo stretchy="false">(</mo><mi>μ</mi><mo>+</mo><msub><mi>b</mi><mi>i</mi></msub><mo separator="true">,</mo><mn>1.0</mn><mo separator="true">,</mo><mn>10.0</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{S}_{\text{latent}}(i) = \text{clip}(\mu + b_i, 1.0, 10.0)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1968em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">latent</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">clip</span></span><span class="mopen">(</span><span class="mord mathnormal">μ</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1.0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">10.0</span><span class="mclose">)</span></span></span></span></span>
             </div>
 
-            <div class="text-[11px] text-slate-500 leading-relaxed border-t border-slate-800/80 pt-3">
-              <strong class="text-slate-400">Parameters:</strong> <span class="font-mono text-emerald-300">b_i</span> isolates intrinsic quality; <span class="font-mono text-slate-400">p_uᵀ q_i</span> captures taste affinity (<span class="font-mono text-slate-400">k = 32</span> latent factors with L₂ regularization <span class="font-mono text-slate-400">λ = 0.02</span>).
+            <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed border-t border-slate-800/80 pt-3">
+              <strong class="text-slate-700 dark:text-slate-300">Parameters:</strong> \(b_i\) isolates intrinsic quality; \(\mathbf{p}_u^T \mathbf{q}_i\) captures taste affinity (\(k = 32\) latent factors with \(L_2\) regularization \(\lambda = 0.02\)).
             </div>
           </div>
 
@@ -1060,20 +1132,20 @@
               </div>
               <h3 class="text-lg font-bold text-white">Bridge-User Multipliers</h3>
               <p class="text-xs text-slate-400 leading-relaxed">
-                Measures user genre diversity via normalized Shannon entropy <span class="font-mono text-amber-300">H̃(u)</span>, contrasting cross-genre bridge raters against echo-chamber genre loyalists:
+                Measures user genre diversity via normalized Shannon entropy \(\tilde{H}(u)\), contrasting cross-genre bridge raters against echo-chamber genre loyalists:
               </p>
             </div>
 
             <!-- Pre-rendered KaTeX Math Block -->
             <div class="math-block bg-slate-950/90 p-4 rounded-xl border border-amber-500/20 space-y-2 text-center overflow-x-auto shadow-inner">
-              <div class="text-xs font-mono text-slate-400 mb-1">User Genre Entropism:</div>
+              <div class="text-xs font-mono text-slate-400 mb-1">User Genre Entropy:</div>
               <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mover accent="true"><mi>H</mi><mo>~</mo></mover><mo stretchy="false">(</mo><mi>u</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mo>−</mo><munder><mo>∑</mo><mrow><mi>g</mi><mo>∈</mo><mi mathvariant="script">G</mi></mrow></munder><msub><mi>p</mi><mi>u</mi></msub><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><msub><mi>p</mi><mi>u</mi></msub><mo stretchy="false">(</mo><mi>g</mi><mo stretchy="false">)</mo></mrow><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mi mathvariant="normal">∣</mi><mi mathvariant="script">G</mi><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\tilde{H}(u) = \frac{-\sum_{g \in \mathcal{G}} p_u(g) \log_2 p_u(g)}{\log_2 |\mathcal{G}|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1702em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9202em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span></span><span style="top:-3.6023em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">~</span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">u</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.5118em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.5758em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">∣</span><span class="mord mathcal" style="margin-right:0.0593em;">G</span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.8258em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">−</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1786em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span><span class="mrel mtight">∈</span><span class="mord mathcal mtight" style="margin-right:0.0593em;">G</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4358em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.207em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2441em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">u</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
               <div class="text-xs font-mono text-slate-400 mt-2 mb-1">Genre Inflation Multiplier:</div>
               <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>M</mi><mi>g</mi></msub><mo>=</mo><mfrac><msub><mover accent="true"><mi>r</mi><mo>ˉ</mo></mover><mrow><mtext>bridge</mtext><mo separator="true">,</mo><mi>g</mi></mrow></msub><msub><mover accent="true"><mi>r</mi><mo>ˉ</mo></mover><mrow><mtext>loyal</mtext><mo separator="true">,</mo><mi>g</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">M_g = \frac{\bar{r}_{\text{bridge}, g}}{\bar{r}_{\text{loyal}, g}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2169em;vertical-align:-0.9721em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.2448em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">loyal</span></span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.5678em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">ˉ</span></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">bridge</span></span><span class="mpunct mtight">,</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">g</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9721em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
             </div>
 
-            <div class="text-[11px] text-slate-500 leading-relaxed border-t border-slate-800/80 pt-3">
-              <strong class="text-slate-400">Parameters:</strong> Bridge users sample broadly across genres; <span class="font-mono text-amber-300">M_g</span> scales down genres where loyalist ratings deviate from cross-genre raters.
+            <div class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed border-t border-slate-800/80 pt-3">
+              <strong class="text-slate-700 dark:text-slate-300">Parameters:</strong> Bridge users sample broadly across genres; \(M_g\) scales down genres where loyalist ratings deviate from cross-genre raters.
             </div>
           </div>
         </div>
@@ -1094,7 +1166,7 @@
             <div class="md:col-span-1 math-block bg-slate-950 p-4 rounded-xl border border-indigo-500/20 text-center shadow-inner">
               <div class="text-xs font-mono text-slate-400 mb-2">IMDb / Bayesian Formula:</div>
               <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>S</mi><mtext>Bayes</mtext></msub><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><msub><mi>v</mi><mi>i</mi></msub><mrow><msub><mi>v</mi><mi>i</mi></msub><mo>+</mo><mi>m</mi></mrow></mfrac><msub><mi>R</mi><mi>i</mi></msub><mo>+</mo><mfrac><mi>m</mi><mrow><msub><mi>v</mi><mi>i</mi></msub><mo>+</mo><mi>m</mi></mrow></mfrac><mi>C</mi></mrow><annotation encoding="application/x-tex">S_{\text{Bayes}}(i) = \frac{v_i}{v_i + m} R_i + \frac{m}{v_i + m} C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Bayes</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.9436em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.9436em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.1076em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span></span></span></span></span>
-              <div class="text-[11px] text-slate-500 mt-2">Where <span class="font-mono text-indigo-300">v_i</span> is vote count, <span class="font-mono text-indigo-300">m = 50</span> prior threshold, and <span class="font-mono text-indigo-300">C = 7.0</span> global prior mean.</div>
+              <div class="text-[11px] text-slate-500 mt-2">Where \(v_i\) is vote count, \(m = 50\) prior threshold, and \(C = 7.0\) global prior mean.</div>
             </div>
 
             <div class="md:col-span-2 text-xs text-slate-300 space-y-2.5 leading-relaxed">
@@ -1291,6 +1363,52 @@
     </div>
   </div>
 
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="shortcuts-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="glass max-w-md w-full rounded-2xl border border-slate-700 shadow-2xl p-5 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="keyboard" class="w-5 h-5 text-cyan-400"></i>
+          <h3 class="text-base font-bold text-white">Keyboard Shortcuts</h3>
+        </div>
+        <button onclick="toggleShortcutsModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Quick Search</span>
+          <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">/</kbd> <span class="text-slate-500">or</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">⌘K</kbd></div>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Toggle Simple / Detailed Mode</span>
+          <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">M</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Toggle Theme (Dark / Light)</span>
+          <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">T</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Switch Navigation Tabs</span>
+          <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">1</kbd> <span class="text-slate-500">-</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">4</kbd></div>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Browse Titles in Inspector</span>
+          <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">→</kbd></div>
+        </div>
+        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+          <span class="text-slate-300">Close Modal / Clear Search</span>
+          <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">Esc</kbd>
+        </div>
+      </div>
+      <div class="pt-2 text-right">
+        <button onclick="toggleShortcutsModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Floating Compare Action Dock -->
   <div id="compare-floating-dock" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden transition-all duration-300">
     <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl glass border border-cyan-500/40 shadow-2xl backdrop-blur-2xl ring-1 ring-cyan-500/30">
@@ -1363,11 +1481,11 @@
       const btnDetailed = document.getElementById('view-mode-detailed');
       if (btnSimple && btnDetailed) {
         if (isSimple) {
-          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm';
-          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent';
+          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25 border border-cyan-400/40';
+          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
         } else {
-          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent';
-          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm';
+          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
+          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25 border border-emerald-400/40';
         }
       }
 
@@ -1598,8 +1716,9 @@
       }
 
       const sortedTags = Array.from(tagCounts.keys()).sort();
+      const isAll = activeGenre === 'all';
       let html = `
-        <button onclick="setGenre('all')" id="genre-pill-all" class="px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap transition-colors ${activeGenre === 'all' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'}">
+        <button onclick="setGenre('all')" id="genre-pill-all" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-all ${isAll ? 'font-bold bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
           All Tags (${allMovies.length.toLocaleString()})
         </button>
       `;
@@ -1609,7 +1728,7 @@
         const isActive = activeGenre === t;
         const pillId = 'genre-pill-' + t.replace(/[^a-zA-Z0-9]/g, '_');
         html += `
-          <button onclick="setGenre('${t.replace(/'/g, "\\'")}')" id="${pillId}" class="px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${isActive ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 font-semibold' : 'text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'}">
+          <button onclick="setGenre('${t.replace(/'/g, "\\'")}')" id="${pillId}" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-all ${isActive ? 'font-bold bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
             ${t} <span class="text-[10px] text-slate-500 font-mono ml-0.5">(${count.toLocaleString()})</span>
           </button>
         `;
@@ -1620,12 +1739,13 @@
     function setGenre(genre) {
       activeGenre = genre;
       document.querySelectorAll('#genre-pills button').forEach(b => {
-        b.className = 'px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
+        b.className = 'px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800';
       });
       const pillId = genre === 'all' ? 'genre-pill-all' : 'genre-pill-' + genre.replace(/[^a-zA-Z0-9]/g, '_');
       const activeBtn = document.getElementById(pillId);
       if (activeBtn) {
-        activeBtn.className = 'px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap ' + (genre === 'all' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40' : 'bg-purple-500/20 text-purple-300 border border-purple-500/40');
+        activeBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition-all ' + (genre === 'all' ? 'bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30');
+        activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
       applyFilters();
     }
@@ -2456,7 +2576,7 @@
         const genresHtml = m.genres.split('|')
           .filter(g => g && !LEGACY_NON_STANDARD_GENRES.has(g))
           .slice(0, 2)
-          .map(g => `<span class="px-1.5 py-0.5 rounded bg-slate-800/80 text-[10px] text-slate-400 mr-1">${g}</span>`)
+          .map(g => `<span class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 text-[10px] text-slate-700 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700/60 mr-1">${g}</span>`)
           .join('');
 
         const mediaBadge = buildMediaBadge(m);
@@ -2518,10 +2638,15 @@
                 </div>
               </td>
               <td class="py-3.5 px-3 text-center align-middle">
-                <button onclick="inspectMovie(${m.id})" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/40 text-xs font-semibold transition-all flex items-center gap-1.5 mx-auto" title="Inspect Title &amp; Rating Breakdown">
-                  <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                  <span>Details</span>
-                </button>
+                <div class="flex items-center justify-center gap-1.5">
+                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 hover:border-cyan-500/40 text-xs font-semibold transition-all flex items-center gap-1" title="Inspect Title &amp; Rating Breakdown">
+                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                    <span>Details</span>
+                  </button>
+                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1.5 rounded-xl ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} hover:text-cyan-600 dark:hover:text-cyan-300 border text-xs font-semibold transition-all flex items-center" title="${isChecked ? 'Remove from Compare' : 'Add to Compare'}">
+                    <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           `;
@@ -2564,10 +2689,15 @@
                   <span>${sourceBadges}</span>
                   <span class="text-slate-500 font-mono">• ${m.votes.toLocaleString()} votes</span>
                 </div>
-                <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300 border border-slate-700 text-xs font-semibold transition-colors flex items-center gap-1" title="View Full Breakdown">
-                  <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-                  <span>Details</span>
-                </button>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 text-xs font-semibold transition-colors flex items-center gap-1" title="View Full Breakdown">
+                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                    <span>Details</span>
+                  </button>
+                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1 rounded-lg ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} border text-xs font-semibold transition-colors" title="Compare">
+                    <i data-lucide="scale" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
               </div>
             </div>
           `;
@@ -2607,30 +2737,30 @@
                 </div>
               </td>
               <td class="py-3 px-3">
-                <div class="flex items-center gap-1 font-mono text-xs whitespace-nowrap bg-slate-900/80 px-2 py-1 rounded-lg border border-slate-800 w-fit">
-                  <span class="text-yellow-400/90" title="Uncalibrated Composite Raw Mean">${m.raw.toFixed(2)}</span>
-                  <span class="text-slate-600 text-[10px]">→</span>
-                  <span class="text-cyan-300/90 text-[11px]" title="Model A: User Z-Score Normalized">${m.mod_a.toFixed(2)}</span>
-                  <span class="text-slate-600 text-[10px]">→</span>
-                  <span class="font-bold text-emerald-400" title="Model B: Universal Calibrated Score">${m.mod_b.toFixed(2)}</span>
+                <div class="flex items-center gap-1 font-mono text-xs whitespace-nowrap bg-slate-100 dark:bg-slate-900/90 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 w-fit">
+                  <span class="text-amber-600 dark:text-yellow-400 font-semibold" title="Uncalibrated Composite Raw Mean">${m.raw.toFixed(2)}</span>
+                  <span class="text-slate-400 dark:text-slate-600 text-[10px]">→</span>
+                  <span class="text-cyan-700 dark:text-cyan-300 text-[11px]" title="Model A: User Z-Score Normalized">${m.mod_a.toFixed(2)}</span>
+                  <span class="text-slate-400 dark:text-slate-600 text-[10px]">→</span>
+                  <span class="font-bold text-emerald-600 dark:text-emerald-400" title="Model B: Universal Calibrated Score">${m.mod_b.toFixed(2)}</span>
                 </div>
                 <div class="text-[10px] text-slate-500 font-mono mt-0.5">
                   Bayes: ${m.bayes.toFixed(2)} • Bridge C: ${m.mod_c.toFixed(2)}
                 </div>
               </td>
               <td class="py-3 px-3 text-right">
-                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 font-bold text-emerald-400 font-mono text-sm">
+                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
                   ${m.mod_b.toFixed(2)}
                 </span>
               </td>
-              <td class="py-3 px-3 text-xs text-slate-300">
+              <td class="py-3 px-3 text-xs text-slate-700 dark:text-slate-300">
                 <div class="flex items-center gap-1.5">
                   <span class="px-1.5 py-0.5 rounded text-[11px] font-mono font-bold border ${deltaColor}">
                     ${m.cal_delta > 0 ? '+' : ''}${m.cal_delta.toFixed(2)}
                   </span>
                   ${rankShiftBadge}
                 </div>
-                <div class="text-[10px] text-slate-400 truncate max-w-[220px] mt-0.5" title="${m.diag}">
+                <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-[220px] mt-0.5" title="${m.diag}">
                   ${m.diag}
                 </div>
               </td>
@@ -2993,6 +3123,33 @@
       }
     }
 
+    function toggleShortcutsModal() {
+      const modal = document.getElementById('shortcuts-modal');
+      if (!modal) return;
+      const isHidden = modal.classList.contains('hidden');
+      modal.classList.toggle('hidden', !isHidden);
+      if (isHidden && window.lucide) lucide.createIcons();
+    }
+
+    function scrollTags(delta) {
+      const container = document.getElementById('genre-pills-container');
+      if (container) {
+        container.scrollBy({ left: delta, behavior: 'smooth' });
+      }
+    }
+
+    function toggleMobileFilters() {
+      const panel = document.getElementById('mobile-collapsible-filters');
+      const chevron = document.getElementById('mobile-filter-chevron');
+      if (panel) {
+        const isHidden = panel.classList.contains('hidden');
+        panel.classList.toggle('hidden', !isHidden);
+        if (chevron) {
+          chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+      }
+    }
+
     // Toast Notification Utility
     function showToast(message, type = 'info') {
       let toast = document.getElementById('app-toast');
@@ -3039,18 +3196,8 @@
 
     function initTheme() {
       const saved = localStorage.getItem('theme');
-      const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isDark = saved === 'dark' || (!saved && systemDark);
+      const isDark = saved !== 'light';
       applyTheme(isDark ? 'dark' : 'light', false);
-
-      // Listen for system changes if user hasn't explicitly set a preference
-      if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem('theme')) {
-            applyTheme(e.matches ? 'dark' : 'light', false);
-          }
-        });
-      }
     }
 
     function applyTheme(theme, save = true) {
@@ -3096,7 +3243,7 @@
           modalChartInstance.options.scales.y.ticks.color = colors.tick;
         }
         if (modalChartInstance.options.scales.x) {
-          modalChartInstance.options.scales.x.ticks.color = colors.tick;
+          modalChartInstance.options.scales.x.ticks.color = colors.text;
         }
         modalChartInstance.update();
       }
@@ -3145,23 +3292,23 @@
       modalChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Raw Arithmetic', 'IMDb Bayesian', 'Model A (Z-Score)', 'Model B (Latent Quality)', 'Model C (Bridge Deflated)'],
+          labels: ['1. Raw Mean', '2. IMDb Bayes', '3. Model A (Z)', '4. Model B (Latent)', '5. Model C (Bridge)'],
           datasets: [{
             label: 'Score (1.0 - 10.0)',
             data: [m.raw, m.bayes, m.mod_a, m.mod_b, m.mod_c],
             backgroundColor: [
-              'rgba(250, 204, 21, 0.7)',
-              'rgba(148, 163, 184, 0.7)',
-              'rgba(6, 182, 212, 0.7)',
-              'rgba(16, 185, 129, 0.9)',
-              'rgba(245, 158, 11, 0.7)',
+              'rgba(245, 158, 11, 0.85)',
+              'rgba(148, 163, 184, 0.85)',
+              'rgba(6, 182, 212, 0.85)',
+              'rgba(16, 185, 129, 0.95)',
+              'rgba(168, 85, 247, 0.85)',
             ],
             borderColor: [
-              '#facc15',
-              '#94a3b8',
-              '#06b6d4',
-              '#10b981',
-              '#f59e0b',
+              '#d97706',
+              '#64748b',
+              '#0891b2',
+              '#059669',
+              '#7e22ce',
             ],
             borderWidth: 1.5,
             borderRadius: 6,
@@ -3170,20 +3317,26 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             y: {
               min: Math.max(0, Math.floor(Math.min(m.raw, m.bayes, m.mod_a, m.mod_b, m.mod_c) - 1)),
               max: 10,
-              grid: { color: 'rgba(255, 255, 255, 0.05)' },
-              ticks: { color: '#94a3b8' }
+              grid: { color: chartColors.grid },
+              ticks: { color: chartColors.tick, font: { family: 'monospace', size: 10 } }
             },
             x: {
               grid: { display: false },
-              ticks: { color: '#cbd5e1', font: { size: 11 } }
+              ticks: { color: chartColors.text, font: { size: 10, weight: '600' } }
             }
           },
           plugins: {
-            legend: { display: false }
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `Score: ${ctx.parsed.y.toFixed(2)} / 10.0`
+              }
+            }
           }
         }
       });
@@ -3323,6 +3476,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             r: {
               angleLines: { color: chartColors.radarAngle },
@@ -3375,6 +3529,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             y: {
               grid: { color: chartColors.grid },
@@ -3427,6 +3582,7 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: false,
           scales: {
             y: {
               min: yMin,
@@ -3574,6 +3730,39 @@
     }
 
     function checkInitialUrlParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qMode = urlParams.get('mode');
+      if (qMode === 'simple' || qMode === 'detailed') {
+        currentViewMode = qMode;
+        updateViewModeUI();
+        renderTableHeader();
+      }
+      const qSearch = urlParams.get('q');
+      if (qSearch) {
+        activeSearch = qSearch.toLowerCase();
+        const sInput = document.getElementById('search-input');
+        if (sInput) sInput.value = qSearch;
+      }
+      const qTag = urlParams.get('tag');
+      if (qTag) {
+        setGenre(qTag);
+      }
+      const qEra = urlParams.get('era');
+      if (qEra) {
+        activeEra = qEra;
+        const eSel = document.getElementById('era-select');
+        if (eSel) eSel.value = qEra;
+      }
+      const qRating = urlParams.get('min_rating');
+      if (qRating) {
+        activeMinRating = parseFloat(qRating) || 0;
+        const rSel = document.getElementById('min-rating-select');
+        if (rSel) rSel.value = qRating;
+      }
+      if (qSearch || qTag || qEra || qRating) {
+        applyFilters();
+      }
+
       const hash = window.location.hash || '';
       if (hash.includes('id=')) {
         const idMatch = hash.match(/id=([0-9]+)/);
@@ -3581,7 +3770,7 @@
           const movieId = parseInt(idMatch[1], 10);
           const found = allMovies.find(m => m.id === movieId);
           if (found) {
-            setTimeout(() => inspectMovie(movieId), 150);
+            setTimeout(() => inspectMovie(movieId), 250);
           }
         }
       } else if (hash.startsWith('#')) {
@@ -3594,6 +3783,21 @@
 
     // Global Keyboard shortcuts: '/' or 'Cmd+K' to search, Arrow keys to navigate modal, 'Esc' to close
     window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        if (e.key === 'Escape') {
+          document.activeElement.blur();
+        }
+        return;
+      }
+
+      const shortcutsModal = document.getElementById('shortcuts-modal');
+      if (shortcutsModal && !shortcutsModal.classList.contains('hidden')) {
+        if (e.key === 'Escape' || e.key === '?') {
+          toggleShortcutsModal();
+          return;
+        }
+      }
+
       const modal = document.getElementById('inspector-modal');
       const isModalOpen = modal && !modal.classList.contains('hidden');
 
@@ -3608,13 +3812,30 @@
         return;
       }
 
-      if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) && document.activeElement.tagName !== 'INPUT') {
+      if (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
           searchInput.focus();
           searchInput.select();
         }
+      } else if (e.key.toLowerCase() === 'm') {
+        e.preventDefault();
+        toggleViewMode();
+      } else if (e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        toggleTheme();
+      } else if (e.key === '?') {
+        e.preventDefault();
+        toggleShortcutsModal();
+      } else if (e.key === '1') {
+        switchTab('explorer');
+      } else if (e.key === '2') {
+        switchTab('macro');
+      } else if (e.key === '3') {
+        switchTab('compare');
+      } else if (e.key === '4') {
+        switchTab('math');
       }
     });
 
@@ -3633,6 +3854,21 @@
         switchTab(hashTab);
       }
       loadDataset(currentDataset);
+
+      // Render math equations on load
+      if (typeof renderMathInElement === 'function') {
+        try {
+          renderMathInElement(document.body, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$', right: '$', display: false },
+              { left: '\\(', right: '\\)', display: false },
+              { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+          });
+        } catch (e) {}
+      }
     });
   </script>
 </body>
