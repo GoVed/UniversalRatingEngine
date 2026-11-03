@@ -777,9 +777,103 @@ def build_unified_database() -> None:
             "imdb_ep_peak": round(ep_peak, 2),
         })
 
+    # --- COHORT 4: IMDb-Exclusive Cinema Releases (numVotes >= 2,000) ---
+    console.print("[cyan]→ Synthesizing Cohort 4: IMDb Cinema Releases (numVotes >= 2,000)...[/cyan]")
+    imdb_cinema_exclusive = (
+        imdb_basics.filter(pl.col("titleType") == "movie")
+        .join(imdb_ratings, on="tconst", how="inner")
+        .filter(pl.col("numVotes") >= 2000)
+        .filter(~pl.col("tconst").is_in(list(merged_ml_tconsts)))
+        .filter(~pl.col("tconst").is_in(list(all_mal_tconsts)))
+    )
+
+    imdb_cinema_id_counter = 8_000_000
+    imdb_cinema_added = 0
+
+    for r in imdb_cinema_exclusive.iter_rows(named=True):
+        imdb_cinema_id_counter += 1
+        tconst = r["tconst"]
+        primary = r["primaryTitle"] or "Unknown"
+        original = r["originalTitle"]
+        year = r["startYear"]
+        raw = float(r["averageRating"])
+        votes = int(r["numVotes"])
+
+        genres_str = (r["genres"] or "Drama").replace(",", "|")
+        if genres_str == r"\N" or not genres_str:
+            genres_str = "Drama"
+
+        # De-bias IMDb cinema rating onto engine's Universal Scale (1-10)
+        # Consistent with MovieLens cinema calibration where IMDb raw has -0.32 offset and shrinkage towards 6.80
+        w_im = votes / (votes + 30000.0)
+        im_cal = w_im * (raw - 0.32) + (1.0 - w_im) * 6.80
+
+        mod_b = float(im_cal)
+        mod_a = float(im_cal)
+        mod_c = float(im_cal - 0.05)
+
+        bayes = (votes / (votes + 10000.0)) * raw + (10000.0 / (votes + 10000.0)) * 6.85
+
+        # Native / Original title formatting:
+        # If original title is in Latin script (e.g. 'Tere Naam', 'Dabangg 3') but primary is an English translation ('In Your Name'),
+        # promote the recognized original title as primary display.
+        if original and original != primary:
+            is_latin = False
+            try:
+                original.encode("latin-1")
+                is_latin = True
+            except UnicodeEncodeError:
+                is_latin = False
+
+            if is_latin and len(original.strip()) > 0:
+                display_title = original
+                title_en = primary
+                title_jp = original
+            else:
+                display_title = primary
+                title_en = primary
+                title_jp = original
+        else:
+            display_title = primary
+            title_en = ""
+            title_jp = ""
+
+        unified_rows.append({
+            "movieId": imdb_cinema_id_counter,
+            "title": clean_display_title(display_title),
+            "year": year,
+            "genres": genres_str,
+            "vote_count": votes,
+            "raw_avg": raw,
+            "bayesian_avg": float(bayes),
+            "score_model_a": float(mod_a),
+            "score_model_b": float(mod_b),
+            "score_model_c": float(mod_c),
+            "bias_b_i": float(mod_b - 6.85),
+            "title_en": title_en,
+            "title_jp": title_jp,
+            "media_type": "movie",
+            "tconst": tconst,
+            "season_num": None,
+            "ep_count": None,
+            "ml_raw": None,
+            "ml_votes": None,
+            "mal_raw": None,
+            "mal_votes": None,
+            "al_raw": None,
+            "al_votes": None,
+            "imdb_raw": round(raw, 2),
+            "imdb_votes": votes,
+            "imdb_ep_avg": None,
+            "imdb_ep_votes": None,
+            "imdb_ep_peak": None,
+        })
+        imdb_cinema_added += 1
+
     console.print(
         f"  [green]✓[/green] Unified rows built: {len(unified_rows):,} total "
-        f"({len(merged_mal_ids):,} Quad-DB Bridge titles, {tv_seasons_added:,} IMDb TV Seasons)"
+        f"({len(merged_mal_ids):,} Quad-DB Bridge titles, {tv_seasons_added:,} IMDb TV Seasons, "
+        f"{imdb_cinema_added:,} IMDb Cinema Releases)"
     )
 
     # 5. Convert to Polars DataFrame and compute Ranks, Deltas & Diagnostics
@@ -814,6 +908,8 @@ def build_unified_database() -> None:
             src_note = f"Anime S{snum} sequel bias removed" if (snum and snum > 1) else "MAL+AL+IMDb consensus calibrated"
         elif mtype == "tv_season":
             src_note = f"TV S{snum} episode rollup calibrated"
+        elif r["ml_raw"] is None:
+            src_note = "IMDb cinema calibrated"
         else:
             src_note = "ML+IMDb cinema calibrated"
 
@@ -873,7 +969,7 @@ def build_unified_database() -> None:
 
     metadata = {
         "dataset": "combined",
-        "sources": ["ml-32m", "mal-57m", "imdb-official-episodes"],
+        "sources": ["ml-32m", "mal-57m", "imdb-official-episodes", "imdb-cinema-exclusive"],
         "total_titles": len(df),
         "total_ratings_processed": 31_637_476 + 57_633_278 + int(imdb_ratings["numVotes"].sum()),
         "user_level_ratings": 31_637_476 + 57_633_278,
@@ -881,6 +977,7 @@ def build_unified_database() -> None:
         "imdb_episodes_aggregated": len(imdb_episodes),
         "bridge_titles_count": len(merged_mal_ids),
         "tv_seasons_count": tv_seasons_added,
+        "imdb_cinema_count": imdb_cinema_added,
     }
     with open(out_dir / "metadata.json", "w") as f:
         json.dump(metadata, f, indent=2)

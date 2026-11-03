@@ -1460,7 +1460,7 @@
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
               <div class="text-[10px] text-slate-400 uppercase font-bold">Global Rank</div>
-              <div id="modal-rank-val" class="font-semibold text-cyan-300 font-mono mt-0.5">#1 of 38,916</div>
+              <div id="modal-rank-val" class="font-semibold text-cyan-300 font-mono mt-0.5">#1 of 55,062</div>
             </div>
           </div>
 
@@ -2779,13 +2779,13 @@
         const desktopSubTitle = (m.title_en || m.title_jp) ? `
           <div class="text-[11px] text-slate-400 font-normal flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
             ${m.title_en && m.title_en !== m.title ? `<span class="text-slate-300"><span class="text-cyan-400 font-mono text-[9px] uppercase">EN</span> ${m.title_en}</span>` : ''}
-            ${m.title_jp ? `<span class="text-slate-400"><span class="text-purple-400 font-mono text-[9px] uppercase">JP</span> ${m.title_jp}</span>` : ''}
+            ${m.title_jp && m.title_jp !== m.title ? `<span class="text-slate-400"><span class="text-purple-400 font-mono text-[9px] uppercase">${m.media_type === 'anime' ? 'JP' : 'ORIG'}</span> ${m.title_jp}</span>` : ''}
           </div>` : '';
 
         const subTitleHtml = (m.title_en || m.title_jp) ? `
           <div class="text-[11px] text-slate-400 space-y-0.5 mt-0.5">
             ${m.title_en && m.title_en !== m.title ? `<div><span class="text-[9px] uppercase font-mono px-1 py-0.2 rounded bg-cyan-900/40 text-cyan-300 border border-cyan-800/50 mr-1">EN</span><span class="text-slate-300">${m.title_en}</span></div>` : ''}
-            ${m.title_jp ? `<div><span class="text-[9px] uppercase font-mono px-1 py-0.2 rounded bg-purple-900/40 text-purple-300 border border-purple-800/50 mr-1">JP</span><span class="text-slate-400">${m.title_jp}</span></div>` : ''}
+            ${m.title_jp && m.title_jp !== m.title ? `<div><span class="text-[9px] uppercase font-mono px-1 py-0.2 rounded bg-purple-900/40 text-purple-300 border border-purple-800/50 mr-1">${m.media_type === 'anime' ? 'JP' : 'ORIG'}</span><span class="text-slate-400">${m.title_jp}</span></div>` : ''}
           </div>` : '';
 
         if (currentViewMode === 'simple') {
@@ -3611,8 +3611,9 @@
         if (m.title_en && m.title_en !== m.title) {
           subHtml += `<div class="flex items-center gap-1.5"><span class="px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-cyan-900/40 text-cyan-300 border border-cyan-800/60 font-semibold">EN</span> <span class="text-slate-200 text-xs">${m.title_en}</span></div>`;
         }
-        if (m.title_jp) {
-          subHtml += `<div class="flex items-center gap-1.5"><span class="px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-purple-900/40 text-purple-300 border border-purple-800/60 font-semibold">JP</span> <span class="text-slate-300 text-xs">${m.title_jp}</span></div>`;
+        if (m.title_jp && m.title_jp !== m.title) {
+          const origLabel = m.media_type === 'anime' ? 'JP' : 'ORIG';
+          subHtml += `<div class="flex items-center gap-1.5"><span class="px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-purple-900/40 text-purple-300 border border-purple-800/60 font-semibold">${origLabel}</span> <span class="text-slate-300 text-xs">${m.title_jp}</span></div>`;
         }
         subDiv.innerHTML = subHtml;
       }
