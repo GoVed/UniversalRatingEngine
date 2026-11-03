@@ -439,9 +439,408 @@
     html:not(.dark) #modal-ambient-backdrop {
       opacity: 0.12 !important;
     }
+
+    /* ========================================================
+       DUAL-PERSONALITY UI: SOFT-EDGE DISCOVERY ↔ MODERN FLAT HARD-EDGE ENGINE
+       Smoothly converts organic friendly curves to Swiss precision flat architecture
+       ======================================================== */
+    .morph-container,
+    .morph-card,
+    .morph-subcard,
+    .morph-pill,
+    .morph-btn,
+    .morph-btn-sm,
+    .morph-input,
+    .morph-poster,
+    .morph-badge,
+    .morph-score-pill,
+    .morph-chip,
+    .modal-tab,
+    #inspector-modal .glass,
+    .morph-modal-poster,
+    .morph-modal-card {
+      transition: border-radius 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.25s ease,
+                  background-color 0.25s ease,
+                  padding 0.3s ease,
+                  letter-spacing 0.3s ease;
+    }
+
+    /* --- MODE-SOFT (DARK MODE): Tactile Neumorphic Extrusions & Inset Depth --- */
+    body.mode-soft {
+      background-color: #0c1220 !important;
+      color: #f1f5f9;
+    }
+    body.mode-soft #hero-strip {
+      background: transparent !important;
+      border-color: rgba(255, 255, 255, 0.04) !important;
+    }
+    body.mode-soft .morph-container {
+      background: #111a2d !important;
+      border-radius: 1.75rem !important; /* rounded-3xl */
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      box-shadow: 14px 14px 32px rgba(3, 7, 18, 0.8), -10px -10px 28px rgba(255, 255, 255, 0.035) !important;
+    }
+    body.mode-soft .morph-card {
+      background: #111a2d !important;
+      border-radius: 1.5rem !important; /* rounded-2xl */
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      box-shadow: 12px 12px 26px rgba(3, 7, 18, 0.75), -8px -8px 24px rgba(255, 255, 255, 0.035) !important;
+    }
+    body.mode-soft .morph-subcard {
+      background: #0f1728 !important;
+      border-radius: 1.25rem !important; /* rounded-xl */
+      border: 1px solid rgba(255, 255, 255, 0.04) !important;
+      box-shadow: 6px 6px 16px rgba(3, 7, 18, 0.7), -5px -5px 14px rgba(255, 255, 255, 0.03) !important;
+    }
+    body.mode-soft .morph-pill {
+      background: #141d33 !important;
+      border-radius: 9999px !important; /* capsule pill */
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.7), -4px -4px 10px rgba(255, 255, 255, 0.035) !important;
+      color: #94a3b8 !important;
+      padding-left: 0.95rem !important;
+      padding-right: 0.95rem !important;
+    }
+    body.mode-soft .morph-pill:hover {
+      box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.8), -5px -5px 14px rgba(255, 255, 255, 0.05) !important;
+    }
+    body.mode-soft .morph-pill.font-bold,
+    body.mode-soft .media-btn.font-bold {
+      background: #0f172a !important;
+      box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.85), inset -3px -3px 8px rgba(255, 255, 255, 0.04) !important;
+      border-color: rgba(56, 189, 248, 0.4) !important;
+      color: #38bdf8 !important;
+    }
+    body.mode-soft .morph-chip {
+      border-radius: 9999px !important;
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.6), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    }
+    body.mode-soft .morph-btn {
+      background: #141d33 !important;
+      border-radius: 1rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.7), -4px -4px 10px rgba(255, 255, 255, 0.035) !important;
+      color: #cbd5e1 !important;
+    }
+    body.mode-soft .morph-btn-sm {
+      background: #141d33 !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7), -3px -3px 8px rgba(255, 255, 255, 0.035) !important;
+      color: #cbd5e1 !important;
+    }
+    body.mode-soft .morph-btn:hover,
+    body.mode-soft .morph-btn-sm:hover {
+      box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.8), -5px -5px 14px rgba(255, 255, 255, 0.05) !important;
+    }
+    body.mode-soft .morph-input {
+      background: #0b1120 !important;
+      border-radius: 1.25rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.04) !important;
+      box-shadow: inset 5px 5px 12px rgba(0, 0, 0, 0.85), inset -4px -4px 10px rgba(255, 255, 255, 0.03) !important;
+      color: #f1f5f9 !important;
+    }
+    body.mode-soft .morph-poster {
+      border-radius: 1rem !important;
+      box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.85), -4px -4px 12px rgba(255, 255, 255, 0.035) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+    body.mode-soft .morph-badge {
+      border-radius: 0.75rem !important;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6), -2px -2px 6px rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    body.mode-soft .morph-score-pill {
+      background: #111a2d !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(16, 185, 129, 0.3) !important;
+      box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.7), -3px -3px 10px rgba(255, 255, 255, 0.035), 0 0 14px rgba(16, 185, 129, 0.15) !important;
+      color: #34d399 !important;
+    }
+    body.mode-soft #inspector-modal .glass {
+      background: #111a2e !important;
+      border-radius: 2rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      box-shadow: 24px 24px 60px rgba(0, 0, 0, 0.85), -14px -14px 40px rgba(255, 255, 255, 0.04) !important;
+    }
+    body.mode-soft #inspector-modal .morph-modal-poster {
+      border-radius: 1.5rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 12px 12px 28px rgba(0, 0, 0, 0.8), -8px -8px 20px rgba(255, 255, 255, 0.04) !important;
+    }
+    body.mode-soft #inspector-modal .morph-modal-card {
+      border-radius: 1.25rem !important;
+    }
+    body.mode-soft .modal-tab {
+      background: #111a2d !important;
+      border-radius: 1rem 1rem 0 0 !important;
+      box-shadow: 3px -3px 8px rgba(0, 0, 0, 0.6), -3px -3px 8px rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    }
+
+    /* --- MODE-SOFT (LIGHT MODE): Authentic Neumorphic Soft UI (Smooth Molded Clay Surface) --- */
+    html:not(.dark) body.mode-soft {
+      background-color: #ebf0f7 !important;
+      color: #1e293b;
+    }
+    html:not(.dark) body.mode-soft #hero-strip {
+      background: transparent !important;
+      border-color: rgba(203, 213, 225, 0.4) !important;
+    }
+    html:not(.dark) body.mode-soft .morph-container {
+      background: #ebf0f7 !important;
+      border-radius: 1.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 12px 12px 28px #cad4e2, -12px -12px 28px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-card {
+      background: #ebf0f7 !important;
+      border-radius: 1.5rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 10px 10px 24px #cad4e2, -10px -10px 24px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-subcard {
+      background: #ebf0f7 !important;
+      border-radius: 1.25rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 6px 6px 16px #cad4e2, -6px -6px 16px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-pill {
+      background: #ebf0f7 !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.85) !important;
+      box-shadow: 4px 4px 10px #cad4e2, -4px -4px 10px #ffffff !important;
+      color: #334155 !important;
+      padding-left: 0.95rem !important;
+      padding-right: 0.95rem !important;
+    }
+    html:not(.dark) body.mode-soft .morph-pill:hover {
+      box-shadow: 6px 6px 14px #cad4e2, -6px -6px 14px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-pill.font-bold,
+    html:not(.dark) body.mode-soft .media-btn.font-bold {
+      background: #e2e9f3 !important;
+      box-shadow: inset 3px 3px 6px #cad4e2, inset -3px -3px 6px #ffffff !important;
+      border-color: rgba(6, 182, 212, 0.5) !important;
+      color: #0e7490 !important;
+    }
+    html:not(.dark) body.mode-soft .morph-chip {
+      background: #ebf0f7 !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 3px 3px 8px #cad4e2, -3px -3px 8px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-btn {
+      background: #ebf0f7 !important;
+      border-radius: 1rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 5px 5px 12px #cad4e2, -5px -5px 12px #ffffff !important;
+      color: #1e293b !important;
+    }
+    html:not(.dark) body.mode-soft .morph-btn-sm {
+      background: #ebf0f7 !important;
+      border-radius: 0.75rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.9) !important;
+      box-shadow: 4px 4px 10px #cad4e2, -4px -4px 10px #ffffff !important;
+      color: #334155 !important;
+    }
+    html:not(.dark) body.mode-soft .morph-btn:hover,
+    html:not(.dark) body.mode-soft .morph-btn-sm:hover {
+      box-shadow: 6px 6px 16px #cad4e2, -6px -6px 16px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-input {
+      background: #e5ebf2 !important;
+      border-radius: 1.25rem !important;
+      border: 1px solid rgba(203, 213, 225, 0.6) !important;
+      box-shadow: inset 5px 5px 10px #cad4e2, inset -5px -5px 10px #ffffff !important;
+      color: #0f172a !important;
+    }
+    html:not(.dark) body.mode-soft .morph-poster {
+      border-radius: 1rem !important;
+      box-shadow: 6px 6px 16px #cad4e2, -6px -6px 16px #ffffff !important;
+      border: 2px solid #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft .morph-badge {
+      border-radius: 0.75rem !important;
+      box-shadow: 2px 2px 6px #cad4e2, -2px -2px 6px #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    }
+    html:not(.dark) body.mode-soft .morph-score-pill {
+      background: #ebf0f7 !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(16, 185, 129, 0.35) !important;
+      box-shadow: 4px 4px 12px #cad4e2, -4px -4px 12px #ffffff, inset 1px 1px 2px rgba(16, 185, 129, 0.2) !important;
+      color: #047857 !important;
+    }
+    html:not(.dark) body.mode-soft #inspector-modal .glass {
+      background: #ebf0f7 !important;
+      border-radius: 2rem !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 20px 20px 50px #b8c4d4, -20px -20px 50px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft #inspector-modal .morph-modal-poster {
+      border-radius: 1.5rem !important;
+      border: 3px solid #ffffff !important;
+      box-shadow: 10px 10px 25px #cad4e2, -10px -10px 25px #ffffff !important;
+    }
+    html:not(.dark) body.mode-soft #inspector-modal .morph-modal-card {
+      border-radius: 1.25rem !important;
+    }
+    html:not(.dark) body.mode-soft .modal-tab {
+      background: #ebf0f7 !important;
+      border-radius: 1rem 1rem 0 0 !important;
+      box-shadow: 3px -3px 8px #cad4e2, -3px -3px 8px #ffffff !important;
+      border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* --- MODE-FLAT: Modern Flat Swiss Precision / Terminal Matrix Aesthetic --- */
+    body.mode-flat .morph-container {
+      border-radius: 0px !important; /* sharp hard 90-deg edge */
+      box-shadow: none !important;
+      border-width: 1px !important;
+      background: #0b1120 !important;
+    }
+    body.mode-flat .morph-card {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      border-width: 1px !important;
+      background: #0b1120 !important;
+    }
+    body.mode-flat .morph-subcard {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      background: #0d1527 !important;
+    }
+    body.mode-flat .morph-pill {
+      border-radius: 0px !important; /* sharp hard edge */
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+      letter-spacing: 0.03em !important;
+      padding-left: 0.6rem !important;
+      padding-right: 0.6rem !important;
+      box-shadow: none !important;
+    }
+    body.mode-flat .morph-chip {
+      border-radius: 0px !important;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+      box-shadow: none !important;
+    }
+    body.mode-flat .morph-btn {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      letter-spacing: 0.025em;
+    }
+    body.mode-flat .morph-btn-sm {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+    }
+    body.mode-flat .morph-input {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+    }
+    body.mode-flat .morph-poster {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      border-width: 1px !important;
+    }
+    body.mode-flat .morph-badge {
+      border-radius: 0px !important; /* sharp hard edge */
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+      text-transform: uppercase !important;
+      box-shadow: none !important;
+    }
+    body.mode-flat .morph-score-pill {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    }
+    body.mode-flat #inspector-modal .glass {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25), 0 30px 60px rgba(0, 0, 0, 0.8) !important;
+      background: #090e1a !important;
+    }
+    body.mode-flat #inspector-modal .morph-modal-poster {
+      border-radius: 0px !important; /* sharp hard edge */
+      box-shadow: none !important;
+      border-width: 1px !important;
+    }
+    body.mode-flat #inspector-modal .morph-modal-card {
+      border-radius: 0px !important; /* sharp hard edge */
+    }
+    body.mode-flat .modal-tab {
+      border-radius: 0px !important;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.04em !important;
+      box-shadow: none !important;
+    }
+
+    /* Light mode adaptations for flat */
+    html:not(.dark) body.mode-flat {
+      background-color: #f8fafc !important;
+    }
+    html:not(.dark) body.mode-flat .morph-container,
+    html:not(.dark) body.mode-flat .morph-card {
+      border-color: #cbd5e1 !important;
+      box-shadow: none !important;
+      background: #ffffff !important;
+    }
+    html:not(.dark) body.mode-flat .morph-subcard {
+      border-color: #e2e8f0 !important;
+      box-shadow: none !important;
+      background: #f8fafc !important;
+    }
+    html:not(.dark) body.mode-flat #inspector-modal .glass {
+      background: #ffffff !important;
+      border-color: #0284c7 !important;
+      box-shadow: 0 0 0 1px rgba(2, 132, 199, 0.3), 0 25px 50px rgba(15, 23, 42, 0.2) !important;
+    }
+
+    /* Light Mode Header & Dataset Select Harmony */
+    html:not(.dark) header {
+      border-color: rgba(203, 213, 225, 0.7) !important;
+      background: rgba(235, 240, 247, 0.92) !important;
+    }
+    html:not(.dark) #dataset-select {
+      background-color: #ebf0f7 !important;
+      border-color: #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+    html:not(.dark) body.mode-soft #dataset-select {
+      box-shadow: inset 2px 2px 5px #cad4e2, inset -2px -2px 5px #ffffff !important;
+      border-radius: 0.75rem !important;
+    }
+    body.mode-soft #dataset-select,
+    body.mode-soft #header-view-mode-btn,
+    body.mode-soft #theme-toggle {
+      border-radius: 0.75rem !important;
+    }
+    body.mode-flat #dataset-select,
+    body.mode-flat #header-view-mode-btn,
+    body.mode-flat #theme-toggle {
+      border-radius: 0px !important;
+      box-shadow: none !important;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black mode-soft">
+  <script>
+    (function() {
+      try {
+        const mode = localStorage.getItem('ure_view_mode') || 'simple';
+        if (mode === 'detailed') {
+          document.body.classList.remove('mode-soft');
+          document.body.classList.add('mode-flat');
+        } else {
+          document.body.classList.add('mode-soft');
+          document.body.classList.remove('mode-flat');
+        }
+        document.documentElement.setAttribute('data-view-mode', mode);
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Top Navigation Header -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800">
@@ -521,7 +920,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <!-- 1. All Unified Ratings -->
-        <div onclick="resetAllFilters()" class="glass p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to view All Unified Titles">
+        <div onclick="resetAllFilters()" class="glass p-3.5 sm:p-4 rounded-2xl morph-card border border-slate-800/80 hover:border-cyan-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to view All Unified Titles">
           <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-medium">
             <span>Unified Titles &amp; Ratings</span>
             <div class="w-6 h-6 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
@@ -539,7 +938,7 @@
         </div>
 
         <!-- 2. Cinema Movies -->
-        <div onclick="setMediaFilter('movie')" class="glass p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter Cinema Movies">
+        <div onclick="setMediaFilter('movie')" class="glass p-3.5 sm:p-4 rounded-2xl morph-card border border-slate-800/80 hover:border-cyan-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter Cinema Movies">
           <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-medium">
             <span>Cinema Movies</span>
             <div class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 group-hover:scale-110 transition-transform">
@@ -554,7 +953,7 @@
         </div>
 
         <!-- 3. Anime Seasons & Films -->
-        <div onclick="setMediaFilter('anime')" class="glass p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter Anime Seasons & Films">
+        <div onclick="setMediaFilter('anime')" class="glass p-3.5 sm:p-4 rounded-2xl morph-card border border-slate-800/80 hover:border-purple-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter Anime Seasons & Films">
           <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-medium">
             <span>Anime Seasons &amp; Films</span>
             <div class="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform">
@@ -569,7 +968,7 @@
         </div>
 
         <!-- 4. TV Seasons (Episode Rollup) -->
-        <div onclick="setMediaFilter('tv_season')" class="glass p-3.5 sm:p-4 rounded-2xl border border-slate-800/80 hover:border-amber-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter TV Seasons">
+        <div onclick="setMediaFilter('tv_season')" class="glass p-3.5 sm:p-4 rounded-2xl morph-card border border-slate-800/80 hover:border-amber-500/50 hover:bg-slate-800/40 cursor-pointer transition-all duration-200 group shadow-lg shadow-black/20" title="Click to filter TV Seasons">
           <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 font-medium">
             <span>IMDb TV Seasons</span>
             <div class="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
@@ -673,26 +1072,26 @@
     <section id="tab-explorer" class="tab-pane space-y-6">
       
       <!-- Controls Toolbar -->
-      <div class="glass p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-4">
+      <div class="glass p-4 sm:p-5 rounded-2xl morph-container border border-slate-800 space-y-4">
         <!-- View Mode Switcher -->
         <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
           <div class="flex items-center gap-2">
             <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 mr-1">
               <i data-lucide="layers" class="w-3.5 h-3.5 text-cyan-400"></i> Mode:
             </span>
-            <div class="inline-flex p-1 rounded-xl bg-slate-950/80 border border-slate-800 text-xs shadow-inner">
-              <button id="view-mode-simple" onclick="setViewMode('simple')" class="px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm" title="IMDb Top Rated / Advanced Search view for clean discovery without statistical bloat">
+            <div class="inline-flex p-1 rounded-xl morph-subcard bg-slate-950/80 border border-slate-800 text-xs shadow-inner">
+              <button id="view-mode-simple" onclick="setViewMode('simple')" class="px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm" title="IMDb Top Rated / Advanced Search view for clean discovery without statistical bloat">
                 <i data-lucide="compass" class="w-4 h-4 text-cyan-400"></i>
                 <span>Simple Discovery</span>
               </button>
-              <button id="view-mode-detailed" onclick="setViewMode('detailed')" class="px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent" title="Detailed calibration view with all statistical models, bias deltas, and cross-DB raw ratings">
+              <button id="view-mode-detailed" onclick="setViewMode('detailed')" class="px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent" title="Detailed calibration view with all statistical models, bias deltas, and cross-DB raw ratings">
                 <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
                 <span>Detailed Engine (Full Stats)</span>
               </button>
             </div>
           </div>
           <div class="text-xs text-slate-400 hidden sm:flex items-center gap-2">
-            <span id="view-mode-badge" class="px-2.5 py-1 rounded-lg bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-[11px] font-medium flex items-center gap-1.5">
+            <span id="view-mode-badge" class="px-2.5 py-1 morph-badge bg-cyan-950/50 border border-cyan-500/30 text-cyan-300 text-[11px] font-medium flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
               <span id="view-mode-desc">Discovery Mode: Streamlined IMDb-style search, universal ratings &amp; narrative tags</span>
             </span>
@@ -701,11 +1100,11 @@
 
         <!-- Search Mode Toggle Bar -->
         <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
-          <div class="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
-            <button id="search-mode-keyword" onclick="setSearchMode('keyword')" class="search-mode-btn px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all">
+          <div class="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl morph-subcard border border-slate-800 text-xs">
+            <button id="search-mode-keyword" onclick="setSearchMode('keyword')" class="search-mode-btn morph-btn-sm px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all">
               <i data-lucide="search" class="w-3.5 h-3.5"></i> Title &amp; Keyword
             </button>
-            <button id="search-mode-vibe" onclick="setSearchMode('vibe')" class="search-mode-btn px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all">
+            <button id="search-mode-vibe" onclick="setSearchMode('vibe')" class="search-mode-btn morph-btn-sm px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all">
               <span class="text-purple-400 font-bold">✨</span> Semantic Vibe Search (AI)
               <span class="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">ONNX</span>
             </button>
@@ -724,7 +1123,7 @@
             id="search-input" 
             oninput="onSearchInput(this.value)"
             placeholder="Search Movie, Anime (EN/JP), TV Season, or IMDb ID... (Press '/' to focus)" 
-            class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-10 pr-20 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
+            class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl morph-input pl-10 pr-20 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/50 transition-all"
           >
           <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5">
             <button id="clear-search-btn" onclick="clearSearch()" class="hidden text-slate-500 hover:text-white p-0.5" title="Clear Search">
@@ -735,26 +1134,26 @@
         </div>
 
         <!-- Semantic Vibe Inspiration Prompt Pills -->
-        <div id="vibe-prompt-pills" class="hidden flex items-center gap-1.5 overflow-x-auto py-1.5 text-xs border-y border-purple-500/20 bg-purple-950/20 px-3 rounded-xl">
+        <div id="vibe-prompt-pills" class="hidden flex items-center gap-1.5 overflow-x-auto py-1.5 text-xs border-y border-purple-500/20 bg-purple-950/20 px-3 rounded-xl morph-subcard">
           <span class="text-purple-300 text-[11px] uppercase tracking-wider font-bold shrink-0 flex items-center gap-1">
             <span class="text-purple-400">✨</span> Try Vibes:
           </span>
-          <button onclick="applyVibePrompt('A show where there is insane build up and everything becomes clear at the end')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('A show where there is insane build up and everything becomes clear at the end')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             ⚡ Insane build-up &amp; grand revelation
           </button>
-          <button onclick="applyVibePrompt('Mind-bending time loops and paradoxical mystery with emotional stakes')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('Mind-bending time loops and paradoxical mystery with emotional stakes')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             🌀 Mind-bending time loops &amp; paradox
           </button>
-          <button onclick="applyVibePrompt('Cerebral psychological cat and mouse game between two geniuses')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('Cerebral psychological cat and mouse game between two geniuses')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             ♟️ Cerebral cat &amp; mouse duel
           </button>
-          <button onclick="applyVibePrompt('Existential dread, cosmic insignificance and psychological isolation in the dark')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('Existential dread, cosmic insignificance and psychological isolation in the dark')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             🌌 Existential dread &amp; cosmic void
           </button>
-          <button onclick="applyVibePrompt('Heartwarming cozy found family with emotional bittersweet undertones')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('Heartwarming cozy found family with emotional bittersweet undertones')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             🍵 Cozy found family &amp; bittersweet
           </button>
-          <button onclick="applyVibePrompt('High-adrenaline revenge thriller with dark twists and morally grey protagonist')" class="vibe-pill shrink-0 px-2.5 py-1 rounded-lg bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
+          <button onclick="applyVibePrompt('High-adrenaline revenge thriller with dark twists and morally grey protagonist')" class="vibe-pill morph-pill shrink-0 px-3 py-1 bg-slate-900/90 hover:bg-purple-900/40 text-slate-300 hover:text-purple-200 border border-slate-700 hover:border-purple-500/50 transition-colors">
             💥 High-adrenaline revenge thriller
           </button>
         </div>
@@ -764,7 +1163,7 @@
           <span class="text-purple-400 text-xs font-bold uppercase tracking-wider pr-1 flex items-center gap-1 shrink-0">
             <i data-lucide="tag" class="w-3.5 h-3.5 text-purple-400"></i> Universal Tags:
           </span>
-          <button onclick="scrollTags(-220)" class="p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags left">
+          <button onclick="scrollTags(-220)" class="morph-btn-sm p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags left">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
           </button>
           <div id="genre-pills-container" class="flex items-center space-x-1.5 overflow-x-auto scroll-smooth py-0.5 flex-1 no-scrollbar">
@@ -772,14 +1171,14 @@
               <!-- Injected dynamically -->
             </div>
           </div>
-          <button onclick="scrollTags(220)" class="p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags right">
+          <button onclick="scrollTags(220)" class="morph-btn-sm p-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 shrink-0 transition-colors" title="Scroll tags right">
             <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
           </button>
         </div>
 
         <!-- Mobile Filter Expand Toggle (Small Screens Only) -->
         <div class="md:hidden pt-1">
-          <button id="mobile-filter-toggle" onclick="toggleMobileFilters()" class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors">
+          <button id="mobile-filter-toggle" onclick="toggleMobileFilters()" class="w-full morph-btn flex items-center justify-between px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-900/80 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors">
             <span class="flex items-center gap-1.5">
               <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-cyan-500"></i>
               <span>Cohorts &amp; Advanced Filters</span>
@@ -795,44 +1194,44 @@
             <span class="text-slate-400 text-xs font-semibold uppercase tracking-wider mr-1.5 flex items-center gap-1">
               <i data-lucide="database" class="w-3.5 h-3.5 text-cyan-400"></i> Cohort / Medium:
             </span>
-            <button onclick="setMediaFilter('all')" id="media-all" class="media-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all">
+            <button onclick="setMediaFilter('all')" id="media-all" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all">
               🌐 All Unified
             </button>
-            <button onclick="setMediaFilter('movie')" id="media-movie" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+            <button onclick="setMediaFilter('movie')" id="media-movie" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
               🎬 Cinema Movies (ML + IMDb)
             </button>
-            <button onclick="setMediaFilter('anime')" id="media-anime" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+            <button onclick="setMediaFilter('anime')" id="media-anime" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
               ⛩️ Anime Seasons &amp; Films (MAL + IMDb)
             </button>
-            <button onclick="setMediaFilter('tv_season')" id="media-tv_season" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
+            <button onclick="setMediaFilter('tv_season')" id="media-tv_season" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all">
               📺 TV Seasons (IMDb Episode-Separated)
             </button>
-            <button onclick="setMediaFilter('bridge')" id="media-bridge" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated simultaneously across MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb">
+            <button onclick="setMediaFilter('bridge')" id="media-bridge" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated simultaneously across MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb">
               🔗 Multi-DB Bridge Overlap
             </button>
-            <button onclick="setMediaFilter('imdb_exclusive')" id="media-imdb_exclusive" class="media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated exclusively via IMDb Official DB">
+            <button onclick="setMediaFilter('imdb_exclusive')" id="media-imdb_exclusive" class="media-btn morph-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all" title="Titles rated exclusively via IMDb Official DB">
               ⭐ IMDb Exclusives
             </button>
           </div>
 
           <!-- Quick Filters -->
           <div class="flex flex-wrap items-center gap-1.5">
-            <button onclick="setPreset('all')" id="preset-all" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
+            <button onclick="setPreset('all')" id="preset-all" class="preset-btn morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
               All
             </button>
-            <button onclick="setPreset('top100')" id="preset-top100" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+            <button onclick="setPreset('top100')" id="preset-top100" class="preset-btn morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
               ⭐ Top 100
             </button>
-            <button onclick="setPreset('top250')" id="preset-top250" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+            <button onclick="setPreset('top250')" id="preset-top250" class="preset-btn morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
               🏆 Top 250
             </button>
-            <button onclick="setPreset('inflated')" id="preset-inflated" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+            <button onclick="setPreset('inflated')" id="preset-inflated" class="preset-btn morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
               <span class="w-2 h-2 rounded-full bg-rose-500"></span> Enthusiast Inflated
             </button>
-            <button onclick="setPreset('penalized')" id="preset-penalized" class="preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
+            <button onclick="setPreset('penalized')" id="preset-penalized" class="preset-btn morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 flex items-center gap-1">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Audience Drag / Gems
             </button>
-            <button onclick="exportCSV()" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-colors ml-auto" title="Download Full CSV">
+            <button onclick="exportCSV()" class="morph-btn-sm px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 flex items-center gap-1.5 transition-colors ml-auto" title="Download Full CSV">
               <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
             </button>
           </div>
@@ -842,7 +1241,7 @@
             <div class="flex flex-wrap items-center gap-3 sm:gap-4">
               <label class="flex items-center space-x-2">
                 <span class="font-medium text-slate-300">Sort By:</span>
-                <select id="sort-select" onchange="onSortChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                <select id="sort-select" onchange="onSortChange(this.value)" class="morph-input bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-cyan-500">
                   <option value="score_model_b_desc">Universal Rating (Highest First)</option>
                   <option value="score_model_b_asc">Universal Rating (Lowest First)</option>
                   <option value="votes_desc">Total Audience Votes (Most Popular)</option>
@@ -863,7 +1262,7 @@
 
               <label class="flex items-center space-x-2">
                 <span class="font-medium text-slate-300">Min Votes:</span>
-                <select id="min-votes-select" onchange="onMinVotesChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                <select id="min-votes-select" onchange="onMinVotesChange(this.value)" class="morph-input bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
                   <option value="30">30+ (All Filtered)</option>
                   <option value="500">500+ votes</option>
                   <option value="5000">5,000+ votes</option>
@@ -875,7 +1274,7 @@
               <!-- Advance Search: Era / Decade -->
               <label class="flex items-center space-x-2">
                 <span class="font-medium text-slate-300">Era:</span>
-                <select id="era-select" onchange="onEraChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                <select id="era-select" onchange="onEraChange(this.value)" class="morph-input bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
                   <option value="all">All Eras (1920–2026)</option>
                   <option value="2020s">2020s (2020–Present)</option>
                   <option value="2010s">2010s (2010–2019)</option>
@@ -889,7 +1288,7 @@
               <!-- Advance Search: Min Rating -->
               <label class="flex items-center space-x-2">
                 <span class="font-medium text-slate-300">Min Rating:</span>
-                <select id="min-rating-select" onchange="onMinRatingChange(this.value)" class="bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
+                <select id="min-rating-select" onchange="onMinRatingChange(this.value)" class="morph-input bg-slate-900 border border-slate-700 text-white rounded-lg px-2 py-1 text-xs focus:outline-none focus:border-cyan-500">
                   <option value="0">All Ratings</option>
                   <option value="8.5">⭐ 8.5+ Masterpiece</option>
                   <option value="8.0">⭐ 8.0+ Exceptional</option>
@@ -913,7 +1312,7 @@
           <div id="active-filters-chips" class="flex flex-wrap items-center gap-1.5">
             <!-- Dynamically populated chips -->
           </div>
-          <button onclick="resetAllFilters()" class="text-cyan-400 hover:text-cyan-300 text-xs font-semibold ml-auto flex items-center gap-1 py-0.5 px-2 rounded-lg hover:bg-cyan-500/10 transition-colors">
+          <button onclick="resetAllFilters()" class="morph-btn-sm text-cyan-400 hover:text-cyan-300 text-xs font-semibold ml-auto flex items-center gap-1 py-0.5 px-2 rounded-lg hover:bg-cyan-500/10 transition-colors">
             <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
             <span>Reset All Filters</span>
           </button>
@@ -921,7 +1320,7 @@
       </div>
 
       <!-- Results Data Table & Mobile Cards -->
-      <div class="glass rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+      <div id="movies-table-container" class="glass rounded-2xl morph-container border border-slate-800 overflow-hidden shadow-2xl">
         <!-- Desktop Table (visible on md screens and up) -->
         <div class="overflow-x-auto hidden md:block">
           <table class="w-full text-left text-sm">
@@ -1000,13 +1399,13 @@
       <!-- Charts Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Inflation Chart -->
-        <div class="glass p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="glass p-6 rounded-2xl morph-container border border-slate-800 space-y-4">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-base font-bold text-white">Cross-Genre Calibration Delta (Δ)</h3>
               <p class="text-xs text-slate-400">Average change between Raw Platform Mean and Latent Quality Score</p>
             </div>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 text-cyan-400 border border-slate-700">De-biasing Impact</span>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded morph-badge bg-slate-800 text-cyan-400 border border-slate-700">De-biasing Impact</span>
           </div>
           <div class="h-72 sm:h-80">
             <canvas id="chart-genre-delta"></canvas>
@@ -1014,13 +1413,13 @@
         </div>
 
         <!-- Bridge Multiplier Chart -->
-        <div class="glass p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div class="glass p-6 rounded-2xl morph-container border border-slate-800 space-y-4">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-base font-bold text-white">Bridge User Multipliers (M<sub>g</sub>)</h3>
               <p class="text-xs text-slate-400">Comparing Bridge-User vs. Genre-Loyalist rating averages</p>
             </div>
-            <span class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-800 text-yellow-400 border border-slate-700">Echo-Chamber Deflator</span>
+            <span class="text-xs font-semibold px-2.5 py-1 rounded morph-badge bg-slate-800 text-yellow-400 border border-slate-700">Echo-Chamber Deflator</span>
           </div>
           <div class="h-72 sm:h-80">
             <canvas id="chart-genre-multiplier"></canvas>
@@ -1029,7 +1428,7 @@
       </div>
 
       <!-- Macro Summary Table -->
-      <div class="glass rounded-2xl border border-slate-800 overflow-hidden space-y-4 p-6">
+      <div class="glass rounded-2xl morph-container border border-slate-800 overflow-hidden space-y-4 p-6">
         <h3 class="text-base font-bold text-white">Comprehensive Genre Breakdown</h3>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm" id="macro-genre-table">
@@ -1057,13 +1456,13 @@
 
     <!-- TAB 3: HEAD-TO-HEAD COMPARE -->
     <section id="tab-compare" class="tab-pane hidden space-y-6">
-      <div class="glass p-6 rounded-2xl border border-slate-800 space-y-4">
+      <div class="glass p-6 rounded-2xl morph-container border border-slate-800 space-y-4">
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-lg font-bold text-white">Head-to-Head Multi-Model Movie Comparison</h2>
             <p class="text-xs text-slate-400">Select up to 4 titles from the Film Explorer using the "Compare" checkbox to contrast their latent factors.</p>
           </div>
-          <button onclick="clearCompareList()" class="text-xs text-rose-400 hover:text-rose-300 font-medium px-3 py-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10">
+          <button onclick="clearCompareList()" class="text-xs text-rose-400 hover:text-rose-300 font-medium px-3 py-1.5 morph-btn-sm border border-rose-500/30 bg-rose-500/10">
             Clear Compare Tray
           </button>
         </div>
@@ -1071,7 +1470,7 @@
         <div id="compare-empty-state" class="py-16 text-center space-y-3">
           <i data-lucide="scale" class="w-10 h-10 text-slate-600 mx-auto"></i>
           <p class="text-slate-400 text-sm">No titles selected yet.</p>
-          <button onclick="switchTab('explorer')" class="px-4 py-2 bg-cyan-500 text-black text-xs font-bold rounded-xl hover:bg-cyan-400 transition-colors">
+          <button onclick="switchTab('explorer')" class="px-4 py-2 bg-cyan-500 text-black text-xs font-bold morph-btn hover:bg-cyan-400 transition-colors">
             Browse Explorer and Add Movies
           </button>
         </div>
@@ -1097,9 +1496,9 @@
 
     <!-- TAB 4: METHODOLOGY & MATHEMATICAL ARCHITECTURE -->
     <section id="tab-math" class="tab-pane hidden space-y-6">
-      <div class="glass p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-8">
+      <div class="glass p-6 sm:p-8 rounded-2xl morph-container border border-slate-800 space-y-8">
         <div>
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-2">
+          <div class="inline-flex items-center gap-2 px-3 py-1 morph-pill bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold uppercase tracking-wider mb-2">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Mathematical Architecture
           </div>
           <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Decomposing Bias Across 32 Million Ratings</h2>
@@ -1110,7 +1509,7 @@
 
         <!-- Problem Statement Banner -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-xl bg-slate-900/80 border border-red-500/20 space-y-1.5">
+          <div class="p-4 rounded-xl morph-subcard bg-slate-900/80 border border-red-500/20 space-y-1.5">
             <div class="text-xs font-bold text-red-400 flex items-center gap-1.5">
               <i data-lucide="alert-triangle" class="w-4 h-4"></i> 1. Enthusiast Siloing
             </div>
@@ -1118,7 +1517,7 @@
               Niche genres (e.g. cult anime, horror) are rated almost exclusively by loyal fans, artificially clustering scores between 7.8 and 8.8.
             </p>
           </div>
-          <div class="p-4 rounded-xl bg-slate-900/80 border border-amber-500/20 space-y-1.5">
+          <div class="p-4 rounded-xl morph-subcard bg-slate-900/80 border border-amber-500/20 space-y-1.5">
             <div class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
               <i data-lucide="trending-down" class="w-4 h-4"></i> 2. Mainstream Audience Drag
             </div>
@@ -1126,7 +1525,7 @@
               Widely watched mainstream comedies and family films attract critical, mismatched casual raters, dragging down raw averages.
             </p>
           </div>
-          <div class="p-4 rounded-xl bg-slate-900/80 border border-cyan-500/20 space-y-1.5">
+          <div class="p-4 rounded-xl morph-subcard bg-slate-900/80 border border-cyan-500/20 space-y-1.5">
             <div class="text-xs font-bold text-cyan-400 flex items-center gap-1.5">
               <i data-lucide="sliders" class="w-4 h-4"></i> 3. User Leniency Heterogeneity
             </div>
@@ -1339,7 +1738,7 @@
 
   <!-- Title Inspector Modal -->
   <div id="inspector-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="glass max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150 relative">
+    <div class="glass max-w-3xl w-full rounded-2xl morph-container border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150 relative">
       <!-- Modal Header with Ambient Backdrop Banner (Confined to Header) -->
       <div class="relative overflow-hidden border-b border-slate-800 shrink-0">
         <!-- Dynamic Ambient Backdrop Banner (From Online CDN, strictly confined to header) -->
@@ -1362,16 +1761,16 @@
             </div>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
-            <button onclick="copyCurrentMovieLink()" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors" title="Copy Direct Link to Title">
+            <button onclick="copyCurrentMovieLink()" class="p-1.5 morph-btn-sm text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors" title="Copy Direct Link to Title">
               <i data-lucide="share-2" class="w-4 h-4"></i>
             </button>
-            <button onclick="inspectPrevMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Previous Title (← Left Arrow)">
+            <button onclick="inspectPrevMovie()" class="p-1.5 morph-btn-sm text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Previous Title (← Left Arrow)">
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
-            <button onclick="inspectNextMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Next Title (→ Right Arrow)">
+            <button onclick="inspectNextMovie()" class="p-1.5 morph-btn-sm text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Next Title (→ Right Arrow)">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
-            <button onclick="closeInspector()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Close (Esc)">
+            <button onclick="closeInspector()" class="p-1.5 morph-btn-sm text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Close (Esc)">
               <i data-lucide="x" class="w-5 h-5"></i>
             </button>
           </div>
@@ -1381,17 +1780,17 @@
       <!-- Modal Segmented View Switcher -->
       <div class="px-4 sm:px-6 pt-2.5 pb-0 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between gap-2 shrink-0 relative z-10">
         <div class="flex items-center gap-2">
-          <button id="modal-tab-story-btn" onclick="setModalTab('story')" class="px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all">
+          <button id="modal-tab-story-btn" onclick="setModalTab('story')" class="px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
             <span>Story & Premise</span>
           </button>
-          <button id="modal-tab-stats-btn" onclick="setModalTab('stats')" class="px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all">
+          <button id="modal-tab-stats-btn" onclick="setModalTab('stats')" class="px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all">
             <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
             <span>Rating & Statistical Calibration</span>
           </button>
         </div>
         <div class="flex items-center gap-1.5 pb-1">
-          <div class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold">
+          <div class="flex items-center gap-1 px-2.5 py-1 morph-score-pill bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono text-xs font-bold">
             <span class="text-yellow-400">★</span> <span id="modal-tab-score">0.00</span>
             <span class="text-[10px] text-emerald-400/80 font-sans font-normal ml-0.5 hidden sm:inline">Calibrated</span>
           </div>
@@ -1405,7 +1804,7 @@
         <div id="modal-view-story" class="space-y-4">
           <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
             <!-- Dynamic Poster Showcase -->
-            <div class="w-28 sm:w-36 shrink-0 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-800 relative self-center sm:self-start group">
+            <div class="w-28 sm:w-36 shrink-0 aspect-[2/3] morph-modal-poster overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-800 relative self-center sm:self-start group">
               <img id="modal-poster-img" src="" alt="Title Poster" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy">
               <div id="modal-poster-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 bg-slate-800/90 text-xs p-2 text-center">
                 <span id="modal-poster-icon" class="text-2xl mb-1 opacity-70">🎬</span>
@@ -1416,7 +1815,7 @@
             <!-- Storyline and Tagline Column -->
             <div class="flex-1 min-w-0 space-y-3 w-full">
               <!-- Tagline Callout -->
-              <div id="modal-tagline-container" class="p-3 sm:p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20 text-purple-200 text-xs sm:text-sm italic flex items-start gap-2.5">
+              <div id="modal-tagline-container" class="p-3 sm:p-3.5 morph-subcard bg-purple-950/20 border border-purple-500/20 text-purple-200 text-xs sm:text-sm italic flex items-start gap-2.5">
                 <span class="text-purple-400 text-base leading-none font-serif select-none">“</span>
                 <span id="modal-tagline-text" class="font-medium tracking-wide"></span>
                 <span class="text-purple-400 text-base leading-none font-serif select-none">”</span>
@@ -1431,7 +1830,7 @@
                   </span>
                   <span id="modal-source-attribution" class="text-[10px] text-slate-500 font-mono"></span>
                 </div>
-                <div id="modal-overview-text" class="p-3.5 sm:p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed tracking-normal font-sans">
+                <div id="modal-overview-text" class="p-3.5 sm:p-4 morph-subcard bg-slate-900/80 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed tracking-normal font-sans">
                   <!-- Inserted dynamically -->
                 </div>
               </div>
@@ -1451,38 +1850,38 @@
 
           <!-- Metadata Quick Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
-            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div class="p-2.5 morph-subcard bg-slate-900/60 border border-slate-800">
               <div class="text-[10px] text-slate-400 uppercase font-bold">Format</div>
               <div id="modal-format-val" class="font-semibold text-slate-200 mt-0.5 truncate">Feature Film</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div class="p-2.5 morph-subcard bg-slate-900/60 border border-slate-800">
               <div class="text-[10px] text-slate-400 uppercase font-bold">Release Era</div>
               <div id="modal-era-val" class="font-semibold text-slate-200 mt-0.5 truncate">2023</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div class="p-2.5 morph-subcard bg-slate-900/60 border border-slate-800">
               <div class="text-[10px] text-slate-400 uppercase font-bold">Scope</div>
               <div id="modal-scope-val" class="font-semibold text-slate-200 mt-0.5 truncate">Feature Length</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800">
+            <div class="p-2.5 morph-subcard bg-slate-900/60 border border-slate-800">
               <div class="text-[10px] text-slate-400 uppercase font-bold">Global Rank</div>
               <div id="modal-rank-val" class="font-semibold text-cyan-300 font-mono mt-0.5">#1 of 55,062</div>
             </div>
           </div>
 
           <!-- Rating Consensus Snapshot -->
-          <div id="modal-consensus-banner" class="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-emerald-950/30 via-slate-900 to-cyan-950/30 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div id="modal-consensus-banner" class="p-3.5 sm:p-4 morph-subcard bg-gradient-to-r from-emerald-950/30 via-slate-900 to-cyan-950/30 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div class="flex items-center gap-2">
                 <span class="text-sm font-bold text-white flex items-center gap-1.5">
                   <span class="text-yellow-400">★</span> Universal Calibrated Score: <span id="modal-story-score-b" class="text-emerald-400 font-mono text-base font-extrabold">0.00</span>
                 </span>
-                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold">1-10 Scale</span>
+                <span class="text-[10px] px-2 py-0.5 morph-badge bg-emerald-500/20 text-emerald-300 font-mono font-bold">1-10 Scale</span>
               </div>
               <p id="modal-story-consensus-summary" class="text-xs text-slate-300 mt-1">
                 Cross-calibrated consensus score.
               </p>
             </div>
-            <button onclick="setModalTab('stats')" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shrink-0">
+            <button onclick="setModalTab('stats')" class="px-3.5 py-2 morph-btn-sm bg-slate-800 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shrink-0">
               <span>View De-biasing Math</span>
               <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </button>
@@ -1493,22 +1892,22 @@
         <div id="modal-view-stats" class="space-y-5 hidden">
           <!-- Big Score Hero -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-            <div class="p-3 rounded-xl bg-slate-900 border border-emerald-500/30">
+            <div class="p-3 morph-subcard bg-slate-900 border border-emerald-500/30">
               <div class="text-[11px] text-emerald-400 font-semibold">Universal Score (Mod B)</div>
               <div id="modal-score-b" class="text-2xl font-bold text-emerald-400 mt-0.5">0.00</div>
               <div class="text-[10px] text-slate-500">De-Biased Cross-DB Scale</div>
             </div>
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="p-3 morph-subcard bg-slate-900 border border-slate-800">
               <div class="text-[11px] text-slate-400 font-medium">Composite Raw</div>
               <div id="modal-score-raw" class="text-2xl font-bold text-yellow-400 mt-0.5">0.00</div>
               <div class="text-[10px] text-slate-500">Uncalibrated Mean</div>
             </div>
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="p-3 morph-subcard bg-slate-900 border border-slate-800">
               <div class="text-[11px] text-slate-400 font-medium">Bayesian Weighted</div>
               <div id="modal-score-bayes" class="text-2xl font-bold text-slate-300 mt-0.5">0.00</div>
               <div class="text-[10px] text-slate-500">Volume-Shrunk Mean</div>
             </div>
-            <div class="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="p-3 morph-subcard bg-slate-900 border border-slate-800">
               <div class="text-[11px] text-slate-400 font-medium">Calibration Shift (Δ)</div>
               <div id="modal-delta" class="text-2xl font-bold text-white mt-0.5">0.00</div>
               <div class="text-[10px] text-slate-500">Universal - Raw</div>
@@ -1526,7 +1925,7 @@
           </div>
 
           <!-- Diagnostic Shift Banner -->
-          <div id="modal-diagnostic-banner" class="p-4 rounded-xl border flex items-center justify-between text-xs font-medium">
+          <div id="modal-diagnostic-banner" class="p-4 morph-subcard border flex items-center justify-between text-xs font-medium">
             <div class="flex items-center gap-2">
               <i id="modal-diag-icon" data-lucide="trending-down" class="w-5 h-5"></i>
               <div>
@@ -1548,7 +1947,7 @@
         <button id="modal-footer-toggle-btn" onclick="toggleModalTabs()" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1.5 transition-colors">
           <span id="modal-footer-toggle-text">View Full Rating Calibration & Math →</span>
         </button>
-        <button onclick="closeInspector()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition-colors">
+        <button onclick="closeInspector()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold morph-btn-sm transition-colors">
           Close Inspector
         </button>
       </div>
@@ -1557,48 +1956,48 @@
 
   <!-- Keyboard Shortcuts Modal -->
   <div id="shortcuts-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="glass max-w-md w-full rounded-2xl border border-slate-700 shadow-2xl p-5 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+    <div class="glass max-w-md w-full rounded-2xl morph-container border border-slate-700 shadow-2xl p-5 space-y-4 animate-in fade-in zoom-in-95 duration-150">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center gap-2">
           <i data-lucide="keyboard" class="w-5 h-5 text-cyan-400"></i>
           <h3 class="text-base font-bold text-white">Keyboard Shortcuts</h3>
         </div>
-        <button onclick="toggleShortcutsModal()" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+        <button onclick="toggleShortcutsModal()" class="p-1 morph-btn-sm text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
           <i data-lucide="x" class="w-4 h-4"></i>
         </button>
       </div>
       <div class="space-y-2 text-xs">
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Quick Search</span>
           <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">/</kbd> <span class="text-slate-500">or</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">⌘K</kbd></div>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Toggle Simple / Detailed Mode</span>
           <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">M</kbd>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Toggle Theme (Dark / Light)</span>
           <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">T</kbd>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Switch Navigation Tabs</span>
           <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">1</kbd> <span class="text-slate-500">-</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">4</kbd></div>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Browse Titles in Inspector</span>
           <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">→</kbd></div>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Toggle Story / Stats in Inspector</span>
           <div class="flex gap-1"><kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">1</kbd> <span class="text-slate-500">/</span> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">2</kbd></div>
         </div>
-        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/60 border border-slate-800">
+        <div class="flex items-center justify-between p-2 morph-subcard bg-slate-900/60 border border-slate-800">
           <span class="text-slate-300">Close Modal / Clear Search</span>
           <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 font-mono text-[10px] text-slate-300">Esc</kbd>
         </div>
       </div>
       <div class="pt-2 text-right">
-        <button onclick="toggleShortcutsModal()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
+        <button onclick="toggleShortcutsModal()" class="px-3.5 py-1.5 morph-btn-sm bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold transition-colors">
           Got it
         </button>
       </div>
@@ -1607,7 +2006,7 @@
 
   <!-- Floating Compare Action Dock -->
   <div id="compare-floating-dock" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 hidden transition-all duration-300">
-    <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl glass border border-cyan-500/40 shadow-2xl backdrop-blur-2xl ring-1 ring-cyan-500/30">
+    <div class="flex items-center gap-3 px-4 py-2.5 rounded-2xl morph-container glass border border-cyan-500/40 shadow-2xl backdrop-blur-2xl ring-1 ring-cyan-500/30">
       <div class="flex items-center gap-2.5">
         <span id="floating-compare-count" class="w-6 h-6 rounded-full bg-cyan-400 text-black font-extrabold text-xs flex items-center justify-center shadow-sm shadow-cyan-400/50">0</span>
         <div class="text-xs">
@@ -1617,11 +2016,11 @@
       </div>
       <div class="h-6 w-px bg-slate-700/80 mx-1"></div>
       <div class="flex items-center gap-2">
-        <button onclick="switchTab('compare')" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-black font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
+        <button onclick="switchTab('compare')" class="px-3.5 py-1.5 morph-btn bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-black font-bold text-xs flex items-center gap-1.5 shadow-lg shadow-cyan-500/20 transition-all active:scale-95">
           <span>Compare Head-to-Head</span>
           <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
         </button>
-        <button onclick="clearCompareList()" class="p-1.5 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Clear Compare Tray">
+        <button onclick="clearCompareList()" class="p-1.5 morph-btn text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Clear Compare Tray">
           <i data-lucide="trash-2" class="w-4 h-4"></i>
         </button>
       </div>
@@ -1673,15 +2072,19 @@
     function updateViewModeUI() {
       const isSimple = currentViewMode === 'simple';
       
+      document.body.classList.toggle('mode-soft', isSimple);
+      document.body.classList.toggle('mode-flat', !isSimple);
+      document.documentElement.setAttribute('data-view-mode', currentViewMode);
+
       const btnSimple = document.getElementById('view-mode-simple');
       const btnDetailed = document.getElementById('view-mode-detailed');
       if (btnSimple && btnDetailed) {
         if (isSimple) {
-          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25 border border-cyan-400/40';
-          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
+          btnSimple.className = 'px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25 border border-cyan-400/40';
+          btnDetailed.className = 'px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
         } else {
-          btnSimple.className = 'px-3.5 py-1.5 rounded-lg font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
-          btnDetailed.className = 'px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25 border border-emerald-400/40';
+          btnSimple.className = 'px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
+          btnDetailed.className = 'px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25 border border-emerald-400/40';
         }
       }
 
@@ -1691,11 +2094,11 @@
       if (headerBtn && headerText) {
         if (isSimple) {
           headerText.innerText = 'Simple Mode';
-          headerBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30';
+          headerBtn.className = 'px-2.5 py-1.5 morph-btn-sm text-xs font-semibold transition-colors flex items-center gap-1.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30';
           if (headerIcon) headerIcon.setAttribute('data-lucide', 'compass');
         } else {
           headerText.innerText = 'Detailed Mode';
-          headerBtn.className = 'px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
+          headerBtn.className = 'px-2.5 py-1.5 morph-btn-sm text-xs font-semibold transition-colors flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
           if (headerIcon) headerIcon.setAttribute('data-lucide', 'activity');
         }
       }
@@ -1869,11 +2272,11 @@
     function setMediaFilter(media) {
       activeMedia = media;
       document.querySelectorAll('.media-btn').forEach(b => {
-        b.className = 'media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all';
+        b.className = 'media-btn morph-btn px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all';
       });
       const activeBtn = document.getElementById(`media-${media}`);
       if (activeBtn) {
-        activeBtn.className = 'media-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all';
+        activeBtn.className = 'media-btn morph-btn px-3 py-1.5 text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all';
       }
       applyFilters();
     }
@@ -1917,7 +2320,7 @@
       const sortedTags = Array.from(tagCounts.keys()).sort();
       const isAll = activeGenre === 'all';
       let html = `
-        <button onclick="setGenre('all')" id="genre-pill-all" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-all ${isAll ? 'font-bold bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
+        <button onclick="setGenre('all')" id="genre-pill-all" class="morph-pill px-3 py-1 text-xs whitespace-nowrap transition-all ${isAll ? 'font-bold bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
           All Tags (${allMovies.length.toLocaleString()})
         </button>
       `;
@@ -1927,7 +2330,7 @@
         const isActive = activeGenre === t;
         const pillId = 'genre-pill-' + t.replace(/[^a-zA-Z0-9]/g, '_');
         html += `
-          <button onclick="setGenre('${t.replace(/'/g, "\\'")}')" id="${pillId}" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap transition-all ${isActive ? 'font-bold bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
+          <button onclick="setGenre('${t.replace(/'/g, "\\'")}')" id="${pillId}" class="morph-pill px-3 py-1 text-xs whitespace-nowrap transition-all ${isActive ? 'font-bold bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30' : 'font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800'}">
             ${t} <span class="text-[10px] text-slate-500 font-mono ml-0.5">(${count.toLocaleString()})</span>
           </button>
         `;
@@ -1938,12 +2341,12 @@
     function setGenre(genre) {
       activeGenre = genre;
       document.querySelectorAll('#genre-pills button').forEach(b => {
-        b.className = 'px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800';
+        b.className = 'morph-pill px-3 py-1 text-xs font-medium whitespace-nowrap transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-900/80 border border-slate-300/80 dark:border-slate-800';
       });
       const pillId = genre === 'all' ? 'genre-pill-all' : 'genre-pill-' + genre.replace(/[^a-zA-Z0-9]/g, '_');
       const activeBtn = document.getElementById(pillId);
       if (activeBtn) {
-        activeBtn.className = 'px-2.5 py-1 rounded-lg text-xs font-bold whitespace-nowrap transition-all ' + (genre === 'all' ? 'bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30');
+        activeBtn.className = 'morph-pill px-3 py-1 text-xs font-bold whitespace-nowrap transition-all ' + (genre === 'all' ? 'bg-cyan-500 text-slate-950 border border-cyan-300 shadow-sm shadow-cyan-500/25' : 'bg-purple-600 text-white border border-purple-400 shadow-sm shadow-purple-600/30');
         activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
       applyFilters();
@@ -1952,11 +2355,11 @@
     function setPreset(preset) {
       activePreset = preset;
       document.querySelectorAll('.preset-btn').forEach(b => {
-        b.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
+        b.className = 'preset-btn morph-btn-sm px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
       });
       const activeBtn = document.getElementById(`preset-${preset}`);
       if (activeBtn) {
-        activeBtn.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+        activeBtn.className = 'preset-btn morph-btn-sm px-3 py-1.5 text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
       }
       applyFilters();
     }
@@ -2523,22 +2926,22 @@
       if (minRatingSel) minRatingSel.value = '0';
 
       document.querySelectorAll('.media-btn').forEach(b => {
-        b.className = 'media-btn px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all';
+        b.className = 'media-btn morph-btn px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800 transition-all';
       });
       const allMediaBtn = document.getElementById('media-all');
-      if (allMediaBtn) allMediaBtn.className = 'media-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all';
+      if (allMediaBtn) allMediaBtn.className = 'media-btn morph-btn px-3 py-1.5 text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 transition-all';
 
       document.querySelectorAll('.preset-btn').forEach(b => {
-        b.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
+        b.className = 'preset-btn morph-btn-sm px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
       });
       const allPresetBtn = document.getElementById('preset-all');
-      if (allPresetBtn) allPresetBtn.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+      if (allPresetBtn) allPresetBtn.className = 'preset-btn morph-btn-sm px-3 py-1.5 text-xs font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
 
       document.querySelectorAll('#genre-pills button').forEach(b => {
-        b.className = 'px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
+        b.className = 'morph-pill px-3 py-1 text-xs font-medium whitespace-nowrap text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800';
       });
       const allGenreBtn = document.getElementById('genre-pill-all');
-      if (allGenreBtn) allGenreBtn.className = 'px-2.5 py-1 rounded-md text-xs font-semibold whitespace-nowrap bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
+      if (allGenreBtn) allGenreBtn.className = 'morph-pill px-3 py-1 text-xs font-semibold whitespace-nowrap bg-cyan-500/20 text-cyan-300 border border-cyan-500/40';
 
       updateSortIcons();
       applyFilters();
@@ -2674,42 +3077,42 @@
     function buildMediaBadge(m) {
       const mt = m.media_type || 'movie';
       if (mt === 'bridge') {
-        return `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap" title="Quad-DB Anchor: Rated across MovieLens 32M + MyAnimeList 57M + AniList + IMDb">🔗 Multi-DB Bridge</span>`;
+        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap" title="Quad-DB Anchor: Rated across MovieLens 32M + MyAnimeList 57M + AniList + IMDb">🔗 Multi-DB Bridge</span>`;
       }
       if (mt === 'anime') {
         const sTag = m.season_num ? ` S${m.season_num}` : '';
-        return `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30 whitespace-nowrap">⛩️ Anime${sTag}</span>`;
+        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30 whitespace-nowrap">⛩️ Anime${sTag}</span>`;
       }
       if (mt === 'tv_season') {
         const sTag = m.season_num ? ` S${m.season_num}` : '';
         const epTag = m.ep_count ? ` • ${m.ep_count} eps` : '';
-        return `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">📺 TV${sTag}${epTag}</span>`;
+        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">📺 TV${sTag}${epTag}</span>`;
       }
       if (mt === 'tv_series') {
-        return `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">📺 TV Series</span>`;
+        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30 whitespace-nowrap">📺 TV Series</span>`;
       }
-      return `<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 whitespace-nowrap">🎬 Cinema</span>`;
+      return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-semibold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 whitespace-nowrap">🎬 Cinema</span>`;
     }
 
     function buildSourceBadges(m) {
       const pills = [];
       if (m.ml_raw != null) {
         pills.push(`
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-200 border border-cyan-500/30 font-mono text-[11px]" title="MovieLens 32M Raw Rating: ${m.ml_raw.toFixed(2)} (${(m.ml_votes || 0).toLocaleString()} user ratings)">
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-cyan-500/15 text-cyan-200 border border-cyan-500/30 font-mono text-[11px]" title="MovieLens 32M Raw Rating: ${m.ml_raw.toFixed(2)} (${(m.ml_votes || 0).toLocaleString()} user ratings)">
             <span class="text-[9px] uppercase font-bold text-cyan-400">ML</span>${m.ml_raw.toFixed(2)}
           </span>
         `);
       }
       if (m.mal_raw != null) {
         pills.push(`
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-200 border border-purple-500/30 font-mono text-[11px]" title="MyAnimeList 57M Raw Rating: ${m.mal_raw.toFixed(2)} (${(m.mal_votes || 0).toLocaleString()} user ratings)">
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-purple-500/15 text-purple-200 border border-purple-500/30 font-mono text-[11px]" title="MyAnimeList 57M Raw Rating: ${m.mal_raw.toFixed(2)} (${(m.mal_votes || 0).toLocaleString()} user ratings)">
             <span class="text-[9px] uppercase font-bold text-purple-400">MAL</span>${m.mal_raw.toFixed(2)}
           </span>
         `);
       }
       if (m.al_raw != null) {
         pills.push(`
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-200 border border-sky-500/30 font-mono text-[11px]" title="AniList 2025 Raw Rating: ${m.al_raw.toFixed(2)} (${(m.al_votes || 0).toLocaleString()} users)">
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-sky-500/15 text-sky-200 border border-sky-500/30 font-mono text-[11px]" title="AniList 2025 Raw Rating: ${m.al_raw.toFixed(2)} (${(m.al_votes || 0).toLocaleString()} users)">
             <span class="text-[9px] uppercase font-bold text-sky-400">AL</span>${m.al_raw.toFixed(2)}
           </span>
         `);
@@ -2717,7 +3120,7 @@
       if (m.imdb_raw != null) {
         const lbl = (m.media_type === 'tv_season' || m.media_type === 'tv_series' || (m.media_type === 'anime' && m.season_num)) ? 'IMDb Series' : 'IMDb';
         pills.push(`
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-200 border border-amber-500/30 font-mono text-[11px]" title="IMDb Official Score: ${m.imdb_raw.toFixed(2)} (${(m.imdb_votes || 0).toLocaleString()} votes)">
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-amber-500/15 text-amber-200 border border-amber-500/30 font-mono text-[11px]" title="IMDb Official Score: ${m.imdb_raw.toFixed(2)} (${(m.imdb_votes || 0).toLocaleString()} votes)">
             <span class="text-[9px] uppercase font-bold text-amber-400">${lbl}</span>${m.imdb_raw.toFixed(2)}
           </span>
         `);
@@ -2725,7 +3128,7 @@
       if (m.imdb_ep_avg != null) {
         const pk = m.imdb_ep_peak ? ` • Peak Ep: ${m.imdb_ep_peak.toFixed(1)}` : '';
         pills.push(`
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-200 border border-orange-500/30 font-mono text-[11px]" title="IMDb Season ${m.season_num || 1} Episode Average: ${m.imdb_ep_avg.toFixed(2)} across ${m.ep_count || '?'} episodes (${(m.imdb_ep_votes || 0).toLocaleString()} episode votes${pk})">
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-orange-500/15 text-orange-200 border border-orange-500/30 font-mono text-[11px]" title="IMDb Season ${m.season_num || 1} Episode Average: ${m.imdb_ep_avg.toFixed(2)} across ${m.ep_count || '?'} episodes (${(m.imdb_ep_votes || 0).toLocaleString()} episode votes${pk})">
             <span class="text-[9px] uppercase font-bold text-orange-400">EpAvg</span>${m.imdb_ep_avg.toFixed(2)}
           </span>
         `);
@@ -2775,7 +3178,7 @@
         const genresHtml = m.genres.split('|')
           .filter(g => g && !LEGACY_NON_STANDARD_GENRES.has(g))
           .slice(0, 2)
-          .map(g => `<span class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800/80 text-[10px] text-slate-700 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700/60 mr-1">${g}</span>`)
+          .map(g => `<span class="px-2 py-0.5 morph-chip bg-slate-200 dark:bg-slate-800/80 text-[10px] text-slate-700 dark:text-slate-300 border border-slate-300/60 dark:border-slate-700/60 mr-1 font-medium">${g}</span>`)
           .join('');
 
         const mediaBadge = buildMediaBadge(m);
@@ -2799,7 +3202,7 @@
             <tr class="hover:bg-slate-800/40 transition-colors title-ambient-row" data-row-movie-id="${m.id}">
               <td class="py-3.5 px-3 text-center align-middle">
                 ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
-                  <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1">
+                  <div class="px-1.5 py-0.5 morph-badge text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1">
                     ✨ ${Math.round(Math.max(0, Math.min(100, vibeScoresMap.get(m.id).similarity * 100)))}%
                   </div>
                 ` : ''}
@@ -2809,7 +3212,7 @@
               </td>
               <td class="py-3.5 px-4 align-middle">
                 <div class="flex items-center gap-3">
-                  <div class="relative w-10 h-14 sm:w-11 sm:h-16 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
+                  <div class="relative w-10 h-14 sm:w-11 sm:h-16 morph-poster overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
                     <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
                       <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
                     </div>
@@ -2826,7 +3229,7 @@
                     ${desktopSubTitle}
                     <div class="mt-1.5 flex items-center flex-wrap gap-1">
                       ${genresHtml}
-                      ${(m.tags || []).map(t => `<span class="px-2 py-0.5 rounded-md bg-purple-900/30 text-[11px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer font-medium" onclick="searchByTag('${t}')" title="Filter by tag: ${t}">${t}</span>`).join('')}
+                      ${(m.tags || []).map(t => `<span class="px-2.5 py-0.5 morph-chip bg-purple-900/30 text-[11px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer font-medium" onclick="searchByTag('${t}')" title="Filter by tag: ${t}">${t}</span>`).join('')}
                     </div>
                   </div>
                 </div>
@@ -2840,7 +3243,7 @@
                 </div>
               </td>
               <td class="py-3.5 px-4 text-right align-middle">
-                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 morph-score-pill bg-emerald-500/10 border border-emerald-500/30">
                   <span class="text-amber-400 text-sm">★</span>
                   <span class="font-bold text-emerald-400 font-mono text-base">${m.mod_b.toFixed(2)}</span>
                   <span class="text-slate-500 text-xs font-mono">/10</span>
@@ -2848,11 +3251,11 @@
               </td>
               <td class="py-3.5 px-3 text-center align-middle">
                 <div class="flex items-center justify-center gap-1.5">
-                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 hover:border-cyan-500/40 text-xs font-semibold transition-all flex items-center gap-1" title="Inspect Title &amp; Rating Breakdown">
+                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1.5 morph-btn bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 hover:border-cyan-500/40 text-xs font-semibold transition-all flex items-center gap-1" title="Inspect Title &amp; Rating Breakdown">
                     <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     <span>Details</span>
                   </button>
-                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1.5 rounded-xl ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} hover:text-cyan-600 dark:hover:text-cyan-300 border text-xs font-semibold transition-all flex items-center" title="${isChecked ? 'Remove from Compare' : 'Add to Compare'}">
+                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1.5 morph-btn ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} hover:text-cyan-600 dark:hover:text-cyan-300 border text-xs font-semibold transition-all flex items-center" title="${isChecked ? 'Remove from Compare' : 'Add to Compare'}">
                     <i data-lucide="scale" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
@@ -2861,15 +3264,15 @@
           `;
 
           mobileHtml += `
-            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5 hover:border-slate-700 transition-colors">
+            <div class="p-3.5 morph-card bg-slate-900/80 border border-slate-800 space-y-2.5 hover:border-slate-700 transition-colors">
               <div class="flex items-start justify-between gap-2">
                 <div class="flex items-start gap-2.5">
                   <div class="text-center shrink-0">
-                    <span class="px-2 py-0.5 rounded-lg bg-slate-800 text-cyan-400 font-mono font-bold text-xs border border-slate-700 block">
+                    <span class="px-2 py-0.5 morph-badge bg-slate-800 text-cyan-400 font-mono font-bold text-xs border border-slate-700 block">
                       #${m.cal_rank}
                     </span>
                   </div>
-                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
+                  <div class="relative w-10 h-14 morph-poster overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
                     <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
                       <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
                     </div>
@@ -2886,7 +3289,7 @@
                   </div>
                 </div>
                 <div class="text-right shrink-0">
-                  <div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold font-mono text-sm">
+                  <div class="inline-flex items-center gap-1 px-2.5 py-1 morph-score-pill bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold font-mono text-sm">
                     <span>★</span> ${m.mod_b.toFixed(2)}
                   </div>
                 </div>
@@ -2895,7 +3298,7 @@
               <!-- Universal Tags on Mobile -->
               <div class="flex flex-wrap items-center gap-1">
                 ${genresHtml}
-                ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 rounded bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Universal Tag: ${t}">${t}</span>`).join('')}
+                ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 morph-chip bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Universal Tag: ${t}">${t}</span>`).join('')}
               </div>
 
               <!-- Consensus & Action row -->
@@ -2905,11 +3308,11 @@
                   <span class="text-slate-500 font-mono">• ${m.votes.toLocaleString()} votes</span>
                 </div>
                 <div class="flex items-center gap-1.5">
-                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 text-xs font-semibold transition-colors flex items-center gap-1" title="View Full Breakdown">
+                  <button onclick="inspectMovie(${m.id})" class="px-2.5 py-1 morph-btn bg-slate-100 dark:bg-slate-800 hover:bg-cyan-500/20 text-slate-700 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-300 border border-slate-300 dark:border-slate-700 text-xs font-semibold transition-colors flex items-center gap-1" title="View Full Breakdown">
                     <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     <span>Details</span>
                   </button>
-                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1 rounded-lg ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} border text-xs font-semibold transition-colors" title="Compare">
+                  <button onclick="toggleCompare(${m.id}, !${isChecked})" class="p-1 morph-btn ${isChecked ? 'bg-cyan-500/20 text-cyan-600 dark:text-cyan-300 border-cyan-500/40' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-300 dark:border-slate-700'} border text-xs font-semibold transition-colors" title="Compare">
                     <i data-lucide="scale" class="w-3.5 h-3.5"></i>
                   </button>
                 </div>
@@ -2922,7 +3325,7 @@
             <tr class="hover:bg-slate-800/40 transition-colors title-ambient-row" data-row-movie-id="${m.id}">
               <td class="py-3 px-3 text-center">
                 ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
-                  <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1" title="Cosine Similarity: ${(vibeScoresMap.get(m.id).similarity * 100).toFixed(1)}%">
+                  <div class="px-1.5 py-0.5 morph-badge text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1" title="Cosine Similarity: ${(vibeScoresMap.get(m.id).similarity * 100).toFixed(1)}%">
                     ✨ ${Math.round(Math.max(0, Math.min(100, vibeScoresMap.get(m.id).similarity * 100)))}% Match
                   </div>
                   <div class="text-[9px] text-slate-500 font-mono">#${m.cal_rank.toLocaleString()}</div>
@@ -2933,7 +3336,7 @@
               </td>
               <td class="py-3 px-4">
                 <div class="flex items-center gap-3">
-                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
+                  <div class="relative w-10 h-14 morph-poster overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
                     <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
                       <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
                     </div>
@@ -2950,7 +3353,7 @@
                     ${desktopSubTitle}
                     <div class="mt-1 flex items-center flex-wrap gap-y-1">
                       ${genresHtml}
-                      ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 rounded bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Narrative DNA: ${t}">${t}</span>`).join('')}
+                      ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 morph-chip bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Narrative DNA: ${t}">${t}</span>`).join('')}
                       <span class="text-[10px] text-slate-500 font-mono ml-1">${m.votes.toLocaleString()} total votes</span>
                     </div>
                   </div>
@@ -2962,7 +3365,7 @@
                 </div>
               </td>
               <td class="py-3 px-3">
-                <div class="flex items-center gap-1 font-mono text-xs whitespace-nowrap bg-slate-100 dark:bg-slate-900/90 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-800 w-fit">
+                <div class="flex items-center gap-1 font-mono text-xs whitespace-nowrap bg-slate-100 dark:bg-slate-900/90 px-2.5 py-1 morph-badge border border-slate-200 dark:border-slate-800 w-fit">
                   <span class="text-amber-600 dark:text-yellow-400 font-semibold" title="Uncalibrated Composite Raw Mean">${m.raw.toFixed(2)}</span>
                   <span class="text-slate-400 dark:text-slate-600 text-[10px]">→</span>
                   <span class="text-cyan-700 dark:text-cyan-300 text-[11px]" title="Model A: User Z-Score Normalized">${m.mod_a.toFixed(2)}</span>
@@ -2974,13 +3377,13 @@
                 </div>
               </td>
               <td class="py-3 px-3 text-right">
-                <span class="px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/30 font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
+                <span class="px-2.5 py-1 morph-score-pill bg-emerald-500/10 border border-emerald-500/30 font-bold text-emerald-600 dark:text-emerald-400 font-mono text-sm">
                   ${m.mod_b.toFixed(2)}
                 </span>
               </td>
               <td class="py-3 px-3 text-xs text-slate-700 dark:text-slate-300">
                 <div class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded text-[11px] font-mono font-bold border ${deltaColor}">
+                  <span class="px-1.5 py-0.5 morph-badge text-[11px] font-mono font-bold border ${deltaColor}">
                     ${m.cal_delta > 0 ? '+' : ''}${m.cal_delta.toFixed(2)}
                   </span>
                   ${rankShiftBadge}
@@ -2991,7 +3394,7 @@
               </td>
               <td class="py-3 px-3 text-center">
                 <div class="flex items-center justify-center gap-2">
-                  <button onclick="inspectMovie(${m.id})" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-400 text-slate-400 transition-colors" title="Inspect Full Multi-DB Breakdown">
+                  <button onclick="inspectMovie(${m.id})" class="p-1.5 morph-btn-sm bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-400 text-slate-400 transition-colors" title="Inspect Full Multi-DB Breakdown">
                     <i data-lucide="eye" class="w-4 h-4"></i>
                   </button>
                   <input type="checkbox" onchange="toggleCompare(${m.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer" title="Add to Compare">
@@ -3002,23 +3405,23 @@
 
           // Mobile Card HTML (Detailed Mode)
           mobileHtml += `
-            <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5 hover:border-slate-700 transition-colors">
+            <div class="p-3.5 morph-card bg-slate-900/80 border border-slate-800 space-y-2.5 hover:border-slate-700 transition-colors">
               <div class="flex items-start justify-between gap-2">
                 <div class="flex items-start gap-2.5">
                   <div class="text-center shrink-0">
                     ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
-                      <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold text-[10px] border border-purple-500/40 block">
+                      <span class="px-1.5 py-0.5 morph-badge bg-purple-500/20 text-purple-300 font-mono font-bold text-[10px] border border-purple-500/40 block">
                         ✨ ${Math.round(Math.max(0, Math.min(100, vibeScoresMap.get(m.id).similarity * 100)))}%
                       </span>
                       <span class="text-[9px] text-slate-500 font-mono block mt-0.5">#${m.cal_rank}</span>
                     ` : `
-                      <span class="px-2 py-0.5 rounded bg-slate-800 text-cyan-400 font-mono font-bold text-xs border border-slate-700 block">
+                      <span class="px-2 py-0.5 morph-badge bg-slate-800 text-cyan-400 font-mono font-bold text-xs border border-slate-700 block">
                         #${m.cal_rank}
                       </span>
                       <span class="text-[9px] text-slate-500 font-mono block mt-0.5">Raw #${m.raw_rank}</span>
                     `}
                   </div>
-                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
+                  <div class="relative w-10 h-14 morph-poster overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
                     <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
                       <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
                     </div>
@@ -3035,7 +3438,7 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-1.5 shrink-0">
-                  <button onclick="inspectMovie(${m.id})" class="p-1.5 rounded-lg bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-400 text-slate-400 transition-colors" title="Inspect Title">
+                  <button onclick="inspectMovie(${m.id})" class="p-1.5 morph-btn-sm bg-slate-800 hover:bg-cyan-500/20 hover:text-cyan-400 text-slate-400 transition-colors" title="Inspect Title">
                     <i data-lucide="eye" class="w-4 h-4"></i>
                   </button>
                   <input type="checkbox" onchange="toggleCompare(${m.id}, this.checked)" ${isChecked ? 'checked' : ''} class="w-4 h-4 rounded bg-slate-800 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer" title="Add to Compare">
@@ -3370,20 +3773,20 @@
 
       if (tab === 'story') {
         if (storyBtn) {
-          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
+          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
         }
         if (statsBtn) {
-          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
+          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
         }
         if (storyView) storyView.classList.remove('hidden');
         if (statsView) statsView.classList.add('hidden');
         if (footerToggleText) footerToggleText.innerText = 'View Full Rating Calibration & Math →';
       } else {
         if (statsBtn) {
-          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
+          statsBtn.className = 'px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all';
         }
         if (storyBtn) {
-          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
+          storyBtn.className = 'px-3.5 py-2 text-xs font-semibold modal-tab border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40 flex items-center gap-1.5 transition-all';
         }
         if (storyView) storyView.classList.add('hidden');
         if (statsView) statsView.classList.remove('hidden');
@@ -3572,11 +3975,11 @@
       if (imdbLinkSpan) {
         let linksHtml = '';
         if (m.tconst) {
-          linksHtml += `<a href="https://www.imdb.com/title/${m.tconst}/" target="_blank" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-[10px] hover:bg-amber-500/30 transition-colors inline-flex items-center gap-1">IMDb: ${m.tconst} ↗</a>`;
+          linksHtml += `<a href="https://www.imdb.com/title/${m.tconst}/" target="_blank" class="px-2 py-0.5 rounded morph-badge bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-[10px] hover:bg-amber-500/30 transition-colors inline-flex items-center gap-1">IMDb: ${m.tconst} ↗</a>`;
         }
         if (m.media_type === 'anime' && m.id >= 3000000 && m.id < 4000000) {
           const malId = m.id - 3000000;
-          linksHtml += ` <a href="https://myanimelist.net/anime/${malId}" target="_blank" class="px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/40 font-mono text-[10px] hover:bg-blue-500/30 transition-colors inline-flex items-center gap-1">MAL: #${malId} ↗</a>`;
+          linksHtml += ` <a href="https://myanimelist.net/anime/${malId}" target="_blank" class="px-2 py-0.5 rounded morph-badge bg-blue-500/20 text-blue-300 border border-blue-500/40 font-mono text-[10px] hover:bg-blue-500/30 transition-colors inline-flex items-center gap-1">MAL: #${malId} ↗</a>`;
         }
         imdbLinkSpan.innerHTML = linksHtml;
       }
@@ -3585,7 +3988,7 @@
       const genresDiv = document.getElementById('modal-genres');
       const filteredGenres = m.genres.split('|').filter(g => g && !LEGACY_NON_STANDARD_GENRES.has(g));
       genresDiv.innerHTML = buildMediaBadge(m) + (filteredGenres.length > 0 ? ' ' + filteredGenres.map(g => 
-        `<span class="px-2 py-0.5 rounded-md bg-slate-800 border border-slate-700 text-xs text-slate-300">${g}</span>`
+        `<span class="px-2 py-0.5 morph-chip bg-slate-800 border border-slate-700 text-xs text-slate-300 font-medium">${g}</span>`
       ).join('') : '');
 
       // Narrative DNA tags
@@ -3598,7 +4001,7 @@
                 <span>✨</span> Narrative DNA:
               </span>
               ${m.tags.map(t => `
-                <button onclick="closeInspector(); searchByTag('${t}');" class="px-2 py-0.5 rounded-lg bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-medium hover:bg-purple-500/30 hover:text-white transition-colors" title="Filter by narrative trope">
+                <button onclick="closeInspector(); searchByTag('${t}');" class="px-2 py-0.5 morph-chip bg-purple-500/15 text-purple-300 border border-purple-500/30 text-xs font-medium hover:bg-purple-500/30 hover:text-white transition-colors" title="Filter by narrative trope">
                   ${t}
                 </button>
               `).join('')}
@@ -3675,56 +4078,56 @@
       const srcBreakDiv = document.getElementById('modal-source-breakdown');
       if (srcBreakDiv) {
         const mlCard = m.ml_raw != null
-          ? `<div class="p-2.5 rounded-xl bg-cyan-950/30 border border-cyan-500/30">
+          ? `<div class="p-2.5 morph-subcard bg-cyan-950/30 border border-cyan-500/30">
                <div class="text-[10px] font-bold uppercase text-cyan-400">MovieLens 32M</div>
                <div class="text-lg font-bold font-mono text-white mt-0.5">${m.ml_raw.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
                <div class="text-[10px] text-slate-400 font-mono">${(m.ml_votes || 0).toLocaleString()} ratings</div>
              </div>`
-          : `<div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/70 opacity-50">
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
                <div class="text-[10px] font-bold uppercase text-slate-500">MovieLens 32M</div>
                <div class="text-xs font-mono text-slate-500 mt-1">Not in Cinema DB</div>
              </div>`;
 
         const malCard = m.mal_raw != null
-          ? `<div class="p-2.5 rounded-xl bg-purple-950/30 border border-purple-500/30">
+          ? `<div class="p-2.5 morph-subcard bg-purple-950/30 border border-purple-500/30">
                <div class="text-[10px] font-bold uppercase text-purple-400">MyAnimeList 57M</div>
                <div class="text-lg font-bold font-mono text-white mt-0.5">${m.mal_raw.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
                <div class="text-[10px] text-slate-400 font-mono">${(m.mal_votes || 0).toLocaleString()} ratings</div>
              </div>`
-          : `<div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/70 opacity-50">
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
                <div class="text-[10px] font-bold uppercase text-slate-500">MyAnimeList 57M</div>
                <div class="text-xs font-mono text-slate-500 mt-1">Not in Anime DB</div>
              </div>`;
 
         const alCard = m.al_raw != null
-          ? `<div class="p-2.5 rounded-xl bg-sky-950/30 border border-sky-500/30">
+          ? `<div class="p-2.5 morph-subcard bg-sky-950/30 border border-sky-500/30">
                <div class="text-[10px] font-bold uppercase text-sky-400">AniList 2025</div>
                <div class="text-lg font-bold font-mono text-white mt-0.5">${m.al_raw.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
                <div class="text-[10px] text-slate-400 font-mono">${(m.al_votes || 0).toLocaleString()} users</div>
              </div>`
-          : `<div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/70 opacity-50">
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
                <div class="text-[10px] font-bold uppercase text-slate-500">AniList 2025</div>
                <div class="text-xs font-mono text-slate-500 mt-1">Not in AniList</div>
              </div>`;
 
         const imdbCard = m.imdb_raw != null
-          ? `<div class="p-2.5 rounded-xl bg-amber-950/30 border border-amber-500/30">
+          ? `<div class="p-2.5 morph-subcard bg-amber-950/30 border border-amber-500/30">
                <div class="text-[10px] font-bold uppercase text-amber-400">IMDb Official</div>
                <div class="text-lg font-bold font-mono text-white mt-0.5">${m.imdb_raw.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
                <div class="text-[10px] text-slate-400 font-mono">${(m.imdb_votes || 0).toLocaleString()} votes</div>
              </div>`
-          : `<div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/70 opacity-50">
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
                <div class="text-[10px] font-bold uppercase text-slate-500">IMDb Official</div>
                <div class="text-xs font-mono text-slate-500 mt-1">Unlinked</div>
              </div>`;
 
         const epCard = m.imdb_ep_avg != null
-          ? `<div class="p-2.5 rounded-xl bg-orange-950/30 border border-orange-500/30">
+          ? `<div class="p-2.5 morph-subcard bg-orange-950/30 border border-orange-500/30">
                <div class="text-[10px] font-bold uppercase text-orange-400">IMDb S${m.season_num || 1} Episodes</div>
                <div class="text-lg font-bold font-mono text-white mt-0.5">${m.imdb_ep_avg.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">(${m.ep_count || '?'} eps)</span></div>
                <div class="text-[10px] text-slate-400 font-mono">Peak: ${m.imdb_ep_peak ? m.imdb_ep_peak.toFixed(1) : 'N/A'} • ${(m.imdb_ep_votes || 0).toLocaleString()} votes</div>
              </div>`
-          : `<div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/70 opacity-50">
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
                <div class="text-[10px] font-bold uppercase text-slate-500">Season Episodes</div>
                <div class="text-xs font-mono text-slate-500 mt-1">Standalone Film</div>
              </div>`;
@@ -3738,16 +4141,16 @@
             ${imdbCard}
             ${epCard}
           </div>
-          <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5 text-xs">
+          <div class="p-3 morph-subcard bg-slate-900/90 border border-slate-800 space-y-1.5 text-xs">
             <div class="font-bold text-slate-300 text-[11px] uppercase tracking-wider">How the Engine Calibrated This Title</div>
             <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs pt-0.5">
-              <span class="px-2 py-1 rounded bg-slate-800 text-yellow-300">1. Raw: ${m.raw.toFixed(2)}</span>
+              <span class="px-2 py-1 morph-badge bg-slate-800 text-yellow-300">1. Raw: ${m.raw.toFixed(2)}</span>
               <span class="text-slate-500">→</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-cyan-300">2. User Z (Mod A): ${m.mod_a.toFixed(2)}</span>
+              <span class="px-2 py-1 morph-badge bg-slate-800 text-cyan-300">2. User Z (Mod A): ${m.mod_a.toFixed(2)}</span>
               <span class="text-slate-500">→</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-purple-300">3. Bridge (Mod C): ${m.mod_c.toFixed(2)}</span>
+              <span class="px-2 py-1 morph-badge bg-slate-800 text-purple-300">3. Bridge (Mod C): ${m.mod_c.toFixed(2)}</span>
               <span class="text-slate-500">→</span>
-              <span class="px-2.5 py-1 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">4. Universal (Mod B): ${m.mod_b.toFixed(2)}</span>
+              <span class="px-2.5 py-1 morph-badge bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">4. Universal (Mod B): ${m.mod_b.toFixed(2)}</span>
             </div>
           </div>
         `;
@@ -3761,13 +4164,13 @@
 
       diagText.innerText = m.diag;
       if (m.rank_delta > 0) {
-        banner.className = 'p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 flex items-center justify-between text-xs font-medium text-rose-300';
+        banner.className = 'p-4 morph-subcard border border-rose-500/30 bg-rose-500/10 flex items-center justify-between text-xs font-medium text-rose-300';
         diagSub.innerText = 'Enthusiast siloing inflated the raw score; calibrated latent factor brings it into true proportion.';
       } else if (m.rank_delta < 0) {
-        banner.className = 'p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between text-xs font-medium text-emerald-300';
+        banner.className = 'p-4 morph-subcard border border-emerald-500/30 bg-emerald-500/10 flex items-center justify-between text-xs font-medium text-emerald-300';
         diagSub.innerText = 'Mismatched casual or critical audience created downward score drag; calibrated factor restores intrinsic quality.';
       } else {
-        banner.className = 'p-4 rounded-xl border border-slate-700 bg-slate-800/40 flex items-center justify-between text-xs font-medium text-slate-300';
+        banner.className = 'p-4 morph-subcard border border-slate-700 bg-slate-800/40 flex items-center justify-between text-xs font-medium text-slate-300';
         diagSub.innerText = 'Balanced audience with negligible enthusiast siloing bias.';
       }
 
