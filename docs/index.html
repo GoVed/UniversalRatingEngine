@@ -430,6 +430,9 @@
     html:not(.dark) tr.title-ambient-row:hover {
       background-color: rgba(241, 245, 249, 0.9);
     }
+    html:not(.dark) #modal-header-gradient {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(248, 250, 252, 0.75), rgba(241, 245, 249, 0.95)) !important;
+    }
     #modal-ambient-backdrop {
       background-image: none;
     }
@@ -1337,44 +1340,46 @@
   <!-- Title Inspector Modal -->
   <div id="inspector-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
     <div class="glass max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150 relative">
-      <!-- Dynamic Ambient Backdrop Banner (From Online CDN) -->
-      <div id="modal-ambient-backdrop" class="absolute inset-x-0 top-0 h-52 sm:h-60 bg-cover bg-center opacity-25 dark:opacity-20 blur-lg pointer-events-none transition-all duration-700 scale-105 z-0"></div>
-      <div class="absolute inset-x-0 top-0 h-52 sm:h-60 bg-gradient-to-b from-transparent via-slate-900/80 to-slate-900 pointer-events-none z-0"></div>
+      <!-- Modal Header with Ambient Backdrop Banner (Confined to Header) -->
+      <div class="relative overflow-hidden border-b border-slate-800 shrink-0">
+        <!-- Dynamic Ambient Backdrop Banner (From Online CDN, strictly confined to header) -->
+        <div id="modal-ambient-backdrop" class="absolute inset-0 bg-cover bg-center opacity-30 dark:opacity-25 blur-md pointer-events-none transition-all duration-700 scale-105 z-0"></div>
+        <div id="modal-header-gradient" class="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-slate-950/70 to-slate-950/95 pointer-events-none z-0"></div>
 
-      <!-- Modal Header -->
-      <div class="p-4 sm:p-5 border-b border-slate-800 flex items-start justify-between shrink-0 gap-3 relative z-10">
-        <div class="pr-2 min-w-0">
-          <div class="flex items-center gap-2 flex-wrap">
-            <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-white leading-tight">Movie Title</h2>
-            <span id="modal-year" class="text-xs sm:text-sm font-semibold text-slate-400"></span>
-            <span id="modal-imdb-link" class="flex items-center gap-1.5 flex-wrap"></span>
+        <div class="p-4 sm:p-5 flex items-start justify-between relative z-10 gap-3">
+          <div class="pr-2 min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-white leading-tight">Movie Title</h2>
+              <span id="modal-year" class="text-xs sm:text-sm font-semibold text-slate-400"></span>
+              <span id="modal-imdb-link" class="flex items-center gap-1.5 flex-wrap"></span>
+            </div>
+            <div id="modal-subtitles" class="text-xs text-slate-400 mt-1 space-y-0.5"></div>
+            <div id="modal-genres" class="flex flex-wrap gap-1 mt-2">
+              <!-- Genre badges -->
+            </div>
+            <div id="modal-tags" class="flex flex-wrap gap-1 mt-1.5">
+              <!-- Narrative DNA badges -->
+            </div>
           </div>
-          <div id="modal-subtitles" class="text-xs text-slate-400 mt-1 space-y-0.5"></div>
-          <div id="modal-genres" class="flex flex-wrap gap-1 mt-2">
-            <!-- Genre badges -->
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="copyCurrentMovieLink()" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800/80 transition-colors" title="Copy Direct Link to Title">
+              <i data-lucide="share-2" class="w-4 h-4"></i>
+            </button>
+            <button onclick="inspectPrevMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Previous Title (← Left Arrow)">
+              <i data-lucide="chevron-left" class="w-5 h-5"></i>
+            </button>
+            <button onclick="inspectNextMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Next Title (→ Right Arrow)">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+            <button onclick="closeInspector()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors" title="Close (Esc)">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
           </div>
-          <div id="modal-tags" class="flex flex-wrap gap-1 mt-1.5">
-            <!-- Narrative DNA badges -->
-          </div>
-        </div>
-        <div class="flex items-center gap-1.5 shrink-0">
-          <button onclick="copyCurrentMovieLink()" class="p-1.5 rounded-lg text-slate-400 hover:text-cyan-300 hover:bg-slate-800 transition-colors" title="Copy Direct Link to Title">
-            <i data-lucide="share-2" class="w-4 h-4"></i>
-          </button>
-          <button onclick="inspectPrevMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" title="Previous Title (← Left Arrow)">
-            <i data-lucide="chevron-left" class="w-5 h-5"></i>
-          </button>
-          <button onclick="inspectNextMovie()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" title="Next Title (→ Right Arrow)">
-            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-          </button>
-          <button onclick="closeInspector()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors" title="Close (Esc)">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
         </div>
       </div>
 
       <!-- Modal Segmented View Switcher -->
-      <div class="px-4 sm:px-6 pt-2.5 pb-0 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between gap-2 shrink-0">
+      <div class="px-4 sm:px-6 pt-2.5 pb-0 border-b border-slate-800/80 bg-slate-900/90 flex items-center justify-between gap-2 shrink-0 relative z-10">
         <div class="flex items-center gap-2">
           <button id="modal-tab-story-btn" onclick="setModalTab('story')" class="px-3.5 py-2 text-xs font-semibold rounded-t-lg border-b-2 border-cyan-400 text-cyan-300 bg-cyan-500/10 flex items-center gap-1.5 transition-all">
             <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -1394,7 +1399,7 @@
       </div>
 
       <!-- Modal Body -->
-      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 relative z-10">
         
         <!-- View 1: Story & Premise -->
         <div id="modal-view-story" class="space-y-4">
@@ -1539,7 +1544,7 @@
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-3 sm:p-4 bg-slate-900/80 border-t border-slate-800 flex items-center justify-between shrink-0">
+      <div class="p-3 sm:p-4 bg-slate-900/90 border-t border-slate-800 flex items-center justify-between shrink-0 relative z-10">
         <button id="modal-footer-toggle-btn" onclick="toggleModalTabs()" class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1.5 transition-colors">
           <span id="modal-footer-toggle-text">View Full Rating Calibration & Math →</span>
         </button>
@@ -3400,7 +3405,9 @@
     }
 
     function updateModalStory(m) {
-      const entry = movieSynopsesCache[m.id] || movieSynopsesCache[String(m.id)];
+      const entry = (m.tconst && movieSynopsesCache[m.tconst])
+        || movieSynopsesCache[m.id]
+        || movieSynopsesCache[String(m.id)];
       let overview = '';
       let tagline = '';
       let keywords = '';
