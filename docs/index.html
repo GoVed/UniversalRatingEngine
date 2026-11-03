@@ -422,30 +422,13 @@
       opacity: 1;
     }
     tr.title-ambient-row {
-      position: relative;
+      transition: background-color 0.15s ease;
     }
-    tr.title-ambient-row > td {
-      position: relative;
-      z-index: 1;
+    tr.title-ambient-row:hover {
+      background-color: rgba(30, 41, 59, 0.45);
     }
-    tr.title-ambient-row::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: var(--row-ambient-bg);
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.35s ease;
-      filter: blur(28px);
-      z-index: 0;
-    }
-    tr.title-ambient-row:hover::before {
-      opacity: 0.12;
-    }
-    html:not(.dark) tr.title-ambient-row:hover::before {
-      opacity: 0.06;
+    html:not(.dark) tr.title-ambient-row:hover {
+      background-color: rgba(241, 245, 249, 0.9);
     }
     #modal-ambient-backdrop {
       background-image: none;
@@ -3321,14 +3304,6 @@
               }
             }
           });
-
-          // 2. Set ambient background on row hover
-          if (img.thumb || img.banner) {
-            const rowEls = document.querySelectorAll(`tr[data-row-movie-id="${m.id}"]`);
-            rowEls.forEach(r => {
-              r.style.setProperty('--row-ambient-bg', `url('${img.thumb || img.banner}')`);
-            });
-          }
         });
       });
     }
