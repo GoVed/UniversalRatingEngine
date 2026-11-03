@@ -412,6 +412,47 @@
       background: rgba(255, 255, 255, 0.85);
       border-color: #e2e8f0;
     }
+
+    /* Dynamic Online Media Cover & Ambient Styles (Zero Git Storage) */
+    .title-row-poster {
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.2s ease;
+    }
+    .title-row-poster.loaded {
+      opacity: 1;
+    }
+    tr.title-ambient-row {
+      position: relative;
+    }
+    tr.title-ambient-row > td {
+      position: relative;
+      z-index: 1;
+    }
+    tr.title-ambient-row::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--row-ambient-bg);
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      filter: blur(28px);
+      z-index: 0;
+    }
+    tr.title-ambient-row:hover::before {
+      opacity: 0.12;
+    }
+    html:not(.dark) tr.title-ambient-row:hover::before {
+      opacity: 0.06;
+    }
+    #modal-ambient-backdrop {
+      background-image: none;
+    }
+    html:not(.dark) #modal-ambient-backdrop {
+      opacity: 0.12 !important;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
@@ -1312,9 +1353,13 @@
 
   <!-- Title Inspector Modal -->
   <div id="inspector-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-3 sm:p-4">
-    <div class="glass max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150">
+    <div class="glass max-w-3xl w-full rounded-2xl border border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] flex flex-col animate-in fade-in zoom-in-95 duration-150 relative">
+      <!-- Dynamic Ambient Backdrop Banner (From Online CDN) -->
+      <div id="modal-ambient-backdrop" class="absolute inset-x-0 top-0 h-52 sm:h-60 bg-cover bg-center opacity-25 dark:opacity-20 blur-lg pointer-events-none transition-all duration-700 scale-105 z-0"></div>
+      <div class="absolute inset-x-0 top-0 h-52 sm:h-60 bg-gradient-to-b from-transparent via-slate-900/80 to-slate-900 pointer-events-none z-0"></div>
+
       <!-- Modal Header -->
-      <div class="p-4 sm:p-5 border-b border-slate-800 flex items-start justify-between shrink-0 gap-3">
+      <div class="p-4 sm:p-5 border-b border-slate-800 flex items-start justify-between shrink-0 gap-3 relative z-10">
         <div class="pr-2 min-w-0">
           <div class="flex items-center gap-2 flex-wrap">
             <h2 id="modal-title" class="text-lg sm:text-xl font-bold text-white leading-tight">Movie Title</h2>
@@ -1370,24 +1415,38 @@
         
         <!-- View 1: Story & Premise -->
         <div id="modal-view-story" class="space-y-4">
-          <!-- Tagline Callout -->
-          <div id="modal-tagline-container" class="p-3 sm:p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20 text-purple-200 text-xs sm:text-sm italic flex items-start gap-2.5">
-            <span class="text-purple-400 text-base leading-none font-serif select-none">“</span>
-            <span id="modal-tagline-text" class="font-medium tracking-wide"></span>
-            <span class="text-purple-400 text-base leading-none font-serif select-none">”</span>
-          </div>
-
-          <!-- Plot Overview -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <i data-lucide="align-left" class="w-3.5 h-3.5 text-cyan-400"></i>
-                Storyline & Premise
-              </span>
-              <span id="modal-source-attribution" class="text-[10px] text-slate-500 font-mono"></span>
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 items-start">
+            <!-- Dynamic Poster Showcase -->
+            <div class="w-28 sm:w-36 shrink-0 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-slate-700/80 bg-slate-800 relative self-center sm:self-start group">
+              <img id="modal-poster-img" src="" alt="Title Poster" class="w-full h-full object-cover transition-opacity duration-300 opacity-0" loading="lazy">
+              <div id="modal-poster-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-500 bg-slate-800/90 text-xs p-2 text-center">
+                <span id="modal-poster-icon" class="text-2xl mb-1 opacity-70">🎬</span>
+                <span class="text-[9px] font-mono text-slate-400">Loading Art...</span>
+              </div>
             </div>
-            <div id="modal-overview-text" class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed tracking-normal font-sans">
-              <!-- Inserted dynamically -->
+
+            <!-- Storyline and Tagline Column -->
+            <div class="flex-1 min-w-0 space-y-3 w-full">
+              <!-- Tagline Callout -->
+              <div id="modal-tagline-container" class="p-3 sm:p-3.5 rounded-xl bg-purple-950/20 border border-purple-500/20 text-purple-200 text-xs sm:text-sm italic flex items-start gap-2.5">
+                <span class="text-purple-400 text-base leading-none font-serif select-none">“</span>
+                <span id="modal-tagline-text" class="font-medium tracking-wide"></span>
+                <span class="text-purple-400 text-base leading-none font-serif select-none">”</span>
+              </div>
+
+              <!-- Plot Overview -->
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                    <i data-lucide="align-left" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    Storyline & Premise
+                  </span>
+                  <span id="modal-source-attribution" class="text-[10px] text-slate-500 font-mono"></span>
+                </div>
+                <div id="modal-overview-text" class="p-3.5 sm:p-4 rounded-xl bg-slate-900/80 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed tracking-normal font-sans">
+                  <!-- Inserted dynamically -->
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2749,7 +2808,7 @@
         if (currentViewMode === 'simple') {
           // SIMPLE MODE (IMDb Top-Rated Discovery Layout)
           html += `
-            <tr class="hover:bg-slate-800/40 transition-colors">
+            <tr class="hover:bg-slate-800/40 transition-colors title-ambient-row" data-row-movie-id="${m.id}">
               <td class="py-3.5 px-3 text-center align-middle">
                 ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
                   <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1">
@@ -2761,17 +2820,27 @@
                 </div>
               </td>
               <td class="py-3.5 px-4 align-middle">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  ${mediaBadge}
-                  <span class="font-bold text-white text-sm sm:text-base hover:text-cyan-400 cursor-pointer transition-colors leading-snug" onclick="inspectMovie(${m.id})">
-                    ${m.title}
-                  </span>
-                  <span class="text-slate-400 font-normal text-xs">(${m.year || 'N/A'})</span>
-                </div>
-                ${desktopSubTitle}
-                <div class="mt-1.5 flex items-center flex-wrap gap-1">
-                  ${genresHtml}
-                  ${(m.tags || []).map(t => `<span class="px-2 py-0.5 rounded-md bg-purple-900/30 text-[11px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer font-medium" onclick="searchByTag('${t}')" title="Filter by tag: ${t}">${t}</span>`).join('')}
+                <div class="flex items-center gap-3">
+                  <div class="relative w-10 h-14 sm:w-11 sm:h-16 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
+                    <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
+                      <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
+                    </div>
+                    <img data-movie-id="${m.id}" alt="${escapeHtml(m.title)}" class="title-row-poster w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      ${mediaBadge}
+                      <span class="font-bold text-white text-sm sm:text-base hover:text-cyan-400 cursor-pointer transition-colors leading-snug" onclick="inspectMovie(${m.id})">
+                        ${m.title}
+                      </span>
+                      <span class="text-slate-400 font-normal text-xs">(${m.year || 'N/A'})</span>
+                    </div>
+                    ${desktopSubTitle}
+                    <div class="mt-1.5 flex items-center flex-wrap gap-1">
+                      ${genresHtml}
+                      ${(m.tags || []).map(t => `<span class="px-2 py-0.5 rounded-md bg-purple-900/30 text-[11px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer font-medium" onclick="searchByTag('${t}')" title="Filter by tag: ${t}">${t}</span>`).join('')}
+                    </div>
+                  </div>
                 </div>
               </td>
               <td class="py-3.5 px-3 align-middle">
@@ -2812,7 +2881,13 @@
                       #${m.cal_rank}
                     </span>
                   </div>
-                  <div>
+                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
+                    <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
+                      <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
+                    </div>
+                    <img data-movie-id="${m.id}" alt="${escapeHtml(m.title)}" class="title-row-poster w-full h-full object-cover" loading="lazy" />
+                  </div>
+                  <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
                       ${mediaBadge}
                     </div>
@@ -2856,7 +2931,7 @@
         } else {
           // DETAILED MODE (Full Statistical Engine Layout)
           html += `
-            <tr class="hover:bg-slate-800/40 transition-colors">
+            <tr class="hover:bg-slate-800/40 transition-colors title-ambient-row" data-row-movie-id="${m.id}">
               <td class="py-3 px-3 text-center">
                 ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
                   <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 whitespace-nowrap mb-1" title="Cosine Similarity: ${(vibeScoresMap.get(m.id).similarity * 100).toFixed(1)}%">
@@ -2869,18 +2944,28 @@
                 `}
               </td>
               <td class="py-3 px-4">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  ${mediaBadge}
-                  <span class="font-bold text-white hover:text-cyan-400 cursor-pointer transition-colors" onclick="inspectMovie(${m.id})">
-                    ${m.title}
-                  </span>
-                  <span class="text-slate-400 font-normal text-xs">(${m.year || 'N/A'})</span>
-                </div>
-                ${desktopSubTitle}
-                <div class="mt-1 flex items-center flex-wrap gap-y-1">
-                  ${genresHtml}
-                  ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 rounded bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Narrative DNA: ${t}">${t}</span>`).join('')}
-                  <span class="text-[10px] text-slate-500 font-mono ml-1">${m.votes.toLocaleString()} total votes</span>
+                <div class="flex items-center gap-3">
+                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 shrink-0 shadow-sm cursor-pointer group" onclick="inspectMovie(${m.id})">
+                    <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
+                      <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
+                    </div>
+                    <img data-movie-id="${m.id}" alt="${escapeHtml(m.title)}" class="title-row-poster w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      ${mediaBadge}
+                      <span class="font-bold text-white hover:text-cyan-400 cursor-pointer transition-colors" onclick="inspectMovie(${m.id})">
+                        ${m.title}
+                      </span>
+                      <span class="text-slate-400 font-normal text-xs">(${m.year || 'N/A'})</span>
+                    </div>
+                    ${desktopSubTitle}
+                    <div class="mt-1 flex items-center flex-wrap gap-y-1">
+                      ${genresHtml}
+                      ${(m.tags || []).map(t => `<span class="px-1.5 py-0.5 rounded bg-purple-900/30 text-[10px] text-purple-300 border border-purple-500/20 mr-1 hover:bg-purple-800/40 cursor-pointer" onclick="searchByTag('${t}')" title="Narrative DNA: ${t}">${t}</span>`).join('')}
+                      <span class="text-[10px] text-slate-500 font-mono ml-1">${m.votes.toLocaleString()} total votes</span>
+                    </div>
+                  </div>
                 </div>
               </td>
               <td class="py-3 px-3">
@@ -2931,7 +3016,7 @@
           mobileHtml += `
             <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2.5 hover:border-slate-700 transition-colors">
               <div class="flex items-start justify-between gap-2">
-                <div class="flex items-start gap-2">
+                <div class="flex items-start gap-2.5">
                   <div class="text-center shrink-0">
                     ${searchMode === 'vibe' && vibeScoresMap.has(m.id) ? `
                       <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold text-[10px] border border-purple-500/40 block">
@@ -2945,7 +3030,13 @@
                       <span class="text-[9px] text-slate-500 font-mono block mt-0.5">Raw #${m.raw_rank}</span>
                     `}
                   </div>
-                  <div>
+                  <div class="relative w-10 h-14 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shrink-0 cursor-pointer" onclick="inspectMovie(${m.id})">
+                    <div class="poster-fallback-icon absolute inset-0 flex items-center justify-center text-slate-400 dark:text-slate-500">
+                      <i data-lucide="${m.media_type === 'anime' ? 'sparkles' : (m.media_type === 'tv_season' ? 'tv' : 'film')}" class="w-4 h-4 opacity-50"></i>
+                    </div>
+                    <img data-movie-id="${m.id}" alt="${escapeHtml(m.title)}" class="title-row-poster w-full h-full object-cover" loading="lazy" />
+                  </div>
+                  <div class="min-w-0">
                     <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
                       ${mediaBadge}
                     </div>
@@ -3006,6 +3097,7 @@
       }
       lucide.createIcons();
       renderPagination();
+      hydrateVisibleRowImages(pageData);
     }
 
     function renderPagination() {
@@ -3048,6 +3140,197 @@
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
+    }
+
+    // Dynamic Online Media Image Resolver (Zero Git Storage - Pure CDN / Live APIs)
+    const OnlineMediaImageService = (() => {
+      const memoryCache = new Map();
+      const pendingRequests = new Map();
+
+      // Hydrate from sessionStorage if available
+      try {
+        const saved = sessionStorage.getItem('ure_media_img_cache');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          for (const [k, v] of Object.entries(parsed)) {
+            memoryCache.set(k, v);
+          }
+        }
+      } catch (e) {}
+
+      function saveCache() {
+        try {
+          if (memoryCache.size > 0 && memoryCache.size < 400) {
+            const obj = {};
+            for (const [k, v] of memoryCache.entries()) {
+              obj[k] = v;
+            }
+            sessionStorage.setItem('ure_media_img_cache', JSON.stringify(obj));
+          }
+        } catch (e) {}
+      }
+
+      // 1. IMDb CloudFront Poster via official JSONP (Bypasses CORS completely in browser)
+      async function fetchImdbImage(tconst) {
+        if (!tconst) return null;
+        return new Promise((resolve) => {
+          const callbackName = `imdb$${tconst.toLowerCase()}`;
+          let timedOut = false;
+
+          const timer = setTimeout(() => {
+            timedOut = true;
+            try { delete window[callbackName]; } catch (e) {}
+            if (script.parentNode) script.remove();
+            resolve(null);
+          }, 3500);
+
+          window[callbackName] = (data) => {
+            clearTimeout(timer);
+            if (timedOut) return;
+            try { delete window[callbackName]; } catch (e) {}
+            if (script.parentNode) script.remove();
+
+            try {
+              if (data && data.d && data.d.length > 0 && data.d[0].i) {
+                const rawUrl = data.d[0].i[0];
+                const thumb = rawUrl.replace(/\._V1_.*?\.jpg$/, '._V1_UX120_CR0,0,120,180_.jpg');
+                const poster = rawUrl.replace(/\._V1_.*?\.jpg$/, '._V1_UX400_.jpg');
+                resolve({ poster: poster || rawUrl, thumb: thumb || rawUrl, banner: poster || rawUrl });
+              } else {
+                resolve(null);
+              }
+            } catch (err) {
+              resolve(null);
+            }
+          };
+
+          const script = document.createElement('script');
+          script.src = `https://v2.sg.media-imdb.com/suggests/t/${tconst.toLowerCase()}.json`;
+          script.async = true;
+          script.onerror = () => {
+            clearTimeout(timer);
+            try { delete window[callbackName]; } catch (e) {}
+            if (script.parentNode) script.remove();
+            resolve(null);
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      // 2. AniList Public GraphQL API (Cloudflare CDN for Anime Poster & Horizontal Banner)
+      async function fetchAniListImage(malId) {
+        if (!malId) return null;
+        try {
+          const query = `query ($id: Int) { Media(idMal: $id, type: ANIME) { coverImage { medium large } bannerImage } }`;
+          const res = await fetch('https://graphql.anilist.co', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ query, variables: { id: malId } })
+          });
+          if (!res.ok) return null;
+          const json = await res.json();
+          const media = json?.data?.Media;
+          if (!media) return null;
+          return {
+            thumb: media.coverImage?.medium || media.coverImage?.large,
+            poster: media.coverImage?.large || media.coverImage?.medium,
+            banner: media.bannerImage || media.coverImage?.large
+          };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      // 3. TVMaze Open API (Fallback for TV Series Key Art)
+      async function fetchTvMazeImage(tconst) {
+        if (!tconst) return null;
+        try {
+          const res = await fetch(`https://api.tvmaze.com/lookup/shows?imdb=${tconst}`);
+          if (!res.ok) return null;
+          const data = await res.json();
+          if (!data?.image) return null;
+          return {
+            thumb: data.image.medium || data.image.original,
+            poster: data.image.original || data.image.medium,
+            banner: data.image.original || data.image.medium
+          };
+        } catch (e) {
+          return null;
+        }
+      }
+
+      async function getImage(movie) {
+        if (!movie) return { thumb: null, poster: null, banner: null };
+        const key = String(movie.id || movie.tconst);
+        if (memoryCache.has(key)) return memoryCache.get(key);
+        if (pendingRequests.has(key)) return pendingRequests.get(key);
+
+        const promise = (async () => {
+          let result = null;
+
+          // Anime: query AniList GraphQL first for rich banner & character cover
+          if (movie.media_type === 'anime' && movie.id >= 3000000 && movie.id < 4000000) {
+            result = await fetchAniListImage(movie.id - 3000000);
+          }
+
+          // Fallback to IMDb JSONP CloudFront CDN
+          if (!result && movie.tconst) {
+            result = await fetchImdbImage(movie.tconst);
+          }
+
+          // Fallback to TVMaze if TV series and still missing
+          if (!result && movie.media_type === 'tv_season' && movie.tconst) {
+            result = await fetchTvMazeImage(movie.tconst);
+          }
+
+          const finalVal = result || { thumb: null, poster: null, banner: null };
+          memoryCache.set(key, finalVal);
+          pendingRequests.delete(key);
+          saveCache();
+          return finalVal;
+        })();
+
+        pendingRequests.set(key, promise);
+        return promise;
+      }
+
+      return { getImage, getCached: (key) => memoryCache.get(String(key)) };
+    })();
+
+    // Hydrate posters and ambient backgrounds for visible rows
+    function hydrateVisibleRowImages(pageData) {
+      if (!pageData || pageData.length === 0) return;
+
+      pageData.forEach(m => {
+        OnlineMediaImageService.getImage(m).then(img => {
+          if (!img) return;
+
+          // 1. Update row poster images
+          const posterEls = document.querySelectorAll(`img[data-movie-id="${m.id}"]`);
+          posterEls.forEach(el => {
+            if (img.thumb || img.poster) {
+              const markLoaded = () => {
+                el.classList.add('loaded');
+                const fallback = el.parentElement?.querySelector('.poster-fallback-icon');
+                if (fallback) fallback.style.display = 'none';
+              };
+              el.onload = markLoaded;
+              el.src = img.thumb || img.poster;
+              if (el.complete && el.naturalWidth > 0) {
+                markLoaded();
+              }
+            }
+          });
+
+          // 2. Set ambient background on row hover
+          if (img.thumb || img.banner) {
+            const rowEls = document.querySelectorAll(`tr[data-row-movie-id="${m.id}"]`);
+            rowEls.forEach(r => {
+              r.style.setProperty('--row-ambient-bg', `url('${img.thumb || img.banner}')`);
+            });
+          }
+        });
+      });
     }
 
     // Storyline Synopses Cache & Dynamic Loading
@@ -3362,6 +3645,49 @@
       // Populate Story Tab Content
       updateModalStory(m);
 
+      // Dynamic Cover Poster & Ambient Backdrop Banner (Zero Git Storage)
+      const modalPosterImg = document.getElementById('modal-poster-img');
+      const modalPosterPlaceholder = document.getElementById('modal-poster-placeholder');
+      const modalBackdrop = document.getElementById('modal-ambient-backdrop');
+      const modalPosterIcon = document.getElementById('modal-poster-icon');
+
+      if (modalPosterImg && modalPosterPlaceholder) {
+        modalPosterImg.classList.add('opacity-0');
+        modalPosterPlaceholder.classList.remove('hidden');
+        if (modalPosterIcon) {
+          modalPosterIcon.innerText = m.media_type === 'anime' ? '✨' : (m.media_type === 'tv_season' ? '📺' : '🎬');
+        }
+      }
+      if (modalBackdrop) {
+        modalBackdrop.style.backgroundImage = 'none';
+      }
+
+      OnlineMediaImageService.getImage(m).then(img => {
+        if (currentInspectingMovieId !== m.id) return;
+        if (img && (img.poster || img.thumb)) {
+          const posterUrl = img.poster || img.thumb;
+          if (modalPosterImg) {
+            const markPosterLoaded = () => {
+              if (currentInspectingMovieId === m.id) {
+                modalPosterImg.classList.remove('opacity-0');
+                if (modalPosterPlaceholder) modalPosterPlaceholder.classList.add('hidden');
+              }
+            };
+            modalPosterImg.onload = markPosterLoaded;
+            modalPosterImg.src = posterUrl;
+            if (modalPosterImg.complete && modalPosterImg.naturalWidth > 0) {
+              markPosterLoaded();
+            }
+          }
+        }
+        if (img && (img.banner || img.poster || img.thumb)) {
+          const bannerUrl = img.banner || img.poster || img.thumb;
+          if (modalBackdrop) {
+            modalBackdrop.style.backgroundImage = `url('${bannerUrl}')`;
+          }
+        }
+      });
+
       // Populate Source Database Breakdown & Step-by-Step Calibration Path
       const srcBreakDiv = document.getElementById('modal-source-breakdown');
       if (srcBreakDiv) {
@@ -3513,6 +3839,8 @@
       const inspModal = document.getElementById('inspector-modal');
       if (inspModal) inspModal.classList.add('hidden');
       currentInspectingMovieId = null;
+      const modalBackdrop = document.getElementById('modal-ambient-backdrop');
+      if (modalBackdrop) modalBackdrop.style.backgroundImage = 'none';
       if (window.location.hash.includes('id=')) {
         history.replaceState(null, '', '#explorer');
       }
