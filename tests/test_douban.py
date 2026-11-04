@@ -54,6 +54,27 @@ class TestDoubanPipeline(unittest.TestCase):
         self.assertGreater(data["total_titles"], 30000)
         self.assertIn("tags", data["cols"])
 
+    def test_douban_in_unified_master_db(self):
+        cal_path = Path("artifacts/combined/calibrated_scores.parquet")
+        self.assertTrue(cal_path.exists(), "Combined calibrated parquet artifact should exist")
+        df = pl.read_parquet(cal_path)
+        self.assertIn("douban_raw", df.columns)
+        self.assertIn("douban_votes", df.columns)
+        self.assertGreater(len(df), 60000, "Unified DB should have 60,000+ titles with Douban included")
+
+        douban_entries = df.filter(pl.col("douban_raw").is_not_null())
+        self.assertGreater(len(douban_entries), 20000, "Over 20,000 titles should have Douban scores in Unified DB")
+
+        json_path = Path("docs/data/movies_combined.json")
+        self.assertTrue(json_path.exists(), "movies_combined.json should exist")
+        import json
+        with open(json_path) as f:
+            data = json.load(f)
+        self.assertEqual(data["dataset"], "combined")
+        self.assertIn("douban_raw", data["cols"])
+        self.assertIn("douban_votes", data["cols"])
+        self.assertGreater(data["total_titles"], 60000)
+
 
 if __name__ == "__main__":
     unittest.main()

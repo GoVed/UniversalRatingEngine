@@ -1114,8 +1114,8 @@
       <!-- Right Utility Cluster: Dataset Selector & Unified Toolbar Pill -->
       <div class="flex items-center space-x-1.5 sm:space-x-2 order-2 sm:order-3 ml-auto sm:ml-0 shrink-0">
         <!-- Dataset Selector -->
-        <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 focus:outline-none focus:border-cyan-500 w-28 sm:w-40 lg:w-44 transition-all" title="Select Database">
-          <option value="combined" selected>Unified Master DB</option>
+        <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 focus:outline-none focus:border-cyan-500 w-32 sm:w-44 lg:w-48 transition-all" title="Select Database">
+          <option value="combined" selected>Unified Master DB (Quint-DB)</option>
           <option value="imdb">IMDb Official</option>
           <option value="douban">Douban 2025 (豆瓣)</option>
           <option value="anilist">AniList 2025</option>
@@ -1176,7 +1176,7 @@
             <span class="text-xs text-slate-400 font-mono">titles</span>
           </div>
           <div class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 flex items-center justify-between">
-            <span id="stat-ratings" class="text-cyan-400 font-mono font-medium">89.3M + AL + IMDb</span>
+            <span id="stat-ratings" class="text-cyan-400 font-mono font-medium">89.3M + AL + IMDb + Douban</span>
             <span class="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">Reset ↺</span>
           </div>
         </div>
@@ -1288,7 +1288,7 @@
             <span class="text-[10px] font-mono text-slate-500">Empirical Biases</span>
           </div>
           <ul class="space-y-1.5 text-slate-300 leading-relaxed">
-            <li>• <strong class="text-white">Quad-DB &amp; Multi-Tier Bridges:</strong> On <span class="text-emerald-300 font-semibold">210 Quad-DB Anchor films</span> rated in all 4 DBs (e.g. <em>Spirited Away</em>, <em>Your Name.</em>), the empirical leniency ladder is <span class="text-cyan-300 font-semibold">ML (6.88)</span> &lt; <span class="text-amber-300 font-semibold">IMDb (7.15)</span> &lt; <span class="text-sky-300 font-semibold">AniList (7.33)</span> &lt; <span class="text-purple-300 font-semibold">MAL (7.60)</span>. For serialized TV anime, a <span class="text-sky-300 font-semibold">Tri-DB Consensus Bridge (7,312 series)</span> triangulates MAL, AniList, and IMDb to extinguish review brigades.</li>
+            <li>• <strong class="text-white">Quint-DB &amp; Multi-Tier Bridges:</strong> Across <span class="text-emerald-300 font-semibold">211 Quint-DB Anchor films</span> rated across all 5 databases (e.g. <em>Spirited Away</em>, <em>Your Name.</em>), the empirical leniency ladder is <span class="text-cyan-300 font-semibold">ML (6.88)</span> &lt; <span class="text-emerald-300 font-semibold">Douban (7.05)</span> &lt; <span class="text-amber-300 font-semibold">IMDb (7.15)</span> &lt; <span class="text-sky-300 font-semibold">AniList (7.33)</span> &lt; <span class="text-purple-300 font-semibold">MAL (7.60)</span>. For serialized TV anime, a <span class="text-sky-300 font-semibold">Tri-DB Consensus Bridge (7,312 series)</span> triangulates MAL, AniList, and IMDb to extinguish review brigades.</li>
             <li>• <strong class="text-white">Sequel Survivorship Bias:</strong> Casual viewers drop out in Season 1; surviving devotees inflate Season 2–4 scores by <code class="text-rose-400">+0.25 to +0.55 pts</code>.</li>
             <li>• <strong class="text-white">Episode Self-Selection &amp; Finale Spikes:</strong> IMDb episode raters average <code class="text-amber-300">+0.62 pts</code> higher than movie raters. Equal-episode season means prevent a single viral finale from distorting an uneven season.</li>
           </ul>
@@ -1900,8 +1900,8 @@
               <i data-lucide="layers" class="w-4 h-4"></i>
             </div>
             <div>
-              <h4 class="text-base font-bold text-white">Quad-Database Integration &amp; Multi-Tiered Bridge Architecture</h4>
-              <p class="text-xs text-slate-400">How MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb 12.9M Titles &amp; 10M Episodes are correlated into a single de-biased benchmark</p>
+              <h4 class="text-base font-bold text-white">Quint-Database Integration &amp; Multi-Tiered Bridge Architecture</h4>
+              <p class="text-xs text-slate-400">How MovieLens 32M, MyAnimeList 57M, AniList 2025, IMDb 12.9M, and Douban 845M (30K+ Asian &amp; World Cinema titles) are correlated into a single de-biased benchmark</p>
             </div>
           </div>
 
@@ -1935,10 +1935,10 @@
 
             <div class="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-800">
               <div class="font-bold text-white flex items-center gap-1.5">
-                <i data-lucide="anchor" class="w-4 h-4 text-emerald-400"></i> 210 Quad-DB Anchors &amp; 7,312 Tri-DB Series Consensus
+                <i data-lucide="anchor" class="w-4 h-4 text-emerald-400"></i> 211 Quint-DB Anchors &amp; Douban Consensus Bridge
               </div>
               <p>
-                Across <strong class="text-white">210 identical feature films</strong> rated simultaneously in MovieLens 32M, MyAnimeList 57M, AniList 2025, and IMDb (e.g. <em>Spirited Away</em>, <em>Princess Mononoke</em>, <em>Your Name.</em>), the engine empirically mapped the 4-way leniency ladder: <span class="text-cyan-300 font-mono">ML (6.88)</span> &lt; <span class="text-amber-300 font-mono">IMDb (7.15)</span> &lt; <span class="text-sky-300 font-mono">AniList (7.33)</span> &lt; <span class="text-purple-300 font-mono">MAL (7.60)</span>. For serialized TV anime that cannot appear in cinema DBs, the engine constructs a <strong class="text-white">Tri-DB Consensus Bridge across 7,312 anime series</strong> (MAL + AniList + IMDb), neutralizing single-platform fan wars and review-bombing.
+                Across <strong class="text-white">211 identical feature films</strong> rated simultaneously across MovieLens 32M, MyAnimeList 57M, AniList 2025, IMDb, and Douban 845M (e.g. <em>Spirited Away</em>, <em>Princess Mononoke</em>, <em>Your Name.</em>), the engine empirically mapped the 5-way leniency ladder: <span class="text-cyan-300 font-mono">ML (6.88)</span> &lt; <span class="text-emerald-300 font-mono">Douban (7.05)</span> &lt; <span class="text-amber-300 font-mono">IMDb (7.15)</span> &lt; <span class="text-sky-300 font-mono">AniList (7.33)</span> &lt; <span class="text-purple-300 font-mono">MAL (7.60)</span>. Over 15,445 cinema films share multi-platform consensus across Western and Asian audiences, neutralizing local platform fan wars and review brigades.
               </p>
             </div>
 
@@ -2274,7 +2274,7 @@
   <!-- Footer -->
   <footer class="border-t border-slate-800/80 mt-auto py-6 text-center text-xs text-slate-500">
     <div class="max-w-7xl mx-auto px-4">
-      UniversalRatingEngine • Unified Quad-Database Benchmark (MovieLens 32M + MyAnimeList 57M + AniList 2025 + IMDb 12.9M)
+      UniversalRatingEngine • Unified Quint-Database Benchmark (MovieLens 32M + MyAnimeList 57M + AniList 2025 + IMDb 12.9M + Douban 845M)
     </div>
   </footer>
 
@@ -2466,7 +2466,7 @@
         const elRatings = document.getElementById('stat-ratings');
         if (elRatings) {
           const ratingsCountMap = {
-            'combined': '89.3M + AL + IMDb',
+            'combined': '89.3M + AL + IMDb + Douban',
             'imdb': '1.79B (IMDb Official)',
             'douban': '845.7M (Douban 豆瓣)',
             'anilist': '247.9M (AniList 2025)',
@@ -3358,7 +3358,7 @@
     function buildMediaBadge(m) {
       const mt = m.media_type || 'movie';
       if (mt === 'bridge') {
-        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap" title="Quad-DB Anchor: Rated across MovieLens 32M + MyAnimeList 57M + AniList + IMDb">🔗 Multi-DB Bridge</span>`;
+        return `<span class="px-1.5 py-0.5 rounded morph-badge text-[10px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 whitespace-nowrap" title="Quint-DB Anchor: Rated across MovieLens 32M + MyAnimeList 57M + AniList + IMDb + Douban">🔗 Multi-DB Bridge</span>`;
       }
       if (mt === 'anime') {
         const sTag = m.season_num ? ` S${m.season_num}` : '';

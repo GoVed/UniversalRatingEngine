@@ -303,6 +303,22 @@ def build_unified_database() -> None:
             }
     console.print(f"  [green]✓[/green] Loaded {len(mal_2024_map):,} MAL 2024/2025 records")
 
+    # Load Douban 845M Database (30K+ titles calibrated with Bayesian shrinkage & genre latent quality)
+    console.print("[cyan]→ Loading Douban 845M Asian & World Cinema Benchmark...[/cyan]")
+    douban_map: dict[str, dict] = {}
+    douban_id_map: dict[int, dict] = {}
+    douban_path = Path("artifacts/douban/calibrated_scores.parquet")
+    douban_df = pl.DataFrame()
+    if douban_path.exists():
+        douban_df = pl.read_parquet(douban_path)
+        for r in douban_df.iter_rows(named=True):
+            mid = int(r["movieId"])
+            tc = r.get("tconst")
+            douban_id_map[mid] = r
+            if tc:
+                douban_map[tc] = r
+    console.print(f"  [green]✓[/green] Loaded {len(douban_id_map):,} Douban titles ({len(douban_map):,} with IMDb tconst)")
+
     # Index 1-to-1 MAL Movies by tconst so we can merge them with MovieLens 32M Bridge Films
     mal_by_id: dict[int, dict] = {int(r["movieId"]): r for r in mal_df.iter_rows(named=True)}
 
@@ -399,13 +415,15 @@ def build_unified_database() -> None:
             "ep_total_mal": anime_eps_map.get(mid),
         }
 
-    # 4. Build Unified Records across the 3 Cohorts
+    # 4. Build Unified Records across the Cohorts
     unified_rows: list[dict] = []
     merged_mal_ids: set[int] = set()
     merged_ml_tconsts: set[str] = set()
+    merged_douban_ids: set[int] = set()
+    merged_douban_tconsts: set[str] = set()
 
-    # --- COHORT 1: MovieLens 32M Cinema & Quad-DB Bridge Movies ---
-    console.print("[cyan]→ Synthesizing Cohort 1: Cinema & Quad-DB Bridge Films (MovieLens + IMDb + MAL + AniList)...[/cyan]")
+    # --- COHORT 1: MovieLens 32M Cinema & Quint-DB Bridge Movies ---
+    console.print("[cyan]→ Synthesizing Cohort 1: Cinema & Quint-DB Bridge Films (MovieLens + IMDb + MAL + AniList + Douban)...[/cyan]")
     for r in ml_df.iter_rows(named=True):
         tconst = r["tconst"]
         im_meta = imdb_type_map.get(tconst) if tconst else None
@@ -428,7 +446,7 @@ def build_unified_database() -> None:
         ml_raw = float(r["raw_avg"])
         ml_votes = int(r["vote_count"])
 
-        # Check if this movie is also in MAL-57M (Tri-Database Bridge Film!)
+        # Check if this movie is also in MAL-57M (Bridge Film!)
         mal_mid = tconst_to_mal_movie.get(tconst) if tconst else None
         mal_row = mal_by_id.get(mal_mid) if mal_mid else None
         if mal_mid and mal_row:
@@ -445,6 +463,22 @@ def build_unified_database() -> None:
             title_en = ""
             title_jp = ""
             media_type = "movie"
+
+        # Check if film has Douban score
+        douban_row = douban_map.get(tconst) if tconst else None
+        if douban_row:
+            douban_raw = float(douban_row["raw_avg"])
+            douban_votes = int(douban_row["vote_count"])
+            douban_latent = float(douban_row["score_model_b"])
+            merged_douban_ids.add(int(douban_row["movieId"]))
+            if tconst:
+                merged_douban_tconsts.add(tconst)
+            if not title_jp and douban_row.get("title_jp"):
+                title_jp = douban_row["title_jp"]
+        else:
+            douban_raw = None
+            douban_votes = None
+            douban_latent = None
 
         if tconst:
             merged_ml_tconsts.add(tconst)
@@ -465,25 +499,39 @@ def build_unified_database() -> None:
         al_votes = al_info["al_votes"] if al_info else None
 
         if mal_row is not None and mal_raw is not None and mal_votes is not None:
-            # Bridge film present in ALL THREE databases (ML + MAL + IMDb)
+            # Bridge film present in ALL databases (ML + MAL + IMDb + optional Douban)
             mal_latent = float(mal_row["score_model_b"]) - 0.34
-            mod_b = 0.45 * ml_latent + 0.35 * mal_latent + 0.20 * im_cal
-            mod_a = 0.50 * float(r["score_model_a"]) + 0.50 * (float(mal_row["score_model_a"]) - 0.34)
-            mod_c = 0.50 * float(r["score_model_c"]) + 0.50 * (float(mal_row["score_model_c"]) - 0.34)
-            total_votes = ml_votes + mal_votes + (al_votes or 0) + (imdb_votes or 0)
+            total_votes = ml_votes + mal_votes + (al_votes or 0) + (imdb_votes or 0) + (douban_votes or 0)
             raw_comp = (
-                ml_raw * ml_votes + mal_raw * mal_votes + ((al_raw or 0.0) * (al_votes or 0)) + (imdb_raw or 0.0) * (imdb_votes or 0)
+                ml_raw * ml_votes
+                + mal_raw * mal_votes
+                + ((al_raw or 0.0) * (al_votes or 0))
+                + ((imdb_raw or 0.0) * (imdb_votes or 0))
+                + ((douban_raw or 0.0) * (douban_votes or 0))
             ) / max(1, total_votes)
+            if douban_latent is not None:
+                mod_b = 0.40 * ml_latent + 0.30 * mal_latent + 0.15 * im_cal + 0.15 * douban_latent
+                mod_a = 0.45 * float(r["score_model_a"]) + 0.45 * (float(mal_row["score_model_a"]) - 0.34) + 0.10 * float(douban_row["score_model_a"])
+                mod_c = 0.45 * float(r["score_model_c"]) + 0.45 * (float(mal_row["score_model_c"]) - 0.34) + 0.10 * float(douban_row["score_model_c"])
+            else:
+                mod_b = 0.45 * ml_latent + 0.35 * mal_latent + 0.20 * im_cal
+                mod_a = 0.50 * float(r["score_model_a"]) + 0.50 * (float(mal_row["score_model_a"]) - 0.34)
+                mod_c = 0.50 * float(r["score_model_c"]) + 0.50 * (float(mal_row["score_model_c"]) - 0.34)
         else:
-            mod_b = 0.78 * ml_latent + 0.22 * im_cal
-            mod_a = w_ml * float(r["score_model_a"]) + (1.0 - w_ml) * im_cal
-            mod_c = w_ml * float(r["score_model_c"]) + (1.0 - w_ml) * im_cal
-            total_votes = ml_votes + (imdb_votes or 0)
+            total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0)
             raw_comp = (
-                (ml_raw * ml_votes + imdb_raw * imdb_votes) / (ml_votes + imdb_votes)
-                if (imdb_raw is not None and imdb_votes)
-                else ml_raw
-            )
+                ml_raw * ml_votes
+                + ((imdb_raw or 0.0) * (imdb_votes or 0))
+                + ((douban_raw or 0.0) * (douban_votes or 0))
+            ) / max(1, total_votes)
+            if douban_latent is not None:
+                mod_b = 0.65 * ml_latent + 0.20 * im_cal + 0.15 * douban_latent
+                mod_a = w_ml * float(r["score_model_a"]) + (1.0 - w_ml) * (0.6 * im_cal + 0.4 * douban_latent)
+                mod_c = w_ml * float(r["score_model_c"]) + (1.0 - w_ml) * (0.6 * im_cal + 0.4 * douban_latent)
+            else:
+                mod_b = 0.78 * ml_latent + 0.22 * im_cal
+                mod_a = w_ml * float(r["score_model_a"]) + (1.0 - w_ml) * im_cal
+                mod_c = w_ml * float(r["score_model_c"]) + (1.0 - w_ml) * im_cal
 
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         year = extract_year(r["title"]) or (im_meta[3] if im_meta else None)
@@ -512,6 +560,8 @@ def build_unified_database() -> None:
             "mal_votes": mal_votes,
             "al_raw": round(al_raw, 2) if al_raw is not None else None,
             "al_votes": al_votes,
+            "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
+            "douban_votes": douban_votes,
             "imdb_raw": round(imdb_raw, 2) if imdb_raw is not None else None,
             "imdb_votes": imdb_votes,
             "imdb_ep_avg": None,
@@ -583,6 +633,17 @@ def build_unified_database() -> None:
         al_info = anilist_map.get(mid)
         al_raw = al_info["al_score"] if al_info else None
         al_votes = al_info["al_votes"] if al_info else None
+
+        douban_row = douban_map.get(tconst) if tconst else None
+        if douban_row:
+            douban_raw = float(douban_row["raw_avg"])
+            douban_votes = int(douban_row["vote_count"])
+            merged_douban_ids.add(int(douban_row["movieId"]))
+            if tconst:
+                merged_douban_tconsts.add(tconst)
+        else:
+            douban_raw = None
+            douban_votes = None
 
         # Calibrate MAL score onto Universal Scale:
         # 1. Subtract cross-platform bridge offset (-0.30)
@@ -658,6 +719,8 @@ def build_unified_database() -> None:
             "mal_votes": mal_votes,
             "al_raw": round(al_raw, 2) if al_raw is not None else None,
             "al_votes": al_votes,
+            "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
+            "douban_votes": douban_votes,
             "imdb_raw": round(imdb_raw, 2) if imdb_raw is not None else None,
             "imdb_votes": imdb_votes,
             "imdb_ep_avg": round(ep_avg, 2) if ep_avg is not None else None,
@@ -715,6 +778,17 @@ def build_unified_database() -> None:
         ml_raw = ml_info[0] if ml_info else None
         ml_votes = ml_info[1] if ml_info else None
 
+        douban_row = douban_map.get(parent_tc) if parent_tc else None
+        if douban_row:
+            douban_raw = float(douban_row["raw_avg"])
+            douban_votes = int(douban_row["vote_count"])
+            merged_douban_ids.add(int(douban_row["movieId"]))
+            if parent_tc:
+                merged_douban_tconsts.add(parent_tc)
+        else:
+            douban_raw = None
+            douban_votes = None
+
         # Calibrate TV Season Score onto Universal Scale:
         # 1. Episode ratings on IMDb have +0.62 self-selection inflation over movie ratings
         # 2. Seasonal survivorship inflation: +0.045 * ln(s_num)
@@ -770,6 +844,8 @@ def build_unified_database() -> None:
             "mal_votes": None,
             "al_raw": None,
             "al_votes": None,
+            "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
+            "douban_votes": douban_votes,
             "imdb_raw": round(parent_raw, 2),
             "imdb_votes": parent_votes,
             "imdb_ep_avg": round(ep_avg, 2),
@@ -803,16 +879,41 @@ def build_unified_database() -> None:
         if genres_str == r"\N" or not genres_str:
             genres_str = "Drama"
 
+        # Check if this IMDb cinema release also has a Douban score
+        douban_row = douban_map.get(tconst) if tconst else None
+        if douban_row:
+            douban_raw = float(douban_row["raw_avg"])
+            douban_votes = int(douban_row["vote_count"])
+            merged_douban_ids.add(int(douban_row["movieId"]))
+            if tconst:
+                merged_douban_tconsts.add(tconst)
+            if not original and douban_row.get("title_jp"):
+                original = douban_row["title_jp"]
+        else:
+            douban_raw = None
+            douban_votes = None
+
         # De-bias IMDb cinema rating onto engine's Universal Scale (1-10)
         # Consistent with MovieLens cinema calibration where IMDb raw has -0.32 offset and shrinkage towards 6.80
         w_im = votes / (votes + 30000.0)
         im_cal = w_im * (raw - 0.32) + (1.0 - w_im) * 6.80
 
-        mod_b = float(im_cal)
-        mod_a = float(im_cal)
-        mod_c = float(im_cal - 0.05)
-
-        bayes = (votes / (votes + 10000.0)) * raw + (10000.0 / (votes + 10000.0)) * 6.85
+        if douban_raw is not None and douban_votes is not None:
+            w_db = douban_votes / (douban_votes + 30000.0)
+            db_cal = w_db * (douban_raw - 0.20) + (1.0 - w_db) * 6.80
+            mod_b = 0.55 * im_cal + 0.45 * db_cal
+            mod_a = mod_b
+            mod_c = mod_b - 0.05
+            total_votes = votes + douban_votes
+            raw_comp = (raw * votes + douban_raw * douban_votes) / total_votes
+            bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
+        else:
+            mod_b = float(im_cal)
+            mod_a = float(im_cal)
+            mod_c = float(im_cal - 0.05)
+            total_votes = votes
+            raw_comp = raw
+            bayes = (votes / (votes + 10000.0)) * raw + (10000.0 / (votes + 10000.0)) * 6.85
 
         # Native / Original title formatting:
         # If original title is in Latin script (e.g. 'Tere Naam', 'Dabangg 3') but primary is an English translation ('In Your Name'),
@@ -843,8 +944,8 @@ def build_unified_database() -> None:
             "title": clean_display_title(display_title),
             "year": year,
             "genres": genres_str,
-            "vote_count": votes,
-            "raw_avg": raw,
+            "vote_count": total_votes,
+            "raw_avg": float(raw_comp),
             "bayesian_avg": float(bayes),
             "score_model_a": float(mod_a),
             "score_model_b": float(mod_b),
@@ -862,6 +963,8 @@ def build_unified_database() -> None:
             "mal_votes": None,
             "al_raw": None,
             "al_votes": None,
+            "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
+            "douban_votes": douban_votes,
             "imdb_raw": round(raw, 2),
             "imdb_votes": votes,
             "imdb_ep_avg": None,
@@ -870,10 +973,94 @@ def build_unified_database() -> None:
         })
         imdb_cinema_added += 1
 
+    # --- COHORT 5: Douban High-Consensus Releases (vote_count >= 2,000) ---
+    console.print("[cyan]→ Synthesizing Cohort 5: Douban High-Consensus Releases (vote_count >= 2,000)...[/cyan]")
+    douban_cinema_id_counter = 9_000_000
+    douban_added = 0
+
+    for r in douban_df.iter_rows(named=True):
+        mid = int(r["movieId"])
+        tc = r.get("tconst") or ""
+        v_cnt = int(r["vote_count"])
+
+        # Check if already merged in Cohorts 1-4
+        if mid in merged_douban_ids or (tc and tc in merged_douban_tconsts) or (tc and tc in merged_ml_tconsts) or (tc and tc in all_mal_tconsts):
+            continue
+
+        # Filter high-consensus threshold (>= 2,000 votes, same standard as Cohort 4)
+        if v_cnt < 2000:
+            continue
+
+        douban_cinema_id_counter += 1
+        douban_added += 1
+
+        db_raw = float(r["raw_avg"])
+        db_votes = v_cnt
+        db_bayes = float(r["bayesian_avg"])
+        db_mod_a = float(r["score_model_a"])
+        db_mod_b = float(r["score_model_b"])
+        db_mod_c = float(r["score_model_c"])
+
+        # Check if IMDb has ratings for this tconst even if < 2,000 IMDb votes
+        im_pair = imdb_rating_map.get(tc) if tc else None
+        im_raw = im_pair[0] if im_pair else None
+        im_votes = im_pair[1] if im_pair else None
+
+        if im_raw is not None and im_votes is not None:
+            total_votes = db_votes + im_votes
+            raw_comp = (db_raw * db_votes + im_raw * im_votes) / total_votes
+            w_im = im_votes / (im_votes + 30000.0)
+            im_cal = w_im * (im_raw - 0.32) + (1.0 - w_im) * 6.80
+            w_db_share = db_votes / total_votes
+            mod_b = w_db_share * db_mod_b + (1.0 - w_db_share) * im_cal
+            mod_a = w_db_share * db_mod_a + (1.0 - w_db_share) * im_cal
+            mod_c = w_db_share * db_mod_c + (1.0 - w_db_share) * (im_cal - 0.05)
+            bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
+        else:
+            total_votes = db_votes
+            raw_comp = db_raw
+            mod_b = db_mod_b
+            mod_a = db_mod_a
+            mod_c = db_mod_c
+            bayes = db_bayes
+
+        unified_rows.append({
+            "movieId": douban_cinema_id_counter,
+            "title": clean_display_title(r["title"]),
+            "year": r["year"],
+            "genres": r["genres"] or "Drama",
+            "vote_count": total_votes,
+            "raw_avg": float(raw_comp),
+            "bayesian_avg": float(bayes),
+            "score_model_a": float(mod_a),
+            "score_model_b": float(mod_b),
+            "score_model_c": float(mod_c),
+            "bias_b_i": float(mod_b - 6.85),
+            "title_en": r["title_en"] or "",
+            "title_jp": r["title_jp"] or "",
+            "media_type": "movie",
+            "tconst": tc,
+            "season_num": None,
+            "ep_count": None,
+            "ml_raw": None,
+            "ml_votes": None,
+            "mal_raw": None,
+            "mal_votes": None,
+            "al_raw": None,
+            "al_votes": None,
+            "douban_raw": round(db_raw, 2),
+            "douban_votes": db_votes,
+            "imdb_raw": round(im_raw, 2) if im_raw is not None else None,
+            "imdb_votes": im_votes,
+            "imdb_ep_avg": None,
+            "imdb_ep_votes": None,
+            "imdb_ep_peak": None,
+        })
+
     console.print(
         f"  [green]✓[/green] Unified rows built: {len(unified_rows):,} total "
-        f"({len(merged_mal_ids):,} Quad-DB Bridge titles, {tv_seasons_added:,} IMDb TV Seasons, "
-        f"{imdb_cinema_added:,} IMDb Cinema Releases)"
+        f"({len(merged_mal_ids):,} Bridge titles, {tv_seasons_added:,} IMDb TV Seasons, "
+        f"{imdb_cinema_added:,} IMDb Cinema Releases, {douban_added:,} Douban Cinema Releases)"
     )
 
     # 5. Convert to Polars DataFrame and compute Ranks, Deltas & Diagnostics
@@ -903,15 +1090,17 @@ def build_unified_database() -> None:
         mtype = r["media_type"]
         snum = r["season_num"]
         if mtype == "bridge":
-            src_note = "Quad-DB Bridge (ML+MAL+AL+IMDb)"
+            src_note = "Quint-DB Bridge (ML+MAL+AL+IMDb+Douban)" if r.get("douban_raw") is not None else "Quad-DB Bridge (ML+MAL+AL+IMDb)"
         elif mtype == "anime":
             src_note = f"Anime S{snum} sequel bias removed" if (snum and snum > 1) else "MAL+AL+IMDb consensus calibrated"
         elif mtype == "tv_season":
             src_note = f"TV S{snum} episode rollup calibrated"
+        elif r.get("douban_raw") is not None and r.get("ml_raw") is None and r.get("mal_raw") is None:
+            src_note = "Douban+IMDb cinema calibrated" if r.get("imdb_raw") is not None else "Douban 豆瓣 cinema calibrated"
         elif r["ml_raw"] is None:
             src_note = "IMDb cinema calibrated"
         else:
-            src_note = "ML+IMDb cinema calibrated"
+            src_note = "ML+IMDb+Douban cinema calibrated" if r.get("douban_raw") is not None else "ML+IMDb cinema calibrated"
 
         if r_delta > 25:
             diags.append(f"Dropped {r_delta:,} ranks ({src_note}; enthusiast inflation de-biased)")
@@ -969,15 +1158,16 @@ def build_unified_database() -> None:
 
     metadata = {
         "dataset": "combined",
-        "sources": ["ml-32m", "mal-57m", "imdb-official-episodes", "imdb-cinema-exclusive"],
+        "sources": ["ml-32m", "mal-57m", "anilist-2025", "imdb-official-episodes", "imdb-cinema-exclusive", "douban-845m"],
         "total_titles": len(df),
-        "total_ratings_processed": 31_637_476 + 57_633_278 + int(imdb_ratings["numVotes"].sum()),
-        "user_level_ratings": 31_637_476 + 57_633_278,
+        "total_ratings_processed": 31_637_476 + 57_633_278 + int(imdb_ratings["numVotes"].sum()) + int(douban_df["vote_count"].sum() if len(douban_df) > 0 else 0),
+        "user_level_ratings": 31_637_476 + 57_633_278 + int(douban_df["vote_count"].sum() if len(douban_df) > 0 else 0),
         "imdb_rated_titles": len(imdb_ratings),
         "imdb_episodes_aggregated": len(imdb_episodes),
         "bridge_titles_count": len(merged_mal_ids),
         "tv_seasons_count": tv_seasons_added,
         "imdb_cinema_count": imdb_cinema_added,
+        "douban_cinema_count": douban_added,
     }
     with open(out_dir / "metadata.json", "w") as f:
         json.dump(metadata, f, indent=2)
