@@ -222,7 +222,7 @@ def export_dataset_for_web(
 
 def export_all():
     console.print("[bold yellow]Exporting web data for GitHub Pages...[/bold yellow]")
-    for ds in ["ml-32m", "ml-1m", "ml-latest-small", "combined", "mal", "mal-57m", "imdb", "anilist"]:
+    for ds in ["ml-32m", "ml-1m", "ml-latest-small", "combined", "mal", "mal-57m", "imdb", "anilist", "douban"]:
         if (Path("artifacts") / ds / "calibrated_scores.parquet").exists():
             export_dataset_for_web(ds)
     console.print("[bold green]✓ All web assets successfully exported![/bold green]")
@@ -235,7 +235,7 @@ if __name__ == "__main__":
         "--dataset",
         type=str,
         default="all",
-        choices=["all", "ml-1m", "ml-32m", "ml-latest-small", "combined", "mal", "mal-57m", "imdb", "anilist", "letterboxd"],
+        choices=["all", "ml-1m", "ml-32m", "ml-latest-small", "combined", "mal", "mal-57m", "imdb", "anilist", "douban", "letterboxd"],
         help="Dataset to export (default: all)",
     )
     args = parser.parse_args()

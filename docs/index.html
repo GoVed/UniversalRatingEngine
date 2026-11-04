@@ -1117,6 +1117,7 @@
         <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 focus:outline-none focus:border-cyan-500 w-28 sm:w-40 lg:w-44 transition-all" title="Select Database">
           <option value="combined" selected>Unified Master DB</option>
           <option value="imdb">IMDb Official</option>
+          <option value="douban">Douban 2025 (豆瓣)</option>
           <option value="anilist">AniList 2025</option>
           <option value="mal-57m">MyAnimeList 57M</option>
           <option value="ml-32m">MovieLens 32M</option>
@@ -2467,6 +2468,7 @@
           const ratingsCountMap = {
             'combined': '89.3M + AL + IMDb',
             'imdb': '1.79B (IMDb Official)',
+            'douban': '845.7M (Douban 豆瓣)',
             'anilist': '247.9M (AniList 2025)',
             'mal-57m': '57.6M + MAL 2024 Archive',
             'ml-32m': '31,637,476',
@@ -3393,6 +3395,15 @@
         pills.push(`
           <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-sky-500/15 text-sky-200 border border-sky-500/30 font-mono text-[11px]" title="AniList 2025 Raw Rating: ${m.al_raw.toFixed(2)} (${(m.al_votes || 0).toLocaleString()} users)">
             <span class="text-[9px] uppercase font-bold text-sky-400">AL</span>${m.al_raw.toFixed(2)}
+          </span>
+        `);
+      }
+      if (m.douban_raw != null || (currentDataset === 'douban' && m.raw != null)) {
+        const dScore = m.douban_raw != null ? m.douban_raw : m.raw;
+        const dVotes = m.douban_votes != null ? m.douban_votes : m.votes;
+        pills.push(`
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-emerald-500/15 text-emerald-200 border border-emerald-500/30 font-mono text-[11px]" title="Douban 豆瓣 Score: ${dScore.toFixed(2)} (${(dVotes || 0).toLocaleString()} user evaluations)">
+            <span class="text-[9px] uppercase font-bold text-emerald-400">豆</span>${dScore.toFixed(2)}
           </span>
         `);
       }
@@ -4389,6 +4400,19 @@
                <div class="text-xs font-mono text-slate-500 mt-1">Not in AniList</div>
              </div>`;
 
+        const doubanScore = m.douban_raw != null ? m.douban_raw : (currentDataset === 'douban' ? m.raw : null);
+        const doubanVotes = m.douban_votes != null ? m.douban_votes : (currentDataset === 'douban' ? m.votes : null);
+        const doubanCard = doubanScore != null
+          ? `<div class="p-2.5 morph-subcard bg-emerald-950/30 border border-emerald-500/30">
+               <div class="text-[10px] font-bold uppercase text-emerald-400">Douban (豆瓣)</div>
+               <div class="text-lg font-bold font-mono text-white mt-0.5">${doubanScore.toFixed(2)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
+               <div class="text-[10px] text-slate-400 font-mono">${(doubanVotes || 0).toLocaleString()} reviews</div>
+             </div>`
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
+               <div class="text-[10px] font-bold uppercase text-slate-500">Douban (豆瓣)</div>
+               <div class="text-xs font-mono text-slate-500 mt-1">Not in Douban DB</div>
+             </div>`;
+
         const imdbCard = m.imdb_raw != null
           ? `<div class="p-2.5 morph-subcard bg-amber-950/30 border border-amber-500/30">
                <div class="text-[10px] font-bold uppercase text-amber-400">IMDb Official</div>
@@ -4413,10 +4437,11 @@
 
         srcBreakDiv.innerHTML = `
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Raw Ratings Across Source Databases</div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
             ${mlCard}
             ${malCard}
             ${alCard}
+            ${doubanCard}
             ${imdbCard}
             ${epCard}
           </div>
@@ -4868,6 +4893,7 @@
         { label: 'MovieLens 32M Raw', fn: m => m.ml_raw != null ? `<span class="font-mono text-cyan-300 font-bold">${m.ml_raw.toFixed(2)}</span> (${(m.ml_votes || 0).toLocaleString()} user ratings)` : '<span class="text-slate-600">—</span>' },
         { label: 'MyAnimeList 57M Raw', fn: m => m.mal_raw != null ? `<span class="font-mono text-purple-300 font-bold">${m.mal_raw.toFixed(2)}</span> (${(m.mal_votes || 0).toLocaleString()} user ratings)` : '<span class="text-slate-600">—</span>' },
         { label: 'AniList 2025 Raw', fn: m => m.al_raw != null ? `<span class="font-mono text-sky-300 font-bold">${m.al_raw.toFixed(2)}</span> (${(m.al_votes || 0).toLocaleString()} users)` : '<span class="text-slate-600">—</span>' },
+        { label: 'Douban 豆瓣 Raw', fn: m => (m.douban_raw != null || (currentDataset === 'douban' && m.raw != null)) ? `<span class="font-mono text-emerald-300 font-bold">${(m.douban_raw != null ? m.douban_raw : m.raw).toFixed(2)}</span> (${((m.douban_votes || m.votes) || 0).toLocaleString()} reviews)` : '<span class="text-slate-600">—</span>' },
         { label: 'IMDb Official Score', fn: m => m.imdb_raw != null ? `<span class="font-mono text-amber-300 font-bold">${m.imdb_raw.toFixed(2)}</span> (${(m.imdb_votes || 0).toLocaleString()} votes)` : '<span class="text-slate-600">—</span>' },
         { label: 'IMDb Season Episodes', fn: m => m.imdb_ep_avg != null ? `<span class="font-mono text-orange-300 font-bold">${m.imdb_ep_avg.toFixed(2)}</span> (${m.ep_count || '?'} eps, ${(m.imdb_ep_votes || 0).toLocaleString()} votes)` : '<span class="text-slate-600">—</span>' },
         { label: 'Composite Raw Mean', fn: m => `<span class="font-mono text-yellow-300">${m.raw.toFixed(2)}</span>` },
@@ -5300,7 +5326,7 @@
       initTheme();
       const urlParams = new URLSearchParams(window.location.search);
       const queryDs = urlParams.get('dataset');
-      if (queryDs && ['combined', 'imdb', 'anilist', 'mal-57m', 'ml-32m'].includes(queryDs)) {
+      if (queryDs && ['combined', 'imdb', 'douban', 'anilist', 'mal-57m', 'ml-32m'].includes(queryDs)) {
         currentDataset = queryDs;
         const dsSelect = document.getElementById('dataset-select');
         if (dsSelect) dsSelect.value = queryDs;

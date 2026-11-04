@@ -1,0 +1,10 @@
+{
+  "dataset": "douban",
+  "sources": [
+    "douban-movie-info-hf"
+  ],
+  "total_titles": 30825,
+  "total_ratings_processed": 845730662,
+  "user_level_ratings": 845730662,
+  "generation_timestamp": "2026-11-04T03:07:24.365660+00:00"
+}

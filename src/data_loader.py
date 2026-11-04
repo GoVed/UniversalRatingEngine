@@ -34,6 +34,7 @@ DATASET_URLS = {
     "mal-large": "https://huggingface.co/datasets/profoz/anime_rating_complete/resolve/main/rating_complete.csv",
     "mal-7m": "https://huggingface.co/datasets/jason1966/CooperUnion_anime-recommendations-database/resolve/main/rating.csv",
     "letterboxd": "https://huggingface.co/datasets/titouann/letterboxd-10m-movies-ratings-2025/resolve/main/train.parquet",
+    "douban": "https://huggingface.co/datasets/YUEMING2/douban_movie_info/resolve/main/douban_movie_info.csv",
 }
 
 
@@ -496,8 +497,8 @@ if __name__ == "__main__":
         "--dataset",
         type=str,
         default="ml-1m",
-        choices=["ml-1m", "ml-25m", "ml-32m", "ml-latest-small", "mal", "mal-57m", "mal-large", "mal-7m", "letterboxd", "combined"],
-        help="Dataset to download and extract (ml-32m, ml-1m, mal, mal-57m, letterboxd, etc.)",
+        choices=["ml-1m", "ml-25m", "ml-32m", "ml-latest-small", "mal", "mal-57m", "mal-large", "mal-7m", "letterboxd", "douban", "combined"],
+        help="Dataset to download and extract (ml-32m, ml-1m, mal, mal-57m, letterboxd, douban, etc.)",
     )
     parser.add_argument(
         "--data-dir",

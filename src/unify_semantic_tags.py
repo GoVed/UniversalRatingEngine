@@ -132,7 +132,7 @@ def main():
         print(f"Updated {vibe_titles_path} with unified tags.")
 
     # 6. Update and Enrich All Datasets (including standalone)
-    datasets = ["combined", "imdb", "mal-57m", "anilist", "ml-32m"]
+    datasets = ["combined", "imdb", "mal-57m", "anilist", "ml-32m", "douban"]
     for ds in datasets:
         file_path = f"docs/data/movies_{ds}.json"
         if not os.path.exists(file_path):
