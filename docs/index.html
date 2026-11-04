@@ -877,6 +877,48 @@
       box-shadow: none !important;
     }
 
+    /* Header Toolbar Pill & Controls Transition */
+    #header-toolbar-pill,
+    #header-toolbar-pill button,
+    #header-toolbar-pill a {
+      transition: all 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    body.mode-soft #header-toolbar-pill {
+      border-radius: 0.875rem !important;
+    }
+    body.mode-soft #header-toolbar-pill button,
+    body.mode-soft #header-toolbar-pill a {
+      border-radius: 0.5rem !important;
+    }
+    body.mode-flat #header-toolbar-pill,
+    body.mode-flat #header-toolbar-pill button,
+    body.mode-flat #header-toolbar-pill a {
+      border-radius: 0px !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) #header-toolbar-pill button,
+    html:not(.dark) #header-toolbar-pill a {
+      color: #64748b;
+    }
+    html:not(.dark) #header-toolbar-pill button:hover,
+    html:not(.dark) #header-toolbar-pill a:hover {
+      color: #0f172a;
+      background: rgba(148, 163, 184, 0.2);
+    }
+    html:not(.dark) #header-toolbar-pill .header-toolbar-divider {
+      background-color: #cbd5e1 !important;
+    }
+    html:not(.dark) #header-view-mode-btn.header-mode-simple {
+      background: rgba(6, 182, 212, 0.15) !important;
+      color: #0891b2 !important;
+      border-color: rgba(6, 182, 212, 0.3) !important;
+    }
+    html:not(.dark) #header-view-mode-btn.header-mode-detailed {
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: #059669 !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+    }
+
     /* --- View Mode Switcher Fluid Morphing Pills --- */
     .view-mode-pill {
       transition: all 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -1033,21 +1075,23 @@
 
   <!-- Top Navigation Header -->
   <header class="sticky top-0 z-40 glass border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-0 sm:h-16 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5">
-      <div class="flex items-center space-x-2.5 sm:space-x-3 cursor-pointer shrink-0" onclick="switchTab('explorer')">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 shrink-0">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 sm:py-0 sm:h-16 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-3">
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer shrink-0" onclick="switchTab('explorer')">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 shrink-0">
           <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 text-black"></i>
         </div>
         <div>
           <h1 class="text-base sm:text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-cyan-400 bg-clip-text text-transparent">
-            UniversalRatingEngine
+            <span class="hidden sm:inline">UniversalRatingEngine</span>
+            <span class="sm:hidden font-extrabold tracking-wide">URE</span>
           </h1>
-          <p class="text-[11px] text-slate-400 hidden lg:block">Cross-Genre Quality Scoring &amp; Statistical De-biasing</p>
+          <p class="text-[11px] text-slate-400 hidden xl:block">Cross-Genre Quality Scoring &amp; Statistical De-biasing</p>
         </div>
       </div>
 
       <!-- Navigation Tabs -->
-      <nav class="flex items-center space-x-1 sm:space-x-2 overflow-x-auto no-scrollbar order-3 sm:order-2 w-full sm:w-auto py-1 sm:py-0 border-t sm:border-t-0 border-slate-800/60 sm:border-transparent">
+      <nav class="flex items-center space-x-1 sm:space-x-1.5 overflow-x-auto no-scrollbar order-3 sm:order-2 w-full sm:w-auto py-1 sm:py-0 border-t sm:border-t-0 border-slate-800/60 sm:border-transparent shrink-0">
         <button id="nav-explorer" onclick="switchTab('explorer')" class="nav-btn px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5 shrink-0">
           <i data-lucide="film" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
           <span>Explorer</span>
@@ -1067,39 +1111,49 @@
         </button>
       </nav>
 
-      <!-- Controls: View Mode Toggle, Architecture Guide Toggle, Theme Toggle, Dataset Select & GitHub Link -->
-      <div class="flex items-center space-x-1.5 sm:space-x-2 order-2 sm:order-3 ml-auto sm:ml-0">
-        <!-- View Mode Quick Header Toggle -->
-        <button id="header-view-mode-btn" onclick="toggleViewMode()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30" title="Toggle Simple Discovery vs Detailed Engine">
-          <i id="header-view-mode-icon" data-lucide="compass" class="w-3.5 h-3.5"></i>
-          <span id="header-view-mode-text" class="hidden sm:inline">Simple Mode</span>
-        </button>
-
-        <button onclick="toggleArchitectureGuide()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition-colors flex items-center gap-1.5" title="How This Unified DB Is Built & Rated">
-          <i data-lucide="layers" class="w-3.5 h-3.5"></i>
-          <span class="hidden xl:inline">How It's Built &amp; Rated</span>
-        </button>
-
-        <button onclick="toggleShortcutsModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors flex items-center gap-1.5" title="Keyboard Shortcuts (?)">
-          <i data-lucide="keyboard" class="w-3.5 h-3.5"></i>
-          <span class="hidden xl:inline">Shortcuts</span>
-        </button>
-
-        <!-- Theme Toggle Button -->
-        <button id="theme-toggle" onclick="toggleTheme()" class="p-1.5 sm:p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors flex items-center justify-center" title="Toggle Theme (System / Dark / Light)" aria-label="Toggle theme">
-          <i id="theme-icon" data-lucide="sun" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-        </button>
-
-        <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-xs font-semibold text-slate-200 rounded-lg px-2 py-1.5 sm:px-2.5 focus:outline-none focus:border-cyan-500 max-w-[180px] sm:max-w-none truncate">
-          <option value="combined" selected>Unified Master DB (ML + MAL + AL + IMDb)</option>
-          <option value="imdb">IMDb Official Standalone (Movies &amp; TV)</option>
-          <option value="anilist">AniList 2025 Standalone</option>
-          <option value="mal-57m">MyAnimeList Standalone (57M + 2024/2025 Archive)</option>
-          <option value="ml-32m">MovieLens 32M Standalone</option>
+      <!-- Right Utility Cluster: Dataset Selector & Unified Toolbar Pill -->
+      <div class="flex items-center space-x-1.5 sm:space-x-2 order-2 sm:order-3 ml-auto sm:ml-0 shrink-0">
+        <!-- Dataset Selector -->
+        <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 focus:outline-none focus:border-cyan-500 w-28 sm:w-40 lg:w-44 transition-all" title="Select Database">
+          <option value="combined" selected>Unified Master DB</option>
+          <option value="imdb">IMDb Official</option>
+          <option value="anilist">AniList 2025</option>
+          <option value="mal-57m">MyAnimeList 57M</option>
+          <option value="ml-32m">MovieLens 32M</option>
         </select>
-        <a href="https://github.com/GoVed/UniversalRatingEngine" target="_blank" class="p-1.5 sm:p-2 text-slate-400 hover:text-white transition-colors" title="View Source on GitHub">
-          <i data-lucide="github" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-        </a>
+
+        <!-- Unified Utility Toolbar Pill -->
+        <div id="header-toolbar-pill" class="flex items-center p-0.5 space-x-0.5 rounded-xl bg-slate-900/60 border border-slate-800/80 morph-subcard transition-all">
+          <!-- View Mode Quick Header Toggle -->
+          <button id="header-view-mode-btn" onclick="toggleViewMode()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center transition-all header-mode-simple" title="Current: Simple Soft Mode (Click for Detailed Engine)" aria-label="Toggle View Mode">
+            <i id="header-view-mode-icon" data-lucide="compass" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+            <span id="header-view-mode-text" class="sr-only">Simple Mode</span>
+          </button>
+
+          <!-- Architecture Guide -->
+          <button onclick="toggleArchitectureGuide()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors" title="Engine Architecture &amp; Mathematical Methodology" aria-label="Engine Architecture">
+            <i data-lucide="layers" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          </button>
+
+          <!-- Shortcuts -->
+          <button onclick="toggleShortcutsModal()" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors hidden sm:flex" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+            <i data-lucide="keyboard" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Theme Toggle Button -->
+          <button id="theme-toggle" onclick="toggleTheme()" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition-colors" title="Toggle Theme (System / Dark / Light)" aria-label="Toggle theme">
+            <i id="theme-icon" data-lucide="sun" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          </button>
+
+          <div class="header-toolbar-divider h-4 w-px bg-slate-800/80 mx-0.5 hidden sm:block"></div>
+
+          <!-- GitHub Source -->
+          <a href="https://github.com/GoVed/UniversalRatingEngine" target="_blank" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors shrink-0 hidden sm:flex" title="View Source on GitHub" aria-label="GitHub Repository">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
   </header>
@@ -2329,8 +2383,9 @@
       const headerBtn = document.getElementById('header-view-mode-btn');
       const headerText = document.getElementById('header-view-mode-text');
       const headerIcon = document.getElementById('header-view-mode-icon');
-      if (headerBtn && headerText) {
-        headerText.innerText = isSimple ? 'Simple Mode' : 'Detailed Mode';
+      if (headerBtn) {
+        if (headerText) headerText.innerText = isSimple ? 'Simple Mode' : 'Detailed Mode';
+        headerBtn.title = isSimple ? 'Current: Simple Soft Mode (Click for Detailed Engine)' : 'Current: Detailed Engine Mode (Click for Simple Soft)';
         headerBtn.classList.toggle('header-mode-simple', isSimple);
         headerBtn.classList.toggle('header-mode-detailed', !isSimple);
         if (headerIcon) headerIcon.setAttribute('data-lucide', isSimple ? 'compass' : 'activity');
@@ -5040,14 +5095,16 @@
       }
       document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.className = 'nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 flex items-center gap-1.5';
+        btn.classList.remove('bg-cyan-500/10', 'text-cyan-400', 'border', 'border-cyan-500/30');
+        btn.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/60');
       });
 
       const targetTab = document.getElementById(`tab-${tabId}`);
       if (targetTab) targetTab.classList.remove('hidden');
       const activeNav = document.getElementById(`nav-${tabId}`);
       if (activeNav) {
-        activeNav.className = 'nav-btn px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5';
+        activeNav.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/60');
+        activeNav.classList.add('bg-cyan-500/10', 'text-cyan-400', 'border', 'border-cyan-500/30');
       }
 
       if (tabId === 'macro') {
