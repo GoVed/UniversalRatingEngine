@@ -464,6 +464,15 @@ def build_unified_database() -> None:
             title_jp = ""
             media_type = "movie"
 
+            # Check if this cinema movie is a foreign-language film with a distinct original title
+            if im_meta:
+                im_primary = im_meta[1] or ""
+                im_orig = im_meta[2] or ""
+                if im_orig and im_primary and im_orig.strip().lower() != im_primary.strip().lower():
+                    # Foreign cinema release with authentic original title distinct from English primary title
+                    title_en = im_primary
+                    title_jp = im_orig
+
         # Check if film has Douban score
         douban_row = douban_map.get(tconst) if tconst else None
         if douban_row:
@@ -473,8 +482,10 @@ def build_unified_database() -> None:
             merged_douban_ids.add(int(douban_row["movieId"]))
             if tconst:
                 merged_douban_tconsts.add(tconst)
-            if not title_jp and douban_row.get("title_jp"):
-                title_jp = douban_row["title_jp"]
+            # If film is confirmed foreign (title_jp is non-empty) and douban has native Hanzi characters, enrich
+            if title_jp and douban_row.get("title_jp") and re.search(r"[\u4e00-\u9fff]", str(douban_row.get("title_jp"))):
+                if not re.search(r"[\u4e00-\u9fff]", title_jp):
+                    title_jp = douban_row["title_jp"]
         else:
             douban_raw = None
             douban_votes = None
@@ -904,7 +915,7 @@ def build_unified_database() -> None:
             merged_douban_ids.add(int(douban_row["movieId"]))
             if tconst:
                 merged_douban_tconsts.add(tconst)
-            if not original and douban_row.get("title_jp"):
+            if not original and douban_row.get("title_jp") and re.search(r"[\u4e00-\u9fff]", str(douban_row.get("title_jp"))):
                 original = douban_row["title_jp"]
         else:
             douban_raw = None
