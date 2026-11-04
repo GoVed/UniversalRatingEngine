@@ -3,15 +3,18 @@
   "sources": [
     "ml-32m",
     "mal-57m",
+    "anilist-2025",
     "imdb-official-episodes",
-    "imdb-cinema-exclusive"
+    "imdb-cinema-exclusive",
+    "douban-845m"
   ],
-  "total_titles": 55062,
-  "total_ratings_processed": 1884585307,
-  "user_level_ratings": 89270754,
+  "total_titles": 62241,
+  "total_ratings_processed": 2730315969,
+  "user_level_ratings": 935001416,
   "imdb_rated_titles": 1727597,
   "imdb_episodes_aggregated": 9995113,
   "bridge_titles_count": 211,
   "tv_seasons_count": 3924,
-  "imdb_cinema_count": 16146
+  "imdb_cinema_count": 16146,
+  "douban_cinema_count": 7179
 }
