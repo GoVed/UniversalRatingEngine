@@ -72,7 +72,7 @@
       background-color: #090d16;
       color: #f1f5f9;
       font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      transition: background-color 0.48s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s ease;
       letter-spacing: -0.011em;
     }
     .font-mono {
@@ -459,12 +459,43 @@
     #inspector-modal .glass,
     .morph-modal-poster,
     .morph-modal-card {
-      transition: border-radius 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-                  border-color 0.25s ease,
-                  background-color 0.25s ease,
-                  padding 0.3s ease,
-                  letter-spacing 0.3s ease;
+      transition: border-radius 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  box-shadow 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  border-color 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  background-color 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  color 0.35s ease,
+                  padding 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  letter-spacing 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      will-change: border-radius, box-shadow;
+    }
+
+    #dataset-select,
+    #header-view-mode-btn,
+    #theme-toggle {
+      transition: border-radius 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  box-shadow 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  border-color 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  background-color 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important,
+                  color 0.35s ease;
+    }
+
+    /* Coordinated Table Cross-Morph Transition */
+    #movies-table-head,
+    #movies-table-body,
+    #movies-mobile-list {
+      transition: opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+                  filter 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: opacity, transform, filter;
+    }
+
+    .table-morphing #movies-table-head,
+    .table-morphing #movies-table-body,
+    .table-morphing #movies-mobile-list {
+      opacity: 0 !important;
+      transform: translateY(6px) scale(0.995) !important;
+      filter: blur(3px) !important;
+      pointer-events: none !important;
     }
 
     /* --- MODE-SOFT (DARK MODE): Tactile Neumorphic Extrusions & Inset Depth --- */
@@ -823,6 +854,82 @@
       border-radius: 0px !important;
       box-shadow: none !important;
     }
+
+    /* --- View Mode Switcher Fluid Morphing Pills --- */
+    .view-mode-pill {
+      transition: all 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    
+    /* Simple Mode Active */
+    body.mode-soft #view-mode-simple.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(37, 99, 235, 0.35)) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.5) !important;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+    }
+    html:not(.dark) body.mode-soft #view-mode-simple.active {
+      background: #e2e9f3 !important;
+      color: #0369a1 !important;
+      border: 1px solid rgba(14, 165, 233, 0.4) !important;
+      box-shadow: inset 2px 2px 5px #cad4e2, inset -2px -2px 5px #ffffff, 0 2px 8px rgba(14, 165, 233, 0.2) !important;
+    }
+    body.mode-soft #view-mode-detailed:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #94a3b8 !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) body.mode-soft #view-mode-detailed:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+    }
+
+    /* Detailed Mode Active */
+    body.mode-flat #view-mode-detailed.active {
+      background: linear-gradient(135deg, #059669, #0d9488) !important;
+      color: #ffffff !important;
+      border: 1px solid #10b981 !important;
+      border-radius: 0px !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) body.mode-flat #view-mode-detailed.active {
+      background: linear-gradient(135deg, #10b981, #059669) !important;
+      color: #ffffff !important;
+      border: 1px solid #059669 !important;
+      border-radius: 0px !important;
+      box-shadow: none !important;
+    }
+    body.mode-flat #view-mode-simple:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      border-radius: 0px !important;
+      color: #94a3b8 !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) body.mode-flat #view-mode-simple:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      border-radius: 0px !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+    }
+
+    /* Header View Mode Button */
+    #header-view-mode-btn {
+      transition: all 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    #header-view-mode-btn.header-mode-simple {
+      background: rgba(6, 182, 212, 0.15) !important;
+      color: #67e8f9 !important;
+      border-color: rgba(6, 182, 212, 0.3) !important;
+    }
+    #header-view-mode-btn.header-mode-detailed {
+      background: rgba(16, 185, 129, 0.15) !important;
+      color: #6ee7b7 !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black mode-soft">
@@ -1080,11 +1187,11 @@
               <i data-lucide="layers" class="w-3.5 h-3.5 text-cyan-400"></i> Mode:
             </span>
             <div class="inline-flex p-1 rounded-xl morph-subcard bg-slate-950/80 border border-slate-800 text-xs shadow-inner">
-              <button id="view-mode-simple" onclick="setViewMode('simple')" class="px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm" title="IMDb Top Rated / Advanced Search view for clean discovery without statistical bloat">
+              <button id="view-mode-simple" onclick="setViewMode('simple')" class="view-mode-pill px-3.5 py-1.5 morph-btn-sm font-bold flex items-center gap-1.5 active" title="IMDb Top Rated / Advanced Search view for clean discovery without statistical bloat">
                 <i data-lucide="compass" class="w-4 h-4 text-cyan-400"></i>
                 <span>Simple Discovery</span>
               </button>
-              <button id="view-mode-detailed" onclick="setViewMode('detailed')" class="px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent" title="Detailed calibration view with all statistical models, bias deltas, and cross-DB raw ratings">
+              <button id="view-mode-detailed" onclick="setViewMode('detailed')" class="view-mode-pill px-3.5 py-1.5 morph-btn-sm font-medium flex items-center gap-1.5" title="Detailed calibration view with all statistical models, bias deltas, and cross-DB raw ratings">
                 <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
                 <span>Detailed Engine (Full Stats)</span>
               </button>
@@ -2054,19 +2161,60 @@
     let activeEra = 'all';
     let activeMinRating = 0;
 
-    function setViewMode(mode) {
+    let isViewModeTransitioning = false;
+
+    function setViewMode(mode, animate = true) {
+      if (mode === currentViewMode && document.body.classList.contains(`mode-${mode === 'simple' ? 'soft' : 'flat'}`)) {
+        return;
+      }
+
       currentViewMode = mode;
       try {
         localStorage.setItem('ure_view_mode', mode);
       } catch (e) {}
+
+      if (!animate) {
+        updateViewModeUI();
+        renderTableHeader();
+        renderTable();
+        return;
+      }
+
+      if (isViewModeTransitioning) return;
+      isViewModeTransitioning = true;
+
+      const tableContainer = document.getElementById('movies-table-container');
+      if (tableContainer) {
+        tableContainer.classList.add('table-morphing');
+      }
+
+      // Immediately toggle container geometry, button active state, and shadows
       updateViewModeUI();
-      renderTableHeader();
-      renderTable();
+
+      // Halfway through the 480ms container morph (~190ms), swap the table contents while blurred/faded
+      setTimeout(() => {
+        renderTableHeader();
+        renderTable();
+
+        // Reveal new table rows smoothly on the next paint frame
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (tableContainer) {
+              tableContainer.classList.remove('table-morphing');
+            }
+          });
+        });
+
+        setTimeout(() => {
+          isViewModeTransitioning = false;
+        }, 260);
+      }, 190);
+
       showToast(`Switched to ${mode === 'simple' ? 'Simple Discovery' : 'Detailed Engine'} Mode`, 'info');
     }
 
     function toggleViewMode() {
-      setViewMode(currentViewMode === 'simple' ? 'detailed' : 'simple');
+      setViewMode(currentViewMode === 'simple' ? 'detailed' : 'simple', true);
     }
 
     function updateViewModeUI() {
@@ -2079,12 +2227,20 @@
       const btnSimple = document.getElementById('view-mode-simple');
       const btnDetailed = document.getElementById('view-mode-detailed');
       if (btnSimple && btnDetailed) {
+        btnSimple.classList.toggle('active', isSimple);
+        btnDetailed.classList.toggle('active', !isSimple);
+        btnSimple.setAttribute('aria-pressed', isSimple ? 'true' : 'false');
+        btnDetailed.setAttribute('aria-pressed', !isSimple ? 'true' : 'false');
         if (isSimple) {
-          btnSimple.className = 'px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md shadow-cyan-500/25 border border-cyan-400/40';
-          btnDetailed.className = 'px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
+          btnSimple.classList.add('font-bold');
+          btnSimple.classList.remove('font-medium');
+          btnDetailed.classList.remove('font-bold');
+          btnDetailed.classList.add('font-medium');
         } else {
-          btnSimple.className = 'px-3.5 py-1.5 morph-btn-sm font-medium transition-all flex items-center gap-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/80 dark:hover:bg-slate-800/80 border border-transparent';
-          btnDetailed.className = 'px-3.5 py-1.5 morph-btn-sm font-bold transition-all flex items-center gap-1.5 bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md shadow-emerald-500/25 border border-emerald-400/40';
+          btnSimple.classList.remove('font-bold');
+          btnSimple.classList.add('font-medium');
+          btnDetailed.classList.add('font-bold');
+          btnDetailed.classList.remove('font-medium');
         }
       }
 
@@ -2092,15 +2248,10 @@
       const headerText = document.getElementById('header-view-mode-text');
       const headerIcon = document.getElementById('header-view-mode-icon');
       if (headerBtn && headerText) {
-        if (isSimple) {
-          headerText.innerText = 'Simple Mode';
-          headerBtn.className = 'px-2.5 py-1.5 morph-btn-sm text-xs font-semibold transition-colors flex items-center gap-1.5 bg-cyan-500/15 text-cyan-300 border border-cyan-500/30';
-          if (headerIcon) headerIcon.setAttribute('data-lucide', 'compass');
-        } else {
-          headerText.innerText = 'Detailed Mode';
-          headerBtn.className = 'px-2.5 py-1.5 morph-btn-sm text-xs font-semibold transition-colors flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30';
-          if (headerIcon) headerIcon.setAttribute('data-lucide', 'activity');
-        }
+        headerText.innerText = isSimple ? 'Simple Mode' : 'Detailed Mode';
+        headerBtn.classList.toggle('header-mode-simple', isSimple);
+        headerBtn.classList.toggle('header-mode-detailed', !isSimple);
+        if (headerIcon) headerIcon.setAttribute('data-lucide', isSimple ? 'compass' : 'activity');
       }
 
       const descEl = document.getElementById('view-mode-desc');
@@ -2108,16 +2259,6 @@
         descEl.innerText = isSimple 
           ? 'Discovery Mode: Streamlined IMDb-style search, universal ratings & narrative tags.'
           : 'Detailed Mode: Full cross-DB source ratings, score delta math, and latent model waterfall.';
-      }
-
-      const heroStrip = document.getElementById('hero-strip');
-      if (heroStrip) {
-        heroStrip.classList.toggle('hidden', isSimple);
-      }
-
-      const disclaimerBanner = document.getElementById('combined-disclaimer-banner');
-      if (disclaimerBanner && isSimple) {
-        disclaimerBanner.classList.add('hidden');
       }
 
       if (window.lucide) lucide.createIcons();
