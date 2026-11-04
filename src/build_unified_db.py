@@ -484,14 +484,25 @@ def build_unified_database() -> None:
             merged_ml_tconsts.add(tconst)
 
         # Calculate Universal Calibrated Scores (Model A, B, C)
-        w_ml = ml_votes / (ml_votes + 1500.0)
+        w_ml = ml_votes / (ml_votes + 3000.0)
         ml_latent = w_ml * (0.78 * float(r["score_model_a"]) + 0.22 * float(r["score_model_b"])) + (1.0 - w_ml) * 6.80
+        w_ml_info = w_ml * math.log(1.0 + ml_votes)
 
         if imdb_raw is not None and imdb_votes is not None:
             w_im = imdb_votes / (imdb_votes + 30000.0)
             im_cal = w_im * (imdb_raw - 0.32) + (1.0 - w_im) * 6.80
+            w_im_info = w_im * math.log(1.0 + imdb_votes)
         else:
             im_cal = ml_latent
+            w_im_info = 0.0
+
+        if douban_raw is not None and douban_votes is not None:
+            w_db = douban_votes / (douban_votes + 30000.0)
+            db_cal = float(douban_latent)
+            w_db_info = w_db * math.log(1.0 + douban_votes)
+        else:
+            db_cal = 0.0
+            w_db_info = 0.0
 
         # Check if bridge anime has AniList score
         al_info = anilist_map.get(mal_mid) if mal_mid else None
@@ -501,6 +512,9 @@ def build_unified_database() -> None:
         if mal_row is not None and mal_raw is not None and mal_votes is not None:
             # Bridge film present in ALL databases (ML + MAL + IMDb + optional Douban)
             mal_latent = float(mal_row["score_model_b"]) - 0.34
+            w_mal = mal_votes / (mal_votes + 25000.0)
+            w_mal_info = w_mal * math.log(1.0 + mal_votes)
+
             total_votes = ml_votes + mal_votes + (al_votes or 0) + (imdb_votes or 0) + (douban_votes or 0)
             raw_comp = (
                 ml_raw * ml_votes
@@ -509,14 +523,16 @@ def build_unified_database() -> None:
                 + ((imdb_raw or 0.0) * (imdb_votes or 0))
                 + ((douban_raw or 0.0) * (douban_votes or 0))
             ) / max(1, total_votes)
-            if douban_latent is not None:
-                mod_b = 0.40 * ml_latent + 0.30 * mal_latent + 0.15 * im_cal + 0.15 * douban_latent
-                mod_a = 0.45 * float(r["score_model_a"]) + 0.45 * (float(mal_row["score_model_a"]) - 0.34) + 0.10 * float(douban_row["score_model_a"])
-                mod_c = 0.45 * float(r["score_model_c"]) + 0.45 * (float(mal_row["score_model_c"]) - 0.34) + 0.10 * float(douban_row["score_model_c"])
-            else:
-                mod_b = 0.45 * ml_latent + 0.35 * mal_latent + 0.20 * im_cal
-                mod_a = 0.50 * float(r["score_model_a"]) + 0.50 * (float(mal_row["score_model_a"]) - 0.34)
-                mod_c = 0.50 * float(r["score_model_c"]) + 0.50 * (float(mal_row["score_model_c"]) - 0.34)
+
+            tot_w = w_ml_info + w_im_info + w_db_info + w_mal_info
+            mod_b = (
+                w_ml_info * ml_latent
+                + w_im_info * im_cal
+                + w_db_info * db_cal
+                + w_mal_info * mal_latent
+            ) / max(1e-6, tot_w)
+            mod_a = mod_b
+            mod_c = mod_b - 0.04
         else:
             total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0)
             raw_comp = (
@@ -524,14 +540,15 @@ def build_unified_database() -> None:
                 + ((imdb_raw or 0.0) * (imdb_votes or 0))
                 + ((douban_raw or 0.0) * (douban_votes or 0))
             ) / max(1, total_votes)
-            if douban_latent is not None:
-                mod_b = 0.65 * ml_latent + 0.20 * im_cal + 0.15 * douban_latent
-                mod_a = w_ml * float(r["score_model_a"]) + (1.0 - w_ml) * (0.6 * im_cal + 0.4 * douban_latent)
-                mod_c = w_ml * float(r["score_model_c"]) + (1.0 - w_ml) * (0.6 * im_cal + 0.4 * douban_latent)
-            else:
-                mod_b = 0.78 * ml_latent + 0.22 * im_cal
-                mod_a = w_ml * float(r["score_model_a"]) + (1.0 - w_ml) * im_cal
-                mod_c = w_ml * float(r["score_model_c"]) + (1.0 - w_ml) * im_cal
+
+            tot_w = w_ml_info + w_im_info + w_db_info
+            mod_b = (
+                w_ml_info * ml_latent
+                + w_im_info * im_cal
+                + w_db_info * db_cal
+            ) / max(1e-6, tot_w)
+            mod_a = mod_b
+            mod_c = mod_b - 0.04
 
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         year = extract_year(r["title"]) or (im_meta[3] if im_meta else None)
@@ -900,17 +917,20 @@ def build_unified_database() -> None:
 
         if douban_raw is not None and douban_votes is not None:
             w_db = douban_votes / (douban_votes + 30000.0)
-            db_cal = w_db * (douban_raw - 0.20) + (1.0 - w_db) * 6.80
-            mod_b = 0.55 * im_cal + 0.45 * db_cal
+            db_cal = w_db * (douban_raw - 0.58) + (1.0 - w_db) * 6.80
+            w_im_info = w_im * math.log(1.0 + votes)
+            w_db_info = w_db * math.log(1.0 + douban_votes)
+            tot_w = w_im_info + w_db_info
+            mod_b = (w_im_info * im_cal + w_db_info * db_cal) / max(1e-6, tot_w)
             mod_a = mod_b
-            mod_c = mod_b - 0.05
+            mod_c = mod_b - 0.04
             total_votes = votes + douban_votes
             raw_comp = (raw * votes + douban_raw * douban_votes) / total_votes
             bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         else:
             mod_b = float(im_cal)
             mod_a = float(im_cal)
-            mod_c = float(im_cal - 0.05)
+            mod_c = float(im_cal - 0.04)
             total_votes = votes
             raw_comp = raw
             bayes = (votes / (votes + 10000.0)) * raw + (10000.0 / (votes + 10000.0)) * 6.85
@@ -1006,15 +1026,19 @@ def build_unified_database() -> None:
         im_raw = im_pair[0] if im_pair else None
         im_votes = im_pair[1] if im_pair else None
 
+        w_db = db_votes / (db_votes + 30000.0)
+
         if im_raw is not None and im_votes is not None:
             total_votes = db_votes + im_votes
             raw_comp = (db_raw * db_votes + im_raw * im_votes) / total_votes
             w_im = im_votes / (im_votes + 30000.0)
             im_cal = w_im * (im_raw - 0.32) + (1.0 - w_im) * 6.80
-            w_db_share = db_votes / total_votes
-            mod_b = w_db_share * db_mod_b + (1.0 - w_db_share) * im_cal
-            mod_a = w_db_share * db_mod_a + (1.0 - w_db_share) * im_cal
-            mod_c = w_db_share * db_mod_c + (1.0 - w_db_share) * (im_cal - 0.05)
+            w_db_info = w_db * math.log(1.0 + db_votes)
+            w_im_info = w_im * math.log(1.0 + im_votes)
+            tot_w = w_db_info + w_im_info
+            mod_b = (w_db_info * db_mod_b + w_im_info * im_cal) / max(1e-6, tot_w)
+            mod_a = mod_b
+            mod_c = mod_b - 0.04
             bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         else:
             total_votes = db_votes

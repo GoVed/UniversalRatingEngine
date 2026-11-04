@@ -148,8 +148,9 @@ def build_douban_standalone_database() -> None:
 
     genre_means = {g: genre_totals[g] / max(1, genre_counts[g]) for g in genre_totals}
 
-    # Pass 2: Calibrate Titles (Empirical Bayes + Latent Model B)
-    c_prior = 150.0  # Bayesian prior credibility weight
+    # Pass 2: Calibrate Titles (Empirical Bayes + Latent Model B + Platform Leniency Offset)
+    c_prior = 10000.0  # Bayesian prior credibility weight
+    douban_leniency_offset = 0.58  # Empirical leniency offset of Douban vs Universal/MovieLens scale
     rows = []
     for row, raw_s, votes, genres_str, g_list in temp_records:
         mid = int(row["movie_id"])
@@ -181,26 +182,27 @@ def build_douban_standalone_database() -> None:
         else:
             display_title = movie_name_cn
 
-        # 1. Bayesian Credibility Shrinkage
+        # 1. Bayesian Credibility Shrinkage (Shrink raw rating towards global mean)
         w_bayes = votes / (votes + c_prior)
         bayes_s = round(w_bayes * raw_s + (1.0 - w_bayes) * global_mean, 2)
 
-        # 2. Model A: Linear shrinkage
-        mod_a = round(0.96 * bayes_s + 0.04 * global_mean, 2)
+        # 2. Model A: Linear shrinkage of de-biased score
+        w_b = votes / (votes + 30000.0)
+        raw_debiased = raw_s - douban_leniency_offset
+        mod_a = round(w_b * raw_debiased + (1.0 - w_b) * 6.80, 2)
 
         # 3. Model B: Genre Latent Quality Calibration
         genre_bias_offsets = [genre_means.get(g, global_mean) - global_mean for g in g_list]
         avg_genre_bias = sum(genre_bias_offsets) / max(1, len(genre_bias_offsets)) if genre_bias_offsets else 0.0
 
         # Adjust score for genre inflation / deflation
-        w_b = votes / (votes + 220.0)
-        calibrated_val = raw_s - 0.45 * avg_genre_bias
-        mod_b = round(w_b * calibrated_val + (1.0 - w_b) * global_mean, 2)
+        calibrated_val = raw_debiased - 0.35 * avg_genre_bias
+        mod_b = round(w_b * calibrated_val + (1.0 - w_b) * 6.80, 2)
 
         # 4. Model C: Bridge Deflator
-        mod_c = round(mod_b - 0.03, 2)
+        mod_c = round(mod_b - 0.04, 2)
 
-        bias_b_i = round(mod_b - global_mean, 3)
+        bias_b_i = round(mod_b - 6.80, 3)
 
         rows.append({
             "movieId": mid,
