@@ -117,11 +117,12 @@ def build_douban_standalone_database() -> None:
             separator="\t",
             null_values=r"\N",
             quote_char=None,
-            columns=["tconst", "titleType", "primaryTitle", "startYear"],
+            columns=["tconst", "titleType", "primaryTitle", "originalTitle", "startYear"],
         )
         for row in basics_df.iter_rows(named=True):
             imdb_map[row["tconst"]] = (
                 row["primaryTitle"],
+                row["originalTitle"],
                 row["titleType"],
                 row["startYear"],
             )
@@ -162,8 +163,25 @@ def build_douban_standalone_database() -> None:
         # Cross-matched IMDb metadata
         imdb_meta = imdb_map.get(imdb_id) if imdb_id else None
         title_en = imdb_meta[0] if imdb_meta else (str(row.get("又名") or "").split("/")[0].strip() or movie_name_cn)
-        raw_type = imdb_meta[1] if imdb_meta else None
-        imdb_year = imdb_meta[2] if imdb_meta else None
+        title_orig = imdb_meta[1] if imdb_meta else None
+        raw_type = imdb_meta[2] if imdb_meta else None
+        imdb_year = imdb_meta[3] if imdb_meta else None
+
+        # Determine authentic original language title
+        if title_orig and title_en and title_orig.strip().lower() == title_en.strip().lower():
+            # Movie was originally in English/Western language (e.g. Inception, Shawshank, Godfather)
+            title_jp = ""
+        elif title_orig and title_en and title_orig.strip().lower() != title_en.strip().lower():
+            # Foreign film with authentic original title distinct from English title
+            if movie_name_cn and re.search(r"[\u4e00-\u9fff]", movie_name_cn) and (
+                " " not in title_orig
+                or any(p in title_orig.lower() for p in ["ba wang", "cha guan", "wo hu", "gei", "de", "zi", "ji", "hua"])
+            ):
+                title_jp = movie_name_cn
+            else:
+                title_jp = title_orig
+        else:
+            title_jp = movie_name_cn if not title_en or title_en == movie_name_cn else ""
 
         # Determine media type
         if raw_type:
@@ -217,7 +235,7 @@ def build_douban_standalone_database() -> None:
             "score_model_c": float(mod_c),
             "bias_b_i": float(bias_b_i),
             "title_en": title_en,
-            "title_jp": movie_name_cn,
+            "title_jp": title_jp,
             "media_type": media_type,
             "tconst": imdb_id,
             "season_num": None,
