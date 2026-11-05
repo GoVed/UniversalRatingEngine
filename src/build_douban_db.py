@@ -151,7 +151,7 @@ def build_douban_standalone_database() -> None:
 
     # Pass 2: Calibrate Titles (Empirical Bayes + Latent Model B + Platform Leniency Offset)
     c_prior = 10000.0  # Bayesian prior credibility weight
-    douban_leniency_offset = 0.58  # Empirical leniency offset of Douban vs Universal/MovieLens scale
+    douban_leniency_offset = 0.82  # Empirical leniency offset of Douban vs Universal neutral scale (6.80)
     rows = []
     for row, raw_s, votes, genres_str, g_list in temp_records:
         mid = int(row["movie_id"])

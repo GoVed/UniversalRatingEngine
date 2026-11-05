@@ -81,6 +81,103 @@ def extract_year(raw_title: str) -> int | None:
     return None
 
 
+def calculate_multisource_consensus(
+    ml_score: float | None = None,
+    ml_votes: int | None = None,
+    imdb_raw: float | None = None,
+    imdb_votes: int | None = None,
+    douban_raw: float | None = None,
+    douban_votes: int | None = None,
+    mal_raw: float | None = None,
+    mal_votes: int | None = None,
+    al_raw: float | None = None,
+    al_votes: int | None = None,
+    tv_ep_avg: float | None = None,
+    tv_ep_votes: int | None = None,
+    tv_parent_raw: float | None = None,
+    tv_parent_votes: int | None = None,
+    season_num: int | None = None,
+) -> tuple[float, float, float]:
+    """
+    Calculate pure un-anchored multi-source consensus across all 5 benchmark databases
+    (MovieLens 32M, IMDb 12.9M, Douban 845M, MyAnimeList 57M, AniList).
+
+    Every source is de-biased onto the universal scale (mu_0 = 6.80) using its true
+    empirical offset and precision weight W = w * ln(1 + V).
+    Returns: (mod_b, mod_a, mod_c)
+    """
+    s_num = season_num or 1
+    seq_penalty = 0.055 * math.log(max(1, s_num))
+    tv_drift = 0.045 * math.log(max(1, s_num))
+
+    w_sum = 0.0
+    cw_sum = 0.0
+
+    # 1. MovieLens 32M: latent score is already on the neutral scale (offset 0.00)
+    if ml_score is not None and ml_votes is not None and ml_votes > 0:
+        w_ml = ml_votes / (ml_votes + 3000.0)
+        cal_ml = w_ml * ml_score + (1.0 - w_ml) * 6.80
+        info_ml = w_ml * math.log(1.0 + ml_votes)
+        w_sum += info_ml
+        cw_sum += info_ml * cal_ml
+
+    # 2. IMDb:
+    # If TV season with episode rollup, blend episode and parent into single TV signal to prevent double-counting IMDb
+    if tv_ep_avg is not None and tv_ep_votes is not None and tv_ep_votes > 0:
+        p_raw = tv_parent_raw if tv_parent_raw is not None else tv_ep_avg
+        p_votes = tv_parent_votes if tv_parent_votes is not None else tv_ep_votes
+        w_ep = tv_ep_votes / (tv_ep_votes + 35000.0)
+        w_par = p_votes / (p_votes + 60000.0)
+        w_tv = w_ep * (0.65 + 0.35 * w_par)
+        if tv_ep_avg < p_raw - 0.35:
+            eff_raw = 0.85 * tv_ep_avg + 0.15 * p_raw
+        else:
+            eff_raw = 0.50 * tv_ep_avg + 0.50 * p_raw
+        cal_tv = w_tv * (eff_raw - 0.55 - tv_drift) + (1.0 - w_tv) * 6.80
+        info_tv = w_tv * math.log(1.0 + tv_ep_votes)
+        w_sum += info_tv
+        cw_sum += info_tv * cal_tv
+    elif imdb_raw is not None and imdb_votes is not None and imdb_votes > 0:
+        w_im = imdb_votes / (imdb_votes + 30000.0)
+        cal_im = w_im * (imdb_raw - 0.26) + (1.0 - w_im) * 6.80
+        info_im = w_im * math.log(1.0 + imdb_votes)
+        w_sum += info_im
+        cw_sum += info_im * cal_im
+
+    # 3. Douban 845M: empirical offset 0.82 vs neutral scale
+    if douban_raw is not None and douban_votes is not None and douban_votes > 0:
+        w_db = douban_votes / (douban_votes + 30000.0)
+        cal_db = w_db * (douban_raw - 0.82) + (1.0 - w_db) * 6.80
+        info_db = w_db * math.log(1.0 + douban_votes)
+        w_sum += info_db
+        cw_sum += info_db * cal_db
+
+    # 4. MyAnimeList 57M: empirical offset 0.70 vs neutral scale
+    if mal_raw is not None and mal_votes is not None and mal_votes > 0:
+        w_mal = mal_votes / (mal_votes + 25000.0)
+        cal_mal = w_mal * (mal_raw - 0.70 - seq_penalty) + (1.0 - w_mal) * 6.80
+        info_mal = w_mal * math.log(1.0 + mal_votes)
+        w_sum += info_mal
+        cw_sum += info_mal * cal_mal
+
+    # 5. AniList: empirical offset 0.25 vs neutral scale
+    if al_raw is not None and al_votes is not None and al_votes > 0:
+        w_al = al_votes / (al_votes + 25000.0)
+        cal_al = w_al * (al_raw - 0.25 - seq_penalty) + (1.0 - w_al) * 6.80
+        info_al = w_al * math.log(1.0 + al_votes)
+        w_sum += info_al
+        cw_sum += info_al * cal_al
+
+    if w_sum > 0:
+        mod_b = cw_sum / w_sum
+    else:
+        mod_b = 6.80
+
+    mod_a = mod_b
+    mod_c = mod_b - 0.04
+    return mod_b, mod_a, mod_c
+
+
 def build_unified_database() -> None:
     t_start = time.time()
     console.print("[bold cyan]═══ Building Unified Tri-Database Benchmark (MovieLens 32M + MAL 57M + IMDb 12.9M) ═══[/bold cyan]")
@@ -494,73 +591,36 @@ def build_unified_database() -> None:
         if tconst:
             merged_ml_tconsts.add(tconst)
 
-        # Calculate Universal Calibrated Scores (Model A, B, C)
-        w_ml = ml_votes / (ml_votes + 3000.0)
-        ml_latent = w_ml * (0.78 * float(r["score_model_a"]) + 0.22 * float(r["score_model_b"])) + (1.0 - w_ml) * 6.80
-        w_ml_info = w_ml * math.log(1.0 + ml_votes)
-
-        if imdb_raw is not None and imdb_votes is not None:
-            w_im = imdb_votes / (imdb_votes + 30000.0)
-            im_cal = w_im * (imdb_raw - 0.32) + (1.0 - w_im) * 6.80
-            w_im_info = w_im * math.log(1.0 + imdb_votes)
-        else:
-            im_cal = ml_latent
-            w_im_info = 0.0
-
-        if douban_raw is not None and douban_votes is not None:
-            w_db = douban_votes / (douban_votes + 30000.0)
-            db_cal = float(douban_latent)
-            w_db_info = w_db * math.log(1.0 + douban_votes)
-        else:
-            db_cal = 0.0
-            w_db_info = 0.0
-
         # Check if bridge anime has AniList score
         al_info = anilist_map.get(mal_mid) if mal_mid else None
         al_raw = al_info["al_score"] if al_info else None
         al_votes = al_info["al_votes"] if al_info else None
 
-        if mal_row is not None and mal_raw is not None and mal_votes is not None:
-            # Bridge film present in ALL databases (ML + MAL + IMDb + optional Douban)
-            mal_latent = float(mal_row["score_model_b"]) - 0.34
-            w_mal = mal_votes / (mal_votes + 25000.0)
-            w_mal_info = w_mal * math.log(1.0 + mal_votes)
+        # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
+        ml_score = 0.78 * float(r["score_model_a"]) + 0.22 * float(r["score_model_b"])
+        mod_b, mod_a, mod_c = calculate_multisource_consensus(
+            ml_score=ml_score,
+            ml_votes=ml_votes,
+            imdb_raw=imdb_raw,
+            imdb_votes=imdb_votes,
+            douban_raw=douban_raw,
+            douban_votes=douban_votes,
+            mal_raw=mal_raw,
+            mal_votes=mal_votes,
+            al_raw=al_raw,
+            al_votes=al_votes,
+        )
 
-            total_votes = ml_votes + mal_votes + (al_votes or 0) + (imdb_votes or 0) + (douban_votes or 0)
-            raw_comp = (
-                ml_raw * ml_votes
-                + mal_raw * mal_votes
-                + ((al_raw or 0.0) * (al_votes or 0))
-                + ((imdb_raw or 0.0) * (imdb_votes or 0))
-                + ((douban_raw or 0.0) * (douban_votes or 0))
-            ) / max(1, total_votes)
-
-            tot_w = w_ml_info + w_im_info + w_db_info + w_mal_info
-            mod_b = (
-                w_ml_info * ml_latent
-                + w_im_info * im_cal
-                + w_db_info * db_cal
-                + w_mal_info * mal_latent
-            ) / max(1e-6, tot_w)
-            mod_a = mod_b
-            mod_c = mod_b - 0.04
-        else:
-            total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0)
-            raw_comp = (
-                ml_raw * ml_votes
-                + ((imdb_raw or 0.0) * (imdb_votes or 0))
-                + ((douban_raw or 0.0) * (douban_votes or 0))
-            ) / max(1, total_votes)
-
-            tot_w = w_ml_info + w_im_info + w_db_info
-            mod_b = (
-                w_ml_info * ml_latent
-                + w_im_info * im_cal
-                + w_db_info * db_cal
-            ) / max(1e-6, tot_w)
-            mod_a = mod_b
-            mod_c = mod_b - 0.04
-
+        # Composite Raw Average across all available sources
+        total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0) + (mal_votes or 0) + (al_votes or 0)
+        raw_weighted_sum = (
+            ml_raw * ml_votes
+            + ((imdb_raw or 0.0) * (imdb_votes or 0))
+            + ((douban_raw or 0.0) * (douban_votes or 0))
+            + ((mal_raw or 0.0) * (mal_votes or 0))
+            + ((al_raw or 0.0) * (al_votes or 0))
+        )
+        raw_comp = raw_weighted_sum / max(1, total_votes)
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         year = extract_year(r["title"]) or (im_meta[3] if im_meta else None)
 
@@ -673,50 +733,33 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
-        # Calibrate MAL score onto Universal Scale:
-        # 1. Subtract cross-platform bridge offset (-0.30)
-        # 2. Subtract sequel survivorship inflation (-0.055 * ln(season_num)) for Season 2+
-        sequel_penalty = 0.055 * math.log(max(1, s_num or 1))
-        w_mal = mal_votes / (mal_votes + 2500.0)
-        mal_cal_b = w_mal * (float(r["score_model_b"]) - 0.30 - sequel_penalty) + (1.0 - w_mal) * 6.80
-        mal_cal_a = w_mal * (float(r["score_model_a"]) - 0.30 - sequel_penalty) + (1.0 - w_mal) * 6.80
-        mal_cal_c = w_mal * (float(r["score_model_c"]) - 0.30 - sequel_penalty) + (1.0 - w_mal) * 6.80
+        # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
+        mod_b, mod_a, mod_c = calculate_multisource_consensus(
+            imdb_raw=imdb_raw,
+            imdb_votes=imdb_votes,
+            douban_raw=douban_raw,
+            douban_votes=douban_votes,
+            mal_raw=mal_raw,
+            mal_votes=mal_votes,
+            al_raw=al_raw,
+            al_votes=al_votes,
+            tv_ep_avg=ep_avg,
+            tv_ep_votes=ep_votes,
+            tv_parent_raw=imdb_raw,
+            tv_parent_votes=imdb_votes,
+            season_num=s_num,
+        )
 
-        # Anchor with AniList if available (mitigates MAL single-platform fan wars)
-        if al_raw is not None and al_votes and al_votes >= 2000:
-            al_cal_b = al_raw - 0.25 - sequel_penalty
-            w_al = min(0.35, al_votes / (al_votes + 25000.0))
-            mal_cal_b = (1.0 - w_al) * mal_cal_b + w_al * al_cal_b
-
-        # Anchor with IMDb Season Episode Average or Parent Rating if available
-        if ep_avg is not None and ep_votes and ep_votes >= 1500 and ep_avg >= mal_raw - 0.45:
-            im_ep_cal = (ep_avg - 0.55 - sequel_penalty)
-            w_ep = min(0.18, ep_votes / (ep_votes + 50000.0))
-            mod_b = (1.0 - w_ep) * mal_cal_b + w_ep * im_ep_cal
-        elif imdb_raw is not None and imdb_votes and imdb_votes >= 1500:
-            im_cal = imdb_raw - 0.45 - sequel_penalty
-            w_im = min(0.15, imdb_votes / (imdb_votes + 50000.0))
-            mod_b = (1.0 - w_im) * mal_cal_b + w_im * im_cal
-        else:
-            mod_b = mal_cal_b
-
-        mod_a = mal_cal_a
-        mod_c = mal_cal_c
-
-        # Multi-Platform Consensus Calculation:
-        al_num = (al_raw * al_votes) if (al_raw is not None and al_votes) else 0.0
-        al_den = al_votes if (al_raw is not None and al_votes) else 0
-
-        im_v_eff = min(imdb_votes, 200000) if imdb_votes else 0
-        im_num = (imdb_raw * (im_v_eff * 0.35)) if (imdb_raw is not None and im_v_eff) else 0.0
-        im_den = (im_v_eff * 0.35) if (imdb_raw is not None and im_v_eff) else 0
-
-        total_votes = mal_votes + (al_votes or 0) + (ep_votes if ep_votes else (imdb_votes or 0))
-
-        if ep_avg is not None and ep_votes and ep_avg >= mal_raw - 0.45:
-            raw_comp = (mal_raw * mal_votes + al_num + ep_avg * ep_votes) / max(1, mal_votes + al_den + ep_votes)
-        else:
-            raw_comp = (mal_raw * mal_votes + al_num + im_num) / max(1, mal_votes + al_den + im_den)
+        # Composite Raw Average across all available anime platforms
+        effective_imdb_votes = ep_votes if (ep_avg is not None and ep_votes) else (imdb_votes or 0)
+        effective_imdb_raw = ep_avg if (ep_avg is not None and ep_votes) else (imdb_raw or 0.0)
+        total_votes = mal_votes + (al_votes or 0) + effective_imdb_votes + (douban_votes or 0)
+        raw_comp = (
+            mal_raw * mal_votes
+            + ((al_raw or 0.0) * (al_votes or 0))
+            + (effective_imdb_raw * effective_imdb_votes)
+            + ((douban_raw or 0.0) * (douban_votes or 0))
+        ) / max(1, total_votes)
 
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
         genres_str = r["genres"]
@@ -817,31 +860,25 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
-        # Calibrate TV Season Score onto Universal Scale:
-        # 1. Episode ratings on IMDb have +0.62 self-selection inflation over movie ratings
-        # 2. Seasonal survivorship inflation: +0.045 * ln(s_num)
-        # 3. Confidence shrinkage on both season episode votes and parent series votes
-        sequel_drift = 0.045 * math.log(max(1, s_num))
-        w_ep = ep_votes / (ep_votes + 35000.0)
-        w_parent = parent_votes / (parent_votes + 60000.0)
-        w_conf = w_ep * (0.65 + 0.35 * w_parent)
+        # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
+        mod_b, mod_a, mod_c = calculate_multisource_consensus(
+            ml_score=ml_info[2] if ml_info else None,
+            ml_votes=ml_votes,
+            douban_raw=douban_raw,
+            douban_votes=douban_votes,
+            tv_ep_avg=ep_avg,
+            tv_ep_votes=ep_votes,
+            tv_parent_raw=parent_raw,
+            tv_parent_votes=parent_votes,
+            season_num=s_num,
+        )
 
-        if ep_avg < parent_raw - 0.35:
-            # Season underperformed parent series (e.g., Game of Thrones S8: ep_avg=6.40 vs parent=9.20)
-            effective_raw = 0.85 * ep_avg + 0.15 * parent_raw
-        else:
-            effective_raw = 0.50 * ep_avg + 0.50 * parent_raw
-
-        cal_base = w_conf * (effective_raw - 0.62 - sequel_drift) + (1.0 - w_conf) * 6.80
-        if ml_info:
-            cal_base = 0.72 * cal_base + 0.28 * ml_info[2]
-
-        mod_b = cal_base
-        mod_a = w_conf * (ep_avg - 0.58 - sequel_drift) + (1.0 - w_conf) * 6.80
-        mod_c = mod_b - 0.04
-
-        raw_comp = ep_avg
-        total_votes = ep_votes + (ml_votes or 0)
+        total_votes = ep_votes + (ml_votes or 0) + (douban_votes or 0)
+        raw_comp = (
+            ep_avg * ep_votes
+            + ((ml_raw or 0.0) * (ml_votes or 0))
+            + ((douban_raw or 0.0) * (douban_votes or 0))
+        ) / max(1, total_votes)
         bayes = (ep_votes / (ep_votes + 15000.0)) * ep_avg + (15000.0 / (ep_votes + 15000.0)) * parent_raw
 
         genres_clean = (p_genres or "Drama").replace(",", "|")
@@ -921,30 +958,17 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
-        # De-bias IMDb cinema rating onto engine's Universal Scale (1-10)
-        # Consistent with MovieLens cinema calibration where IMDb raw has -0.32 offset and shrinkage towards 6.80
-        w_im = votes / (votes + 30000.0)
-        im_cal = w_im * (raw - 0.32) + (1.0 - w_im) * 6.80
+        # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
+        mod_b, mod_a, mod_c = calculate_multisource_consensus(
+            imdb_raw=raw,
+            imdb_votes=votes,
+            douban_raw=douban_raw,
+            douban_votes=douban_votes,
+        )
 
-        if douban_raw is not None and douban_votes is not None:
-            w_db = douban_votes / (douban_votes + 30000.0)
-            db_cal = w_db * (douban_raw - 0.58) + (1.0 - w_db) * 6.80
-            w_im_info = w_im * math.log(1.0 + votes)
-            w_db_info = w_db * math.log(1.0 + douban_votes)
-            tot_w = w_im_info + w_db_info
-            mod_b = (w_im_info * im_cal + w_db_info * db_cal) / max(1e-6, tot_w)
-            mod_a = mod_b
-            mod_c = mod_b - 0.04
-            total_votes = votes + douban_votes
-            raw_comp = (raw * votes + douban_raw * douban_votes) / total_votes
-            bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
-        else:
-            mod_b = float(im_cal)
-            mod_a = float(im_cal)
-            mod_c = float(im_cal - 0.04)
-            total_votes = votes
-            raw_comp = raw
-            bayes = (votes / (votes + 10000.0)) * raw + (10000.0 / (votes + 10000.0)) * 6.85
+        total_votes = votes + (douban_votes or 0)
+        raw_comp = (raw * votes + ((douban_raw or 0.0) * (douban_votes or 0))) / max(1, total_votes)
+        bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
 
         # Native / Original title formatting:
         # If original title is in Latin script (e.g. 'Tere Naam', 'Dabangg 3') but primary is an English translation ('In Your Name'),
@@ -1037,27 +1061,17 @@ def build_unified_database() -> None:
         im_raw = im_pair[0] if im_pair else None
         im_votes = im_pair[1] if im_pair else None
 
-        w_db = db_votes / (db_votes + 30000.0)
+        # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
+        mod_b, mod_a, mod_c = calculate_multisource_consensus(
+            imdb_raw=im_raw,
+            imdb_votes=im_votes,
+            douban_raw=db_raw,
+            douban_votes=db_votes,
+        )
 
-        if im_raw is not None and im_votes is not None:
-            total_votes = db_votes + im_votes
-            raw_comp = (db_raw * db_votes + im_raw * im_votes) / total_votes
-            w_im = im_votes / (im_votes + 30000.0)
-            im_cal = w_im * (im_raw - 0.32) + (1.0 - w_im) * 6.80
-            w_db_info = w_db * math.log(1.0 + db_votes)
-            w_im_info = w_im * math.log(1.0 + im_votes)
-            tot_w = w_db_info + w_im_info
-            mod_b = (w_db_info * db_mod_b + w_im_info * im_cal) / max(1e-6, tot_w)
-            mod_a = mod_b
-            mod_c = mod_b - 0.04
-            bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
-        else:
-            total_votes = db_votes
-            raw_comp = db_raw
-            mod_b = db_mod_b
-            mod_a = db_mod_a
-            mod_c = db_mod_c
-            bayes = db_bayes
+        total_votes = db_votes + (im_votes or 0)
+        raw_comp = (db_raw * db_votes + ((im_raw or 0.0) * (im_votes or 0))) / max(1, total_votes)
+        bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
 
         unified_rows.append({
             "movieId": douban_cinema_id_counter,
