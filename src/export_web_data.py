@@ -106,6 +106,8 @@ def export_dataset_for_web(
         "al_votes",
         "douban_raw",
         "douban_votes",
+        "tmdb_raw",
+        "tmdb_votes",
         "imdb_raw",
         "imdb_votes",
         "imdb_ep_avg",
@@ -136,6 +138,8 @@ def export_dataset_for_web(
             al_votes = r.get("al_votes")
             douban_raw = r.get("douban_raw")
             douban_votes = r.get("douban_votes")
+            tmdb_raw = r.get("tmdb_raw")
+            tmdb_votes = r.get("tmdb_votes")
             imdb_raw = r.get("imdb_raw")
             imdb_votes = r.get("imdb_votes")
             imdb_ep_avg = r.get("imdb_ep_avg")
@@ -156,6 +160,8 @@ def export_dataset_for_web(
             al_votes = r["vote_count"] if dataset_name == "anilist" else None
             douban_raw = round(r["raw_avg"], 2) if dataset_name == "douban" else None
             douban_votes = r["vote_count"] if dataset_name == "douban" else None
+            tmdb_raw = None
+            tmdb_votes = None
             imdb_raw = None
             imdb_votes = None
             imdb_ep_avg = None
@@ -193,6 +199,8 @@ def export_dataset_for_web(
             al_votes,
             round(douban_raw, 2) if douban_raw is not None else None,
             douban_votes,
+            round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            tmdb_votes,
             imdb_raw,
             imdb_votes,
             imdb_ep_avg,
