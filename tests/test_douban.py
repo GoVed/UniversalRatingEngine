@@ -52,7 +52,7 @@ class TestDoubanPipeline(unittest.TestCase):
             data = json.load(f)
         self.assertEqual(data["dataset"], "douban")
         self.assertGreater(data["total_titles"], 30000)
-        self.assertIn("tags", data["cols"])
+        self.assertIn("genres", data["cols"])
 
     def test_douban_in_unified_master_db(self):
         cal_path = Path("artifacts/combined/calibrated_scores.parquet")

@@ -32,8 +32,12 @@ ENV/
 htmlcov/
 .mypy_cache/
 
+# Scratch scripts & temporary test files
+scratch/
+
 # Large raw datasets (downloaded automatically on demand via python -m src.data_loader)
 /data/
+
 *.zip
 *.tar
 *.tar.gz

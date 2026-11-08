@@ -92,6 +92,8 @@ def calculate_multisource_consensus(
     mal_votes: int | None = None,
     al_raw: float | None = None,
     al_votes: int | None = None,
+    tmdb_raw: float | None = None,
+    tmdb_votes: int | None = None,
     tv_ep_avg: float | None = None,
     tv_ep_votes: int | None = None,
     tv_parent_raw: float | None = None,
@@ -99,8 +101,8 @@ def calculate_multisource_consensus(
     season_num: int | None = None,
 ) -> tuple[float, float, float]:
     """
-    Calculate pure un-anchored multi-source consensus across all 5 benchmark databases
-    (MovieLens 32M, IMDb 12.9M, Douban 845M, MyAnimeList 57M, AniList).
+    Calculate pure un-anchored multi-source consensus across all 6 benchmark databases
+    (MovieLens 32M, IMDb 12.9M, Douban 845M, MyAnimeList 57M, AniList, TMDb).
 
     Every source is de-biased onto the universal scale (mu_0 = 6.80) using its true
     empirical offset and precision weight W = w * ln(1 + V).
@@ -167,6 +169,14 @@ def calculate_multisource_consensus(
         info_al = w_al * math.log(1.0 + al_votes)
         w_sum += info_al
         cw_sum += info_al * cal_al
+
+    # 6. TMDb (The Movie Database): empirical offset 0.22 vs neutral scale
+    if tmdb_raw is not None and tmdb_votes is not None and tmdb_votes > 0:
+        w_tm = tmdb_votes / (tmdb_votes + 25000.0)
+        cal_tm = w_tm * (tmdb_raw - 0.22) + (1.0 - w_tm) * 6.80
+        info_tm = w_tm * math.log(1.0 + tmdb_votes)
+        w_sum += info_tm
+        cw_sum += info_tm * cal_tm
 
     if w_sum > 0:
         mod_b = cw_sum / w_sum
@@ -416,6 +426,25 @@ def build_unified_database() -> None:
                 douban_map[tc] = r
     console.print(f"  [green]✓[/green] Loaded {len(douban_id_map):,} Douban titles ({len(douban_map):,} with IMDb tconst)")
 
+    # Load TMDb Multi-Platform Benchmark Database (TV series/seasons & Cinema movies)
+    console.print("[cyan]→ Loading TMDb Benchmark Database (TV & Cinema)...[/cyan]")
+    tmdb_tv_map: dict[str, dict] = {}
+    tmdb_tv_path = Path("data/tmdb/tmdb_tv_ratings.json")
+    if tmdb_tv_path.exists():
+        with open(tmdb_tv_path) as f:
+            tmdb_tv_map = json.load(f)
+    console.print(f"  [green]✓[/green] Loaded {len(tmdb_tv_map):,} TMDb TV show records")
+
+    tmdb_movie_map: dict[str, tuple[float, int]] = {}
+    tmdb_movie_path = Path("data/tmdb/tmdb_movie_ratings.parquet")
+    if tmdb_movie_path.exists():
+        tmdb_m_df = pl.read_parquet(tmdb_movie_path)
+        for r in tmdb_m_df.iter_rows(named=True):
+            tc = r.get("tconst")
+            if tc:
+                tmdb_movie_map[tc] = (float(r["vote_average"]), int(r["vote_count"]))
+    console.print(f"  [green]✓[/green] Loaded {len(tmdb_movie_map):,} TMDb cinema movie records")
+
     # Index 1-to-1 MAL Movies by tconst so we can merge them with MovieLens 32M Bridge Films
     mal_by_id: dict[int, dict] = {int(r["movieId"]): r for r in mal_df.iter_rows(named=True)}
 
@@ -596,6 +625,11 @@ def build_unified_database() -> None:
         al_raw = al_info["al_score"] if al_info else None
         al_votes = al_info["al_votes"] if al_info else None
 
+        # Check TMDb cinema score
+        tmdb_info = tmdb_movie_map.get(tconst) if tconst else None
+        tmdb_raw = tmdb_info[0] if tmdb_info else None
+        tmdb_votes = tmdb_info[1] if tmdb_info else None
+
         # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
         ml_score = 0.78 * float(r["score_model_a"]) + 0.22 * float(r["score_model_b"])
         mod_b, mod_a, mod_c = calculate_multisource_consensus(
@@ -609,16 +643,19 @@ def build_unified_database() -> None:
             mal_votes=mal_votes,
             al_raw=al_raw,
             al_votes=al_votes,
+            tmdb_raw=tmdb_raw,
+            tmdb_votes=tmdb_votes,
         )
 
         # Composite Raw Average across all available sources
-        total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0) + (mal_votes or 0) + (al_votes or 0)
+        total_votes = ml_votes + (imdb_votes or 0) + (douban_votes or 0) + (mal_votes or 0) + (al_votes or 0) + (tmdb_votes or 0)
         raw_weighted_sum = (
             ml_raw * ml_votes
             + ((imdb_raw or 0.0) * (imdb_votes or 0))
             + ((douban_raw or 0.0) * (douban_votes or 0))
             + ((mal_raw or 0.0) * (mal_votes or 0))
             + ((al_raw or 0.0) * (al_votes or 0))
+            + ((tmdb_raw or 0.0) * (tmdb_votes or 0))
         )
         raw_comp = raw_weighted_sum / max(1, total_votes)
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
@@ -650,6 +687,8 @@ def build_unified_database() -> None:
             "al_votes": al_votes,
             "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
             "douban_votes": douban_votes,
+            "tmdb_raw": round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            "tmdb_votes": tmdb_votes,
             "imdb_raw": round(imdb_raw, 2) if imdb_raw is not None else None,
             "imdb_votes": imdb_votes,
             "imdb_ep_avg": None,
@@ -733,6 +772,17 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
+        tmdb_raw = None
+        tmdb_votes = None
+        if tconst:
+            if tconst in tmdb_movie_map:
+                tmdb_raw = tmdb_movie_map[tconst][0]
+                tmdb_votes = tmdb_movie_map[tconst][1]
+            elif tconst in tmdb_tv_map:
+                tv_entry = tmdb_tv_map[tconst]
+                tmdb_raw = tv_entry.get("vote_average")
+                tmdb_votes = tv_entry.get("vote_count")
+
         # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
         mod_b, mod_a, mod_c = calculate_multisource_consensus(
             imdb_raw=imdb_raw,
@@ -743,6 +793,8 @@ def build_unified_database() -> None:
             mal_votes=mal_votes,
             al_raw=al_raw,
             al_votes=al_votes,
+            tmdb_raw=tmdb_raw,
+            tmdb_votes=tmdb_votes,
             tv_ep_avg=ep_avg,
             tv_ep_votes=ep_votes,
             tv_parent_raw=imdb_raw,
@@ -753,12 +805,13 @@ def build_unified_database() -> None:
         # Composite Raw Average across all available anime platforms
         effective_imdb_votes = ep_votes if (ep_avg is not None and ep_votes) else (imdb_votes or 0)
         effective_imdb_raw = ep_avg if (ep_avg is not None and ep_votes) else (imdb_raw or 0.0)
-        total_votes = mal_votes + (al_votes or 0) + effective_imdb_votes + (douban_votes or 0)
+        total_votes = mal_votes + (al_votes or 0) + effective_imdb_votes + (douban_votes or 0) + (tmdb_votes or 0)
         raw_comp = (
             mal_raw * mal_votes
             + ((al_raw or 0.0) * (al_votes or 0))
             + (effective_imdb_raw * effective_imdb_votes)
             + ((douban_raw or 0.0) * (douban_votes or 0))
+            + ((tmdb_raw or 0.0) * (tmdb_votes or 0))
         ) / max(1, total_votes)
 
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
@@ -792,6 +845,8 @@ def build_unified_database() -> None:
             "al_votes": al_votes,
             "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
             "douban_votes": douban_votes,
+            "tmdb_raw": round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            "tmdb_votes": tmdb_votes,
             "imdb_raw": round(imdb_raw, 2) if imdb_raw is not None else None,
             "imdb_votes": imdb_votes,
             "imdb_ep_avg": round(ep_avg, 2) if ep_avg is not None else None,
@@ -860,12 +915,28 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
+        # Attach TMDb TV score (season-level if available and > 0, else show-level)
+        tmdb_show = tmdb_tv_map.get(parent_tc)
+        if tmdb_show:
+            s_key = str(s_num)
+            s_info = tmdb_show.get("seasons", {}).get(s_key)
+            if s_info and s_info.get("vote_average", 0.0) > 0.0:
+                tmdb_raw = float(s_info["vote_average"])
+            else:
+                tmdb_raw = float(tmdb_show.get("vote_average") or 0.0) if tmdb_show.get("vote_average") else None
+            tmdb_votes = int(tmdb_show.get("vote_count") or 0) if tmdb_show.get("vote_count") else None
+        else:
+            tmdb_raw = None
+            tmdb_votes = None
+
         # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
         mod_b, mod_a, mod_c = calculate_multisource_consensus(
             ml_score=ml_info[2] if ml_info else None,
             ml_votes=ml_votes,
             douban_raw=douban_raw,
             douban_votes=douban_votes,
+            tmdb_raw=tmdb_raw,
+            tmdb_votes=tmdb_votes,
             tv_ep_avg=ep_avg,
             tv_ep_votes=ep_votes,
             tv_parent_raw=parent_raw,
@@ -873,11 +944,12 @@ def build_unified_database() -> None:
             season_num=s_num,
         )
 
-        total_votes = ep_votes + (ml_votes or 0) + (douban_votes or 0)
+        total_votes = ep_votes + (ml_votes or 0) + (douban_votes or 0) + (tmdb_votes or 0)
         raw_comp = (
             ep_avg * ep_votes
             + ((ml_raw or 0.0) * (ml_votes or 0))
             + ((douban_raw or 0.0) * (douban_votes or 0))
+            + ((tmdb_raw or 0.0) * (tmdb_votes or 0))
         ) / max(1, total_votes)
         bayes = (ep_votes / (ep_votes + 15000.0)) * ep_avg + (15000.0 / (ep_votes + 15000.0)) * parent_raw
 
@@ -911,6 +983,8 @@ def build_unified_database() -> None:
             "al_votes": None,
             "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
             "douban_votes": douban_votes,
+            "tmdb_raw": round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            "tmdb_votes": tmdb_votes,
             "imdb_raw": round(parent_raw, 2),
             "imdb_votes": parent_votes,
             "imdb_ep_avg": round(ep_avg, 2),
@@ -958,16 +1032,22 @@ def build_unified_database() -> None:
             douban_raw = None
             douban_votes = None
 
+        tmdb_info = tmdb_movie_map.get(tconst) if tconst else None
+        tmdb_raw = tmdb_info[0] if tmdb_info else None
+        tmdb_votes = tmdb_info[1] if tmdb_info else None
+
         # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
         mod_b, mod_a, mod_c = calculate_multisource_consensus(
             imdb_raw=raw,
             imdb_votes=votes,
             douban_raw=douban_raw,
             douban_votes=douban_votes,
+            tmdb_raw=tmdb_raw,
+            tmdb_votes=tmdb_votes,
         )
 
-        total_votes = votes + (douban_votes or 0)
-        raw_comp = (raw * votes + ((douban_raw or 0.0) * (douban_votes or 0))) / max(1, total_votes)
+        total_votes = votes + (douban_votes or 0) + (tmdb_votes or 0)
+        raw_comp = (raw * votes + ((douban_raw or 0.0) * (douban_votes or 0)) + ((tmdb_raw or 0.0) * (tmdb_votes or 0))) / max(1, total_votes)
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
 
         # Native / Original title formatting:
@@ -1020,6 +1100,8 @@ def build_unified_database() -> None:
             "al_votes": None,
             "douban_raw": round(douban_raw, 2) if douban_raw is not None else None,
             "douban_votes": douban_votes,
+            "tmdb_raw": round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            "tmdb_votes": tmdb_votes,
             "imdb_raw": round(raw, 2),
             "imdb_votes": votes,
             "imdb_ep_avg": None,
@@ -1061,16 +1143,22 @@ def build_unified_database() -> None:
         im_raw = im_pair[0] if im_pair else None
         im_votes = im_pair[1] if im_pair else None
 
+        tmdb_info = tmdb_movie_map.get(tc) if tc else None
+        tmdb_raw = tmdb_info[0] if tmdb_info else None
+        tmdb_votes = tmdb_info[1] if tmdb_info else None
+
         # Calculate Universal Calibrated Scores via Un-anchored Multi-Source Consensus
         mod_b, mod_a, mod_c = calculate_multisource_consensus(
             imdb_raw=im_raw,
             imdb_votes=im_votes,
             douban_raw=db_raw,
             douban_votes=db_votes,
+            tmdb_raw=tmdb_raw,
+            tmdb_votes=tmdb_votes,
         )
 
-        total_votes = db_votes + (im_votes or 0)
-        raw_comp = (db_raw * db_votes + ((im_raw or 0.0) * (im_votes or 0))) / max(1, total_votes)
+        total_votes = db_votes + (im_votes or 0) + (tmdb_votes or 0)
+        raw_comp = (db_raw * db_votes + ((im_raw or 0.0) * (im_votes or 0)) + ((tmdb_raw or 0.0) * (tmdb_votes or 0))) / max(1, total_votes)
         bayes = (total_votes / (total_votes + 10000.0)) * raw_comp + (10000.0 / (total_votes + 10000.0)) * 6.85
 
         unified_rows.append({
@@ -1099,6 +1187,8 @@ def build_unified_database() -> None:
             "al_votes": None,
             "douban_raw": round(db_raw, 2),
             "douban_votes": db_votes,
+            "tmdb_raw": round(tmdb_raw, 2) if tmdb_raw is not None else None,
+            "tmdb_votes": tmdb_votes,
             "imdb_raw": round(im_raw, 2) if im_raw is not None else None,
             "imdb_votes": im_votes,
             "imdb_ep_avg": None,
@@ -1139,17 +1229,17 @@ def build_unified_database() -> None:
         mtype = r["media_type"]
         snum = r["season_num"]
         if mtype == "bridge":
-            src_note = "Quint-DB Bridge (ML+MAL+AL+IMDb+Douban)" if r.get("douban_raw") is not None else "Quad-DB Bridge (ML+MAL+AL+IMDb)"
+            src_note = "Multi-DB Consensus (ML+IMDb+TMDb+Douban+Anime)"
         elif mtype == "anime":
-            src_note = f"Anime S{snum} sequel bias removed" if (snum and snum > 1) else "MAL+AL+IMDb consensus calibrated"
+            src_note = f"Anime S{snum} sequel bias removed" if (snum and snum > 1) else "MAL+AL+IMDb+TMDb consensus calibrated"
         elif mtype == "tv_season":
-            src_note = f"TV S{snum} episode rollup calibrated"
+            src_note = f"TV S{snum} (IMDb+TMDb consensus calibrated)" if r.get("tmdb_raw") is not None else f"TV S{snum} episode rollup calibrated"
         elif r.get("douban_raw") is not None and r.get("ml_raw") is None and r.get("mal_raw") is None:
-            src_note = "Douban+IMDb cinema calibrated" if r.get("imdb_raw") is not None else "Douban 豆瓣 cinema calibrated"
+            src_note = "Douban+IMDb+TMDb cinema calibrated" if r.get("tmdb_raw") is not None else "Douban+IMDb cinema calibrated"
         elif r["ml_raw"] is None:
-            src_note = "IMDb cinema calibrated"
+            src_note = "IMDb+TMDb cinema calibrated" if r.get("tmdb_raw") is not None else "IMDb cinema calibrated"
         else:
-            src_note = "ML+IMDb+Douban cinema calibrated" if r.get("douban_raw") is not None else "ML+IMDb cinema calibrated"
+            src_note = "ML+IMDb+TMDb cinema calibrated" if r.get("tmdb_raw") is not None else "ML+IMDb cinema calibrated"
 
         if r_delta > 25:
             diags.append(f"Dropped {r_delta:,} ranks ({src_note}; enthusiast inflation de-biased)")

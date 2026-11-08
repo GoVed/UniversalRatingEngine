@@ -1115,7 +1115,7 @@
       <div class="flex items-center space-x-1.5 sm:space-x-2 order-2 sm:order-3 ml-auto sm:ml-0 shrink-0">
         <!-- Dataset Selector -->
         <select id="dataset-select" onchange="onDatasetChange(this.value)" class="bg-slate-900 border border-slate-700 text-[11px] sm:text-xs font-semibold text-slate-200 rounded-lg px-2 sm:px-2.5 py-1 sm:py-1.5 focus:outline-none focus:border-cyan-500 w-32 sm:w-44 lg:w-48 transition-all" title="Select Database">
-          <option value="combined" selected>Unified Master DB (Quint-DB)</option>
+          <option value="combined" selected>Unified Master DB (6-Platform Consensus)</option>
           <option value="imdb">IMDb Official</option>
           <option value="douban">Douban 2025 (豆瓣)</option>
           <option value="anilist">AniList 2025</option>
@@ -1176,7 +1176,7 @@
             <span class="text-xs text-slate-400 font-mono">titles</span>
           </div>
           <div class="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 flex items-center justify-between">
-            <span id="stat-ratings" class="text-cyan-400 font-mono font-medium">89.3M + AL + IMDb + Douban</span>
+            <span id="stat-ratings" class="text-cyan-400 font-mono font-medium">89.3M + TMDb + Douban + IMDb</span>
             <span class="text-cyan-400 opacity-0 group-hover:opacity-100 transition-opacity text-[10px]">Reset ↺</span>
           </div>
         </div>
@@ -1535,7 +1535,8 @@
                   <select id="source-db-select" onchange="onSourceDBChange(this.value)" class="morph-input bg-slate-900 border border-slate-700 text-white rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-cyan-500">
                     <option value="all">All Platforms (Any)</option>
                     <option value="multi_db">Multi-DB Consensus (2+ Databases)</option>
-                    <option value="bridge_5">Quint-DB Bridge (All 5 Databases)</option>
+                    <option value="bridge_5">Multi-DB Bridge (All Databases)</option>
+                    <option value="has_tmdb">Has TMDb (TV &amp; Cinema Consensus)</option>
                     <option value="has_douban">Has Douban 845M (Asian &amp; Global Cinema)</option>
                     <option value="has_ml">Has MovieLens 32M</option>
                     <option value="has_imdb">Has IMDb Official Catalog</option>
@@ -1546,7 +1547,7 @@
               </div>
 
               <div class="text-slate-400 font-medium" id="results-count">
-                Showing 0 of 0 titles
+                Loading calibrated catalog...
               </div>
             </div>
 
@@ -1615,9 +1616,6 @@
                   <option value="100000">100,000+</option>
                 </select>
               </label>
-            </div>
-          </div>
-              Showing 0 of 0 titles
             </div>
           </div>
         </div>
@@ -2546,7 +2544,7 @@
         const elRatings = document.getElementById('stat-ratings');
         if (elRatings) {
           const ratingsCountMap = {
-            'combined': '89.3M + AL + IMDb + Douban',
+            'combined': '89.3M + TMDb + Douban + IMDb',
             'imdb': '1.79B (IMDb Official)',
             'douban': '845.7M (Douban 豆瓣)',
             'anilist': '247.9M (AniList 2025)',
@@ -3259,7 +3257,8 @@
       if (activeSourceDB !== 'all') {
         const srcLabels = {
           multi_db: 'Consensus (2+ DBs)',
-          bridge_5: 'Quint-DB Bridge',
+          bridge_5: 'Multi-DB Bridge',
+          has_tmdb: 'TMDb Consensus',
           has_douban: 'Douban 845M',
           has_ml: 'MovieLens 32M',
           has_imdb: 'IMDb Official',
@@ -3487,11 +3486,14 @@
             if (m.ml_raw != null) srcCount++;
             if (m.imdb_raw != null || m.imdb_ep_avg != null) srcCount++;
             if (m.douban_raw != null) srcCount++;
+            if (m.tmdb_raw != null) srcCount++;
             if (m.mal_raw != null) srcCount++;
             if (m.al_raw != null) srcCount++;
             if (srcCount < 2) return false;
           } else if (activeSourceDB === 'bridge_5') {
             if (m.media_type !== 'bridge' && (m.ml_raw == null || m.douban_raw == null || m.imdb_raw == null)) return false;
+          } else if (activeSourceDB === 'has_tmdb') {
+            if (m.tmdb_raw == null) return false;
           } else if (activeSourceDB === 'has_douban') {
             if (m.douban_raw == null) return false;
           } else if (activeSourceDB === 'has_ml') {
@@ -3678,6 +3680,14 @@
         pills.push(`
           <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-emerald-500/15 text-emerald-200 border border-emerald-500/30 font-mono text-[11px]" title="Douban 豆瓣 Score: ${dScore.toFixed(2)} (${(dVotes || 0).toLocaleString()} user evaluations)">
             <span class="text-[9px] uppercase font-bold text-emerald-400">豆</span>${dScore.toFixed(2)}
+          </span>
+        `);
+      }
+      if (m.tmdb_raw != null) {
+        const lbl = (m.media_type === 'tv_season' || m.media_type === 'tv_series') ? 'TMDb S' + (m.season_num || '') : 'TMDb';
+        pills.push(`
+          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded morph-badge bg-blue-500/15 text-blue-200 border border-blue-500/30 font-mono text-[11px]" title="TMDb User Score: ${m.tmdb_raw.toFixed(1)} (${(m.tmdb_votes || 0).toLocaleString()} user evaluations)">
+            <span class="text-[9px] uppercase font-bold text-blue-400">${lbl}</span>${m.tmdb_raw.toFixed(1)}
           </span>
         `);
       }
@@ -4701,6 +4711,20 @@
                <div class="text-xs font-mono text-slate-500 mt-1">Not in Douban DB</div>
              </div>`;
 
+        const tmdbScore = m.tmdb_raw != null ? m.tmdb_raw : null;
+        const tmdbVotes = m.tmdb_votes != null ? m.tmdb_votes : null;
+        const tmdbLabel = (m.media_type === 'tv_season' || m.media_type === 'tv_series') ? `TMDb S${m.season_num || ''}` : 'TMDb Cinema';
+        const tmdbCard = tmdbScore != null
+          ? `<div class="p-2.5 morph-subcard bg-blue-950/30 border border-blue-500/30">
+               <div class="text-[10px] font-bold uppercase text-blue-400">${tmdbLabel}</div>
+               <div class="text-lg font-bold font-mono text-white mt-0.5">${tmdbScore.toFixed(1)} <span class="text-[10px] text-slate-400 font-normal">/ 10</span></div>
+               <div class="text-[10px] text-slate-400 font-mono">${(tmdbVotes || 0).toLocaleString()} users</div>
+             </div>`
+          : `<div class="p-2.5 morph-subcard bg-slate-900/40 border border-slate-800/70 opacity-50">
+               <div class="text-[10px] font-bold uppercase text-slate-500">TMDb</div>
+               <div class="text-xs font-mono text-slate-500 mt-1">Not in TMDb</div>
+             </div>`;
+
         const imdbCard = m.imdb_raw != null
           ? `<div class="p-2.5 morph-subcard bg-amber-950/30 border border-amber-500/30">
                <div class="text-[10px] font-bold uppercase text-amber-400">IMDb Official</div>
@@ -4725,11 +4749,12 @@
 
         srcBreakDiv.innerHTML = `
           <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Raw Ratings Across Source Databases</div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2.5">
             ${mlCard}
             ${malCard}
             ${alCard}
             ${doubanCard}
+            ${tmdbCard}
             ${imdbCard}
             ${epCard}
           </div>
@@ -5182,6 +5207,7 @@
         { label: 'MyAnimeList 57M Raw', fn: m => m.mal_raw != null ? `<span class="font-mono text-purple-300 font-bold">${m.mal_raw.toFixed(2)}</span> (${(m.mal_votes || 0).toLocaleString()} user ratings)` : '<span class="text-slate-600">—</span>' },
         { label: 'AniList 2025 Raw', fn: m => m.al_raw != null ? `<span class="font-mono text-sky-300 font-bold">${m.al_raw.toFixed(2)}</span> (${(m.al_votes || 0).toLocaleString()} users)` : '<span class="text-slate-600">—</span>' },
         { label: 'Douban 豆瓣 Raw', fn: m => (m.douban_raw != null || (currentDataset === 'douban' && m.raw != null)) ? `<span class="font-mono text-emerald-300 font-bold">${(m.douban_raw != null ? m.douban_raw : m.raw).toFixed(2)}</span> (${((m.douban_votes || m.votes) || 0).toLocaleString()} reviews)` : '<span class="text-slate-600">—</span>' },
+        { label: 'TMDb User Score', fn: m => m.tmdb_raw != null ? `<span class="font-mono text-blue-300 font-bold">${m.tmdb_raw.toFixed(1)}</span> (${(m.tmdb_votes || 0).toLocaleString()} user evaluations)` : '<span class="text-slate-600">—</span>' },
         { label: 'IMDb Official Score', fn: m => m.imdb_raw != null ? `<span class="font-mono text-amber-300 font-bold">${m.imdb_raw.toFixed(2)}</span> (${(m.imdb_votes || 0).toLocaleString()} votes)` : '<span class="text-slate-600">—</span>' },
         { label: 'IMDb Season Episodes', fn: m => m.imdb_ep_avg != null ? `<span class="font-mono text-orange-300 font-bold">${m.imdb_ep_avg.toFixed(2)}</span> (${m.ep_count || '?'} eps, ${(m.imdb_ep_votes || 0).toLocaleString()} votes)` : '<span class="text-slate-600">—</span>' },
         { label: 'Composite Raw Mean', fn: m => `<span class="font-mono text-yellow-300">${m.raw.toFixed(2)}</span>` },
