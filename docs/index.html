@@ -980,6 +980,63 @@
       box-shadow: none !important;
     }
 
+    /* --- Search Mode Toggle Fluid Pills --- */
+    .search-mode-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    body.mode-soft #search-mode-keyword.active,
+    #search-mode-keyword.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(37, 99, 235, 0.25)) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.5) !important;
+      box-shadow: 0 2px 10px rgba(6, 182, 212, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+    }
+    html:not(.dark) body.mode-soft #search-mode-keyword.active,
+    html:not(.dark) #search-mode-keyword.active {
+      background: #e0f2fe !important;
+      color: #0284c7 !important;
+      border: 1px solid rgba(14, 165, 233, 0.5) !important;
+      box-shadow: inset 1px 1px 3px #cbd5e1, 0 2px 6px rgba(14, 165, 233, 0.2) !important;
+    }
+    body.mode-soft #search-mode-vibe.active,
+    #search-mode-vibe.active {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(124, 58, 237, 0.25)) !important;
+      color: #d8b4fe !important;
+      border: 1px solid rgba(168, 85, 247, 0.5) !important;
+      box-shadow: 0 2px 10px rgba(168, 85, 247, 0.25), inset 0 1px 2px rgba(255, 255, 255, 0.15) !important;
+    }
+    html:not(.dark) body.mode-soft #search-mode-vibe.active,
+    html:not(.dark) #search-mode-vibe.active {
+      background: #f3e8ff !important;
+      color: #7e22ce !important;
+      border: 1px solid rgba(168, 85, 247, 0.5) !important;
+      box-shadow: inset 1px 1px 3px #cbd5e1, 0 2px 6px rgba(168, 85, 247, 0.2) !important;
+    }
+    body.mode-soft .search-mode-btn:not(.active),
+    .search-mode-btn:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #94a3b8 !important;
+      box-shadow: none !important;
+    }
+    html:not(.dark) body.mode-soft .search-mode-btn:not(.active),
+    html:not(.dark) .search-mode-btn:not(.active) {
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #64748b !important;
+      box-shadow: none !important;
+    }
+    body.mode-soft .search-mode-btn:not(.active):hover,
+    .search-mode-btn:not(.active):hover {
+      background: rgba(51, 65, 85, 0.5) !important;
+      color: #f8fafc !important;
+    }
+    html:not(.dark) body.mode-soft .search-mode-btn:not(.active):hover,
+    html:not(.dark) .search-mode-btn:not(.active):hover {
+      background: rgba(226, 232, 240, 0.8) !important;
+      color: #1e293b !important;
+    }
+
     /* Header View Mode Button */
     #header-view-mode-btn {
       transition: all 0.48s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -1345,10 +1402,10 @@
         <!-- Search Mode Toggle Bar -->
         <div class="flex items-center justify-between flex-wrap gap-2 pt-1">
           <div class="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl morph-subcard border border-slate-800 text-xs">
-            <button id="search-mode-keyword" onclick="setSearchMode('keyword')" class="search-mode-btn morph-btn-sm px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all">
+            <button id="search-mode-keyword" onclick="setSearchMode('keyword')" class="search-mode-btn active px-2.5 py-1 rounded-lg font-semibold flex items-center gap-1.5 transition-all">
               <i data-lucide="search" class="w-3.5 h-3.5"></i> Title &amp; Keyword
             </button>
-            <button id="search-mode-vibe" onclick="setSearchMode('vibe')" class="search-mode-btn morph-btn-sm px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all">
+            <button id="search-mode-vibe" onclick="setSearchMode('vibe')" class="search-mode-btn px-2.5 py-1 rounded-lg font-medium flex items-center gap-1.5 transition-all">
               <span class="text-purple-400 font-bold">✨</span> Semantic Vibe Search (AI)
               <span class="text-[9px] px-1 py-0.2 rounded bg-purple-500/20 text-purple-300 font-mono font-bold">ONNX</span>
             </button>
@@ -2889,8 +2946,14 @@
       const searchIcon = document.getElementById('search-input-icon');
 
       if (mode === 'vibe') {
-        if (btnKeyword) btnKeyword.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all';
-        if (btnVibe) btnVibe.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1.5 transition-all shadow-sm shadow-purple-500/10';
+        if (btnKeyword) {
+          btnKeyword.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all';
+          btnKeyword.classList.remove('active');
+        }
+        if (btnVibe) {
+          btnVibe.className = 'search-mode-btn active px-2.5 py-1 rounded-lg font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 flex items-center gap-1.5 transition-all shadow-sm shadow-purple-500/10';
+          btnVibe.classList.add('active');
+        }
         if (pills) pills.classList.remove('hidden');
         if (searchIcon) searchIcon.className = 'w-4 h-4 text-purple-400 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2';
         if (searchInput) {
@@ -2903,8 +2966,14 @@
           triggerVibeSearch(activeSearch);
         }
       } else {
-        if (btnKeyword) btnKeyword.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all';
-        if (btnVibe) btnVibe.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all';
+        if (btnKeyword) {
+          btnKeyword.className = 'search-mode-btn active px-2.5 py-1 rounded-lg font-semibold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center gap-1.5 transition-all shadow-sm shadow-cyan-500/10';
+          btnKeyword.classList.add('active');
+        }
+        if (btnVibe) {
+          btnVibe.className = 'search-mode-btn px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white hover:bg-slate-800/80 border border-transparent flex items-center gap-1.5 transition-all';
+          btnVibe.classList.remove('active');
+        }
         if (pills) pills.classList.add('hidden');
         if (searchIcon) searchIcon.className = 'w-4 h-4 text-slate-400 group-focus-within:text-cyan-400 transition-colors absolute left-3.5 top-1/2 -translate-y-1/2';
         if (searchInput) {
@@ -3405,6 +3474,10 @@
       if (searchInput) searchInput.value = '';
       const clearSearchBtn = document.getElementById('clear-search-btn');
       if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
+
+      if (searchMode !== 'keyword') {
+        setSearchMode('keyword');
+      }
 
       const sortSel = document.getElementById('sort-select');
       if (sortSel) sortSel.value = 'score_model_b_desc';
@@ -5650,6 +5723,7 @@
         switchTab(hashTab);
       }
       loadDataset(currentDataset);
+      setSearchMode('keyword');
 
       // Render math equations on load
       if (typeof renderMathInElement === 'function') {
